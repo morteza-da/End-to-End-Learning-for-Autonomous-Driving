@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+*.ipynb_checkpoints
+.DS_Store
+*.h5
+*.pth
+*.pt
+models/
+results/
