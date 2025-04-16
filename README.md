@@ -20,14 +20,14 @@ This project presents an end-to-end deep learning model developed for decision-m
 - Real-world driving scenarios (urban & highway)
 - Pre-trained backbones: ImageNet (for CNN feature extractors)
 
-- ## ⚙️ Dependencies
+## ⚙️ Dependencies
 - Python 3.10+
 - TensorFlow / PyTorch
 - OpenCV, NumPy, Pandas
 - Matplotlib / Seaborn
 
-- ## 🚀 How to Run
-```bash
+ ## 🚀 How to Run
+```bash```
 git clone https://github.com/yourusername/e2e-autonomous-driving.git
 cd e2e-autonomous-driving
 pip install -r requirements.txt
@@ -46,4 +46,4 @@ python src/train.py
 ## 🧑‍💻 Author
 **[Morteza Aghamohammadi]**  
 Ph.D. in Mechanical Engineering – Autonomous Vehicles  
-[LinkedIn](https://www.linkedin.com/in/morteza-a/)) | [Email](aghamohamadi.da@gmail.com) | [ORCID](0009-0001-4837-2298)
+[LinkedIn](https://www.linkedin.com/in/morteza-a/) | [Email](aghamohamadi.da@gmail.com) | [ORCID](0009-0001-4837-2298)
