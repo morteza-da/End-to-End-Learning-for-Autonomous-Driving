@@ -22,7 +22,7 @@ In mathematical notation, `fused_t = concat(camera_features_t, lidar_features_t,
 
 The researcher confirms that **Flatten** was used to convert each backbone's feature maps into a feature vector **before concatenation**. Thus the intended path is **backbone feature maps → Flatten (per branch) → feature concatenation → LSTM**. Global Average Pooling (GAP) must not be substituted for Flatten in the faithful reconstruction.
 
-The exact feature-map shapes, concatenated feature dimension, and any optional dimensionality-reduction layer remain to be verified against the dissertation.
+The researcher confirms **no Dense layer between concatenation and LSTM**. The concatenated feature vector was fed directly to the LSTM. The processing order after fusion was **LSTM → Attention → Dense**. Exact feature-map shapes, concatenated feature dimensions, temporal sequence length, and Dense/output-head settings still require verification.
 
 ## Implementation constraints
 
@@ -31,10 +31,10 @@ The exact feature-map shapes, concatenated feature dimension, and any optional d
 - Keep the temporal ordering intact for the LSTM.
 - Preserve the two feature branches at fusion; do not introduce averaging, addition, or a learned gating step unless documented.
 - Flatten the backbone feature maps separately before concatenating their feature vectors.
-- Confirm whether attention followed the LSTM and the exact prediction-head design from the dissertation.
+- Place Attention after the LSTM and Dense after Attention; verify attention variant and the exact Dense/output-head design from the dissertation.
 
 **Scientific precision:** Concatenation retains the extracted feature components in the fused representation; it does **not** prove that all information from the original sensor measurements survives backbone extraction or later network processing.
 
 ## Status
 
-Fusion operator and placement before LSTM: **confirmed by researcher**. Flatten before concatenation: **confirmed by researcher**. Exact tensor dimensions, sequence length, attention mechanism, and downstream output heads: **awaiting verification**.
+Fusion operator and placement before LSTM: **confirmed by researcher**. Flatten before concatenation: **confirmed by researcher**. LSTM → Attention → Dense ordering and absence of pre-LSTM Dense: **confirmed by researcher**. Exact tensor dimensions, sequence length, attention variant, and output-head settings: **awaiting verification**.
