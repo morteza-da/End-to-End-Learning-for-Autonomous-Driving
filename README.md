@@ -1,49 +1,68 @@
-# End-to-End Learning for autonomous-driving
-This project presents an end-to-end deep learning model developed for decision-making in autonomous vehicles. It is based on my Ph.D. dissertation, integrating LiDAR and camera inputs to predict driving actions using CNN, LSTM, and Attention mechanisms.
+# End-to-End Learning for Autonomous Driving
 
-## Model Overview
-**Input**: LiDAR point clouds + Camera images
-**Architecture**: Dual CNN (Xception & ResNeXt) → LSTM + Attention
-**Output**: Steering angle and speed commands
-**Method**: End-to-End learning (E2E) on real-world data
+**PhD research project | Deep Learning · Camera–LiDAR Fusion · Intelligent Vehicle Control**
 
-## 🗂️ Project Structure
-├── data/ # Sample input data (or links to it)
-├── src/ # Source code
-├── models/ # Trained models (optional or linked)
-├── notebooks/ # Jupyter notebooks for analysis
-├── results/ # Visualizations, graphs, and logs
-└── README.md 
+**Researcher:** Morteza Aghamohammadi, PhD in Mechanical Engineering  
+**Location:** Toronto, Canada  
+**LinkedIn:** https://www.linkedin.com/in/morteza-a/  
+**ORCID:** https://orcid.org/0009-0001-4837-2298
 
- ## 📊 Dataset
-- 11,000+ image frames + synchronized LiDAR data
-- Real-world driving scenarios (urban & highway)
-- Pre-trained backbones: ImageNet (for CNN feature extractors)
+## Research overview
 
-## ⚙️ Dependencies
-- Python 3.10+
-- TensorFlow / PyTorch
-- OpenCV, NumPy, Pandas
-- Matplotlib / Seaborn
+This repository documents doctoral research on end-to-end learning for autonomous driving. The research investigates multimodal perception and temporal modeling for predicting **steering angle and vehicle speed** from camera and LiDAR observations.
 
- ## 🚀 How to Run
-```bash```
-git clone https://github.com/yourusername/e2e-autonomous-driving.git
-cd e2e-autonomous-driving
-pip install -r requirements.txt
-python src/train.py
+The proposed research architecture combines **Xception** and **ResNeXt-50** feature extraction with **LSTM** temporal modeling and an **attention mechanism**. Monte Carlo dropout is investigated for uncertainty estimation.
 
-## 📈 Results
-- Training RMSE: ...
-- Validation RMSE: ...
-- Test RMSE: ...
+## Research workflow
 
-## 🔍 Innovation Highlights
-- First-time combination of [Xception + ResNeXt + LSTM + Attention] in E2E driving
-- Parallel CNN feature extraction from multi-modal data
-- Real-world deployment-ready structure
+1. Prepare and synchronize camera and LiDAR observations.
+2. Extract complementary visual and spatial features.
+3. Fuse multimodal features and model temporal dependencies.
+4. Predict steering and speed.
+5. Evaluate prediction accuracy, generalization, and uncertainty.
 
-## 🧑‍💻 Author
-**[Morteza Aghamohammadi]**  
-Ph.D. in Mechanical Engineering – Autonomous Vehicles  
-[LinkedIn](https://www.linkedin.com/in/morteza-a/) | [Email](aghamohamadi.da@gmail.com) | [ORCID](0009-0001-4837-2298)
+## Dataset
+
+The doctoral research used a driving dataset of more than 11,000 frames with camera and LiDAR information. Dataset access, preprocessing scripts, and train/validation/test split definitions will be documented as they are verified and reconstructed.
+
+## Repository status
+
+> **Reconstruction in progress.** The original local source-code files were lost before they could be uploaded to GitHub. This repository is being rebuilt from dissertation materials and available research records. Newly written implementations must not be interpreted as the original historical training code.
+
+The architecture described above reflects the dissertation's research design. Reconstructed scripts, dependency versions, datasets, pretrained weights, and reproducibility instructions will be added only after they are implemented and checked.
+
+## Planned organization
+
+```text
+docs/          Research methodology and architecture documentation
+src/           Reconstructed data processing, modeling, and evaluation code
+configs/       Experiment configurations
+tests/         Unit and integration tests
+notebooks/     Exploratory analyses
+results/       Verified figures, metrics, and experiment logs
+```
+
+These are **planned directories**, not a claim that all code and artifacts are already available.
+
+## Results and reproducibility
+
+Quantitative results, baselines, split definitions, evaluation scripts, and reproducible run commands will be published here after verification against the dissertation and available experimental records. No placeholder scores are presented as independently reproduced results.
+
+## Research interests
+
+- Autonomous driving and intelligent transportation systems
+- Deep learning and computer vision
+- Multimodal sensor fusion (camera and LiDAR)
+- Temporal sequence modeling and attention
+- Vehicle dynamics and intelligent control
+- Reliable and interpretable machine learning
+
+## Collaboration
+
+Interested in academic research collaborations and postdoctoral opportunities in autonomous driving, intelligent vehicles, and multimodal machine learning, particularly in Canada.
+
+**Connect:** [LinkedIn](https://www.linkedin.com/in/morteza-a/) · [ORCID](https://orcid.org/0009-0001-4837-2298)
+
+## Acknowledgment
+
+This project is based on doctoral research. Full academic acknowledgments, references, publication links, and citation details will be added after verification.
