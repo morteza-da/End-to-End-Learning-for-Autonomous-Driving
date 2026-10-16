@@ -24,6 +24,12 @@ The researcher confirms that **Flatten** was used to convert each backbone's fea
 
 The researcher confirms **no Dense layer between concatenation and LSTM**. The concatenated feature vector was fed directly to the LSTM. The processing order after fusion was **LSTM → Attention → Dense**. Exact feature-map shapes, concatenated feature dimensions, temporal sequence length, and Dense/output-head settings still require verification.
 
+## Confirmed temporal sequence input
+
+The researcher confirms that the LSTM processed **sequences of multiple consecutive driving frames**, not isolated camera–LiDAR pairs. At each time step, features from the synchronized camera and LiDAR representations were separately flattened and concatenated; the ordered fused vectors then formed the LSTM input of conceptual shape `[batch, sequence_length, fused_feature_dimension]` (batch-first convention shown for clarity, not a verified framework setting).
+
+The **exact sequence length, stride, temporal sampling interval, sequence boundaries, and target alignment** are not yet confirmed. No particular frame count should be presented as historical fact.
+
 ## Confirmed prediction targets
 
 The model **simultaneously predicted steering angle and vehicle speed** from the shared temporal representation. This is a joint two-target regression task. Whether the final implementation used one two-unit Dense layer or two separate output heads remains unconfirmed; do not assume either arrangement without dissertation evidence.
@@ -41,4 +47,4 @@ The model **simultaneously predicted steering angle and vehicle speed** from the
 
 ## Status
 
-Fusion operator and placement before LSTM: **confirmed by researcher**. Flatten before concatenation: **confirmed by researcher**. LSTM → Attention → Dense ordering and absence of pre-LSTM Dense: **confirmed by researcher**. Simultaneous steering-and-speed prediction: **confirmed by researcher**. Exact tensor dimensions, sequence length, attention variant, and output-head implementation: **awaiting verification**.
+Fusion operator and placement before LSTM: **confirmed by researcher**. Flatten before concatenation: **confirmed by researcher**. LSTM → Attention → Dense ordering and absence of pre-LSTM Dense: **confirmed by researcher**. Simultaneous steering-and-speed prediction: **confirmed by researcher**. Consecutive-frame sequence input: **confirmed by researcher**. Exact tensor dimensions, sequence length, attention variant, and output-head implementation: **awaiting verification**.
