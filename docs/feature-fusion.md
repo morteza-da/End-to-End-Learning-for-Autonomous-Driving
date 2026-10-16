@@ -24,6 +24,10 @@ The researcher confirms that **Flatten** was used to convert each backbone's fea
 
 The researcher confirms **no Dense layer between concatenation and LSTM**. The concatenated feature vector was fed directly to the LSTM. The processing order after fusion was **LSTM → Attention → Dense**. Exact feature-map shapes, concatenated feature dimensions, temporal sequence length, and Dense/output-head settings still require verification.
 
+## Confirmed prediction targets
+
+The model **simultaneously predicted steering angle and vehicle speed** from the shared temporal representation. This is a joint two-target regression task. Whether the final implementation used one two-unit Dense layer or two separate output heads remains unconfirmed; do not assume either arrangement without dissertation evidence.
+
 ## Implementation constraints
 
 - Concatenate feature representations along the **feature dimension**, not the temporal or batch dimensions.
@@ -37,4 +41,4 @@ The researcher confirms **no Dense layer between concatenation and LSTM**. The c
 
 ## Status
 
-Fusion operator and placement before LSTM: **confirmed by researcher**. Flatten before concatenation: **confirmed by researcher**. LSTM → Attention → Dense ordering and absence of pre-LSTM Dense: **confirmed by researcher**. Exact tensor dimensions, sequence length, attention variant, and output-head settings: **awaiting verification**.
+Fusion operator and placement before LSTM: **confirmed by researcher**. Flatten before concatenation: **confirmed by researcher**. LSTM → Attention → Dense ordering and absence of pre-LSTM Dense: **confirmed by researcher**. Simultaneous steering-and-speed prediction: **confirmed by researcher**. Exact tensor dimensions, sequence length, attention variant, and output-head implementation: **awaiting verification**.
