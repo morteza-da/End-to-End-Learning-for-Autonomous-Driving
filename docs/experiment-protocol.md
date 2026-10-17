@@ -79,6 +79,8 @@ python scripts/train_multimodal.py --data-root data/dbnet-2018 --label-provenanc
 
 The optional pooling is a separate experimental variant; omit `--pool-size` for direct Flatten. A/B output folders are organized by assignment and fusion variant; for example `results/multimodal/A/pool-2x2/validation_metrics.json`. For matched validation comparisons use `scripts/compare_fusion_variants.py` with compatible reports.
 
+The training runner refuses an output directory equal to or nested inside the dataset root, to avoid writing experiment artifacts into raw DBNet folders. Keep `--output` in a separate working directory.
+
 The runner saves `config.json`, `run_metadata.json`, `latest_metrics.json`, and the best validation checkpoint `best.pt` in separate A/B folders. It reports batch-averaged joint training/validation objectives, then reloads the best checkpoint to produce `validation_metrics.json` (aggregate RMSE, R², and threshold accuracy) and `validation_predictions.json` (per-window targets and predictions). It does **not** evaluate the unlabeled DBNet test split. These commands have not been validated on the complete dataset. Full-resolution flattened CNN maps can require substantial GPU memory; inspect `feature_width` and memory requirements before training.
 
 ## Memory preflight for flattened CNN features
