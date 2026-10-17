@@ -65,7 +65,7 @@ Do not claim reproducibility until dependencies, datasets, seeds, checkpoints, a
 
 **[OPEN]** Dataset download/permission, precise schema, sample identifiers, synchronization, temporal split leakage prevention, sequence sampling, and normalization.
 
-See `docs/dataset-manifest.md` and `src/autonomous_driving/data_manifest.py`. Do not invent or distribute unlicensed dataset records.
+**[SOURCE ATTRIBUTION]** DBNet is credited to Chen et al. (2018), *LiDAR-Video Driving Dataset: Learning Driving Policies Effectively*, IEEE/CVF CVPR 2018. Official repository: https://github.com/driving-behavior/DBNet. Preserve this citation in every DBNet-based notebook, result, paper, and figure. The repository states its **code** is Apache 2.0; original dataset rights must be checked separately before redistribution. Full original-author BibTeX: `CITATION_DBNet.bib`; details: `docs/dbnet-attribution.md`.\n\nSee `docs/dataset-manifest.md` and `src/autonomous_driving/data_manifest.py`. Do not invent or distribute unlicensed dataset records.
 
 ## Chapter 4 — Synchronized multimodal inputs
 
@@ -173,4 +173,4 @@ Config: `src/autonomous_driving/backbone_config.py`.
 - `docs/lidar-color-encoding.md`
 - `docs/backbone-implementation-plan.md`
 - `docs/threshold-accuracy.md`
-- `docs/runnable-backbones.md`
+- `docs/runnable-backbones.md`\n- `docs/dbnet-attribution.md`
