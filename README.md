@@ -52,6 +52,10 @@ Report MAE, RMSE, R², and threshold accuracy separately for steering and speed.
 
 Research interests include autonomous driving, multimodal perception, temporal learning, intelligent vehicles, uncertainty estimation, and vehicle dynamics. Open to academic collaborations and postdoctoral research opportunities.
 
+## License and citation
+
+The project source code is distributed under the [MIT License](LICENSE). For academic use, cite this software using [CITATION.cff](CITATION.cff). When using the DBNet dataset, also cite the original dataset authors via [CITATION_DBNet.bib](CITATION_DBNet.bib). The software license does not grant rights to redistribute third-party datasets.
+
 ## Acknowledgment
 
 DBNet dataset credit: Chen et al. (CVPR 2018). Dataset access and redistribution are governed by the original authors' terms.
