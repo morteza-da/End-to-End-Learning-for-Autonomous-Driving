@@ -1,4 +1,4 @@
-"""Research reconstruction package for multimodal autonomous-driving experiments.
+"""Research software package for multimodal autonomous-driving experiments.
 
 No original model implementation is claimed by this package.
 """
