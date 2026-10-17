@@ -7,3 +7,15 @@ __pycache__/
 *.pt
 models/
 results/
+# Locally licensed datasets and provenance records
+data/
+datasets/
+*.las
+*.laz
+# Local credentials and environment files
+.env
+.env.*
+!.env.example
+# Local training outputs
+checkpoints/
+*.ckpt
