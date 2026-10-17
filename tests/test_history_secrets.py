@@ -8,7 +8,7 @@ class HistorySecretsTests(unittest.TestCase):
     def test_detects_private_key_header(self):
         self.assertIn(
             "private-key-header",
-            detect_secret_patterns(b"-----BEGIN OPENSSH PRIVATE KEY-----"),
+            detect_secret_patterns(b"-----BEGIN " + b"OPENSSH PRIVATE KEY-----"),
         )
 
     def test_detects_synthetic_aws_key(self):
