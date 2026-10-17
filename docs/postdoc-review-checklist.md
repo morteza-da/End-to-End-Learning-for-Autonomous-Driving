@@ -9,7 +9,7 @@ This checklist separates software readiness from scientific validation.
 - [x] Raw local data and environment secrets excluded from future commits via gitignore.
 - [x] CI tracked-file path policy rejects common raw sensor, model-weight, and credential filenames.
 - [x] Inspect current main-branch file tree for large binaries and common raw-data formats (no such files found in the inspected tree; placeholder .gitkeep files remain).
-- [ ] Review historical commits for previously tracked sensitive or restricted files; current-tree inspection does not cover Git history.
+- [ ] Review historical commits for previously tracked sensitive or restricted file **contents**; automated history filename scanning is a preliminary check only.
 
 ## Reproducible software
 - [x] Automated Python tests and CPU model integration workflow, with live badges in README.
