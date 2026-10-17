@@ -1,4 +1,4 @@
-"""Tests use synthetic fixtures, not dissertation experimental results."""
+"""Regression metric tests with synthetic numeric fixtures."""
 import math
 import unittest
 
@@ -12,7 +12,6 @@ class RegressionMetricsTests(unittest.TestCase):
 
     def test_known_error(self):
         result = regression_metrics([0, 2], [1, 1])
-        self.assertEqual(result["rmse"], 1.0)
         self.assertEqual(result["rmse"], 1.0)
         self.assertEqual(result["r2"], 0.0)
 
