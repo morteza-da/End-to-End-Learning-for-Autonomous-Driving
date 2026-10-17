@@ -32,6 +32,8 @@ def parse_args():
     parser.add_argument("--camera-trainable-last-n", type=int, default=1)
     parser.add_argument("--lidar-trainable-last-n", type=int, default=1)
     parser.add_argument("--no-pretrained", action="store_true")
+    parser.add_argument("--max-temporal-adam-mib", type=float, default=1024.0,
+                        help="Preflight limit for LSTM parameter+Adam state only")
     parser.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
     return parser.parse_args()
 
@@ -54,6 +56,7 @@ def main():
         seed_everything, write_experiment_report
     )
     from autonomous_driving.model_evaluation import evaluate_driving_loader
+    from autonomous_driving.memory_budget import check_temporal_memory
     from autonomous_driving.sequence_dataset import make_sequence_dataset
     from autonomous_driving.target_mapping import TargetSchema, map_raw_observations
 
@@ -104,6 +107,13 @@ def main():
     }
     camera, lidar = camera.to(device), lidar.to(device)
     width = infer_feature_width(camera, lidar, device=device)
+    budget = check_temporal_memory(
+        width, hidden_size=config.hidden_size, num_layers=config.lstm_layers,
+        max_adam_state_mib=args.max_temporal_adam_mib
+    )
+    print(f"Fused width={width}; estimated LSTM+Adam state="
+          f"{budget.adam_training_state_mib:.1f} MiB (CNN/activations excluded)",
+          flush=True)
     model = build_end_to_end_model(
         camera, lidar, input_size=width,
         hidden_size=config.hidden_size, num_layers=config.lstm_layers
@@ -124,6 +134,9 @@ def main():
             "speed_unit": schema.speed_unit,
         },
         "feature_width": width,
+        "temporal_parameter_count": budget.parameter_count,
+        "temporal_adam_state_mib": budget.adam_training_state_mib,
+        "temporal_memory_cap_mib": args.max_temporal_adam_mib,
         "trainable_stages": freeze_info,
         "window_counts": {split: len(ds) for split, ds in datasets.items()},
         "device": device,
