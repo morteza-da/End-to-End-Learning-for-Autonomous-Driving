@@ -60,6 +60,19 @@ class PreflightGateTests(unittest.TestCase):
     def test_accept_matching(self):
         self.assertTrue(self.check())
 
+    def test_reject_forged_passed_flag_with_out_of_range_labels(self):
+        from dataclasses import replace
+        self.rows[0] = replace(self.rows[0], steering_deg=180.0)
+        self.report["canonical_targets_sha256"] = fingerprint_targets(self.rows)
+        # All existing metadata can be consistent while the targets are unsafe.
+        with self.assertRaisesRegex(ValueError, "outside configured physical limits"):
+            self.check()
+
+    def test_reject_forged_target_range_summary(self):
+        self.report["target_ranges"] = {"train": {"sample_count": 999}}
+        with self.assertRaisesRegex(ValueError, "range summary"):
+            self.check()
+
     def test_reject_failed_preflight(self):
         self.report["readiness"]["passed"] = False
         with self.assertRaises(ValueError):
