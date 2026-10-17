@@ -41,7 +41,7 @@
 
 ## Chapter 2 — Environment
 
-**[RECONSTRUCTION]** Python 3.10+ and standard-library tests are currently available. Notebook files use the Jupyter `ipynb` format. A deep-learning framework has **not** been selected as historical fact. Select and pin TensorFlow/Keras or PyTorch after implementation and compatibility tests; a notebook is an interface, not a replacement for a training framework.
+**[RECONSTRUCTION]** Python 3.10+ and standard-library tests are currently available. Notebook files use the Jupyter `ipynb` format. A **new reconstruction implementation** now uses PyTorch + timm within a Jupyter Notebook. This is **not** confirmation of the historical research framework. Dependency versions still require pinning after compatibility and execution tests. A notebook is an interface, not a replacement for a training framework.
 
 ```bash
 git clone https://github.com/morteza-da/End-to-End-Learning-for-Autonomous-Driving.git
@@ -82,6 +82,10 @@ See `docs/dataset-manifest.md` and `src/autonomous_driving/data_manifest.py`. Do
 Notebook: `notebooks/02_LiDAR_Preprocessing.ipynb`. Tests: `tests/test_lidar_encoding.py`.
 
 **[OPEN]** Projection, occlusion, pixel collision resolution, empty pixel policy, coordinate units, and exact rounding.
+
+### New executable backbone notebook (2026-10-16)
+
+**[RECONSTRUCTION]** Run `notebooks/03b_Runnable_Backbone_Features.ipynb` after installing `torch` and `timm`. It calls `src/autonomous_driving/backbone_extraction.py` to instantiate timm feature-map backbones, apply an **illustrative** freeze policy, flatten each branch, and concatenate aligned synthetic frame features. Set `PRETRAINED=True` to request ImageNet weights; the notebook defaults to `False` for an initial no-download shape check. Exact model registry names and pretrained weights **must** be checked against the installed timm version. No execution results are archived yet. See `docs/runnable-backbones.md`.
 
 ## Chapter 6 — Transfer learning
 
@@ -149,7 +153,8 @@ Config: `src/autonomous_driving/backbone_config.py`.
 - [ ] Verify CI test runs
 - [ ] Obtain/validate legal access to DBNet
 - [ ] Confirm 2D LiDAR projection algorithm or label a new one
-- [ ] Pin runnable pretrained backbones and dependency versions
+- [x] Add runnable PyTorch/timm backbone construction and synthetic shape-check notebook (execution not yet verified)
+- [ ] Pin verified pretrained backbones and dependency versions
 - [ ] Implement Flatten → Concatenate → LSTM → Attention → Dense
 - [ ] Verify train/validation/test temporal separation
 - [ ] Execute controlled training, evaluation, and ablations
@@ -168,3 +173,4 @@ Config: `src/autonomous_driving/backbone_config.py`.
 - `docs/lidar-color-encoding.md`
 - `docs/backbone-implementation-plan.md`
 - `docs/threshold-accuracy.md`
+- `docs/runnable-backbones.md`
