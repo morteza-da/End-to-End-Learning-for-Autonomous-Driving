@@ -31,6 +31,9 @@ def main():
     from autonomous_driving.dataset_fingerprint import fingerprint_windows
     from autonomous_driving.target_fingerprint import fingerprint_targets
     from autonomous_driving.sensor_integrity import fingerprint_sensor_files
+    from autonomous_driving.output_safety import require_output_outside_dataset
+
+    require_output_outside_dataset(args.data_root, args.output)
 
     schema = TargetSchema(
         steering_channel=args.steering_channel,
