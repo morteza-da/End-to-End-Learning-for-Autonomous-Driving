@@ -48,6 +48,10 @@ The last two commands require locally extracted DBNet data. See [dataset instruc
 
 The [sequence dataset](src/autonomous_driving/sequence_dataset.py) loads aligned camera/LiDAR windows and verified steering/speed targets. The [end-to-end model](src/autonomous_driving/end_to_end.py) connects two spatial feature extractors to the LSTM-attention regression head. See [training integration](docs/end-to-end-training.md). Dataset label units and channel mappings must be established before real-data training; see [DBNet label validation](docs/dbnet-label-validation.md) and the explicit [target mapping module](src/autonomous_driving/target_mapping.py).
 
+## Training and checkpointing
+
+Use [the training runner](scripts/train_multimodal.py) to train configuration A or B after independently verifying DBNet target-channel order and physical units. Each run saves its configuration, trainable-stage metadata, validation objectives, and best checkpoint. [Compare the two configurations](scripts/compare_backbones.py) using measured validation objectives; see the [experiment protocol](docs/experiment-protocol.md). Real-data benchmark results are not yet reported.
+
 ## Evaluation
 
 Use [validated experiment configurations](src/autonomous_driving/experiment_config.py) and [measured-result reporting](src/autonomous_driving/experiment_reporting.py) for reproducible A/B comparisons; see the [experiment protocol](docs/experiment-protocol.md). Report MAE, RMSE, R², and threshold accuracy separately for steering and speed. Include dataset version, split, random seed, preprocessing configuration, checkpoint, and environment with each measured result. Training and benchmark numbers are published only when accompanied by actual run artifacts.
