@@ -15,6 +15,7 @@ class TrainingCLIContractTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("--stride", result.stdout)
+        self.assertIn("--overwrite-output", result.stdout)
         self.assertIn("--require-sensor-hashes", result.stdout)
         self.assertIn("--preflight-report", result.stdout)
 
