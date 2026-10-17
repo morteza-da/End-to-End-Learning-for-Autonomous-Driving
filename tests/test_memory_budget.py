@@ -29,6 +29,23 @@ class MemoryBudgetTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             estimate_temporal_memory(0)
 
+try:
+    import torch
+except ImportError:
+    torch = None
+
+
+@unittest.skipUnless(torch is not None, "PyTorch optional dependency not installed")
+class TemporalMemoryIntegrationTests(unittest.TestCase):
+    def test_estimate_matches_actual_torch_parameters(self):
+        from autonomous_driving.temporal_model import build_temporal_model
+        for width, hidden, layers in ((4, 8, 1), (16, 12, 2), (1024, 64, 3)):
+            with self.subTest(width=width, hidden=hidden, layers=layers):
+                model = build_temporal_model(width, hidden_size=hidden, num_layers=layers)
+                actual = sum(parameter.numel() for parameter in model.parameters())
+                estimate = estimate_temporal_memory(width, hidden_size=hidden, num_layers=layers)
+                self.assertEqual(estimate.parameter_count, actual)
+
 
 if __name__ == "__main__":
     unittest.main()
