@@ -51,15 +51,17 @@ def audit_drive(drive_path: Path, split: str) -> DBNetDriveAudit:
     cameras = numbered_files(drive_path / "dvr_66x200", ".jpg")
     clouds = numbered_files(drive_path / "points_16384", ".las")
     behavior_path = drive_path / "behavior.csv"
+    camera_ids, lidar_ids = set(cameras), set(clouds)
+    all_ids = camera_ids | lidar_ids
+    expected_frames = max(all_ids, default=-1) + 1
     labels = read_behavior_rows(behavior_path) if behavior_path.exists() else None
     if labels is not None:
         from .label_inspection import inspect_behavior_csv
-        label_report = inspect_behavior_csv(behavior_path, expected_frames=len(cameras | clouds))
+        label_report = inspect_behavior_csv(behavior_path, expected_frames=expected_frames)
         if label_report['orientation'] in {'frame_count_mismatch', 'ambiguous'}:
-            raise ValueError(f'Label/frame count mismatch: {behavior_path}')
+            raise ValueError(f'Label orientation ambiguous or frame count mismatch: {behavior_path}')
     if labels is None and split != "test":
         raise FileNotFoundError(f"Missing behavior.csv for labeled split: {drive_path}")
-    camera_ids, lidar_ids = set(cameras), set(clouds)
     paired = camera_ids & lidar_ids
     expected = set(range(max(camera_ids | lidar_ids, default=-1) + 1))
     label_frame_count = (None if labels is None else
@@ -96,7 +98,7 @@ def build_labeled_observations(root: Path):
     Label channel meanings and units must be independently verified before
     assigning steering_deg and speed_kmh; returns raw numeric tuples.
     """
-    root = Path(root)
+    root = Path(root).resolve()
     rows = []
     for split in ("train", "val"):
         for drive in sorted((root / split).iterdir()):
@@ -106,11 +108,13 @@ def build_labeled_observations(root: Path):
             lidars = numbered_files(drive / "points_16384", ".las")
             from .label_inspection import inspect_behavior_csv, extract_raw_frame_labels
             label_path = drive / "behavior.csv"
-            report = inspect_behavior_csv(label_path, expected_frames=len(set(cameras) | set(lidars)))
+            all_ids = set(cameras) | set(lidars)
+            frame_count = max(all_ids, default=-1) + 1
+            report = inspect_behavior_csv(label_path, expected_frames=frame_count)
             if report['orientation'] not in {'frames_as_rows', 'frames_as_columns'}:
                 raise ValueError(f'Unrecognized label orientation: {label_path}')
             labels = extract_raw_frame_labels(
-                label_path, frame_count=len(set(cameras) | set(lidars)),
+                label_path, frame_count=frame_count,
                 orientation=report['orientation'])
             for index in sorted(set(cameras) & set(lidars)):
                 if index >= len(labels):
