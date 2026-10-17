@@ -77,6 +77,7 @@ def main():
     from autonomous_driving.label_quality import audit_target_ranges, require_plausible_targets
     from autonomous_driving.preflight_gate import verify_preflight_report
     from autonomous_driving.run_identity import git_run_identity
+    from autonomous_driving.environment_identity import environment_identity
     from autonomous_driving.output_safety import (
         require_output_outside_dataset, require_fresh_experiment_directory
     )
@@ -185,6 +186,7 @@ def main():
         },
         "device": device,
         "code_revision": git_run_identity(Path(__file__).resolve().parents[1]),
+        "runtime_environment": environment_identity(),
     }, indent=2) + "\n", encoding="utf-8")
 
     best_val = float("inf")
