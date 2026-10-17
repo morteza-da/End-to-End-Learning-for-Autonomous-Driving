@@ -25,6 +25,18 @@ class OutputSafetyTests(unittest.TestCase):
             output = Path(tmp) / "results"
             self.assertEqual(require_output_outside_dataset(root, output), output.resolve())
 
+    def test_final_output_symlink_into_dataset_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "dbnet"
+            root.mkdir()
+            base = Path(tmp) / "results"
+            base.mkdir()
+            # Base output is safe, but the final A/flatten directory is not.
+            (base / "A").symlink_to(root, target_is_directory=True)
+            self.assertEqual(require_output_outside_dataset(root, base), base.resolve())
+            with self.assertRaisesRegex(ValueError, "outside"):
+                require_output_outside_dataset(root, base / "A" / "flatten")
+
     def test_existing_experiment_artifacts_require_explicit_opt_in(self):
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / "A" / "pool-2x2"
