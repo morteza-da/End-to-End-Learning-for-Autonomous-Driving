@@ -8,6 +8,10 @@ The public repository can be shared as a **tested research-software demonstratio
 
 Before sending the link to a prospective collaborator, check the current Actions status, confirm the latest README and license, and perform a manual review of Git history **contents** for secrets and restricted material. Automated filename and secret-pattern checks cannot certify this.
 
+## Automated release gate — 2026-10-17
+
+At commit `6a70c1b73d2c3b622eb03dcecb1e1cdcd7606574`, both GitHub Actions checks completed successfully: Python unit tests (run 39060882527) and PyTorch CPU integration (run 39060882495). These runs validate the automated software checks, not real-data benchmark results or a complete manual content audit. Any subsequent change requires a new CI check.
+
 ## Public presentation
 - [x] Clear camera–LiDAR, CNN–LSTM–attention project scope and author links in README.
 - [x] MIT code license and separate dataset attribution.
