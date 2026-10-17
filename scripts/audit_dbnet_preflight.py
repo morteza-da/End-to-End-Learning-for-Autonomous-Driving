@@ -18,6 +18,8 @@ def main():
     parser.add_argument("--stride", type=int, default=1)
     parser.add_argument("--steering-limit-deg", type=float, default=40.0)
     parser.add_argument("--speed-limit-kmh", type=float, default=120.0)
+    parser.add_argument("--hash-sensor-files", action="store_true",
+                        help="Stream and hash all paired camera/LiDAR file bytes (slow)")
     parser.add_argument("--output", type=Path, default=Path("results/dbnet-preflight.json"))
     args = parser.parse_args()
 
@@ -28,6 +30,7 @@ def main():
     from autonomous_driving.sequence_manifest import build_sequence_manifest, split_windows
     from autonomous_driving.dataset_fingerprint import fingerprint_windows
     from autonomous_driving.target_fingerprint import fingerprint_targets
+    from autonomous_driving.sensor_integrity import fingerprint_sensor_files
 
     schema = TargetSchema(
         steering_channel=args.steering_channel,
@@ -62,6 +65,10 @@ def main():
         },
         "target_ranges": ranges,
         "canonical_targets_sha256": fingerprint_targets(observations),
+        "sensor_content_integrity": (
+            fingerprint_sensor_files(args.data_root, observations)
+            if args.hash_sensor_files else None
+        ),
         "drives": [
             {
                 "split": d.split, "drive": d.drive,
