@@ -12,17 +12,17 @@ class DBNetLayoutTests(unittest.TestCase):
                 drive = root / split / "1"
                 (drive / "dvr_66x200").mkdir(parents=True)
                 (drive / "points_16384").mkdir()
-                for i in (0, 1):
+                for i in (0, 1, 2):
                     (drive / "dvr_66x200" / f"{i}.jpg").touch()
                     (drive / "points_16384" / f"{i}.las").touch()
                 if split != "test":
-                    (drive / "behavior.csv").write_text("1.5,20\n2.5,21\n")
+                    (drive / "behavior.csv").write_text("1.5,20\n2.5,21\n3.5,22\n")
             audit = audit_dataset(root)
             self.assertEqual(len(audit), 3)
-            self.assertEqual([x.label_rows for x in audit], [2, 2, None])
+            self.assertEqual([x.label_rows for x in audit], [3, 3, None])
             rows = build_labeled_observations(root)
-            self.assertEqual(len(rows), 4)
-            self.assertEqual(rows[0]["raw_label_columns"], ("1.5", "20"))
+            self.assertEqual(len(rows), 6)
+            self.assertEqual(rows[0]["raw_label_columns"], (1.5, 20.0))
 
     def test_detect_missing_pair(self):
         with tempfile.TemporaryDirectory() as tmp:
