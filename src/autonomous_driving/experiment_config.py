@@ -19,6 +19,7 @@ class ExperimentConfig:
     learning_rate: float = 1e-4
     epochs: int = 10
     pretrained: bool = True
+    pool_size: int | None = None
     camera_trainable_last_n: int = 1
     lidar_trainable_last_n: int = 1
     steering_weight: float = 1.0
@@ -35,6 +36,8 @@ class ExperimentConfig:
             raise ValueError("Count and dimension settings must be positive")
         if self.sequence_length < 2:
             raise ValueError("Temporal windows must contain at least two frames")
+        if self.pool_size is not None and (type(self.pool_size) is not int or self.pool_size not in (1, 2, 5)):
+            raise ValueError("pool_size must be None, 1, 2, or 5")
         if self.seed < 0:
             raise ValueError("Seed must be nonnegative")
         if self.learning_rate <= 0 or self.steering_weight <= 0 or self.speed_weight <= 0:
