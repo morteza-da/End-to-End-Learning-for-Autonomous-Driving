@@ -46,7 +46,11 @@ def make_sequence_dataset(observations, dataset_root, *, sequence_length,
     mean = np.asarray([0.485, 0.456, 0.406], dtype=np.float32)[:, None, None]
     std = np.asarray([0.229, 0.224, 0.225], dtype=np.float32)[:, None, None]
 
+    from .dataset_fingerprint import fingerprint_windows
+    membership_sha256 = fingerprint_windows(windows) if windows else None
+
     class DBNetSequenceDataset(Dataset):
+        window_membership_sha256 = membership_sha256
         def __len__(self):
             return len(windows)
 
