@@ -1,4 +1,4 @@
-"""Synthetic unit tests only; not validation of dissertation datasets."""
+"""Synthetic unit tests only; not validation of real driving datasets."""
 import csv
 from pathlib import Path
 import tempfile
