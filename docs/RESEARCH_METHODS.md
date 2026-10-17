@@ -20,7 +20,7 @@ Configuration choices, dataset definitions, and evaluation metrics are documente
 10. Sequence construction and LSTM temporal modelling
 11. Attention and joint steering/speed prediction
 12. Training, optimization, checkpoints, and reproducibility
-13. Evaluation: RMSE, R², MAE, threshold-based accuracy
+13. Evaluation: RMSE and R², threshold-based accuracy
 14. Comparison experiments, plots, ablations, and uncertainty
 15. Results audit: prior tables vs newly reproduced outcomes
 16. Full implementation checklist and long-term archival
