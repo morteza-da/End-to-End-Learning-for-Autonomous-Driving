@@ -1,12 +1,4 @@
-"""Dissertation-guided LiDAR distance and RGB color encoding.
-
-Source: supplied doctoral dissertation, PDF p. 73, Equation (3-1).
-This module deliberately does NOT rasterize/project 3D points to 2D pixels:
-the original pixel mapping, calibration, and collision policy are unknown.
-
-The piecewise branches below are a transparent interpretation of the printed
-equation, not a claim of byte-for-byte reproduction of lost original code.
-"""
+"""LiDAR planar-distance and RGB color encoding utilities."""
 from __future__ import annotations
 
 import math
@@ -14,7 +6,7 @@ from collections.abc import Iterable
 
 
 def planar_distance(px: float, py: float) -> float:
-    """Return sqrt(px**2 + py**2) as specified in the dissertation.
+    """Return sqrt(px**2 + py**2).
 
     Pz is intentionally absent from the source equation.
     """
