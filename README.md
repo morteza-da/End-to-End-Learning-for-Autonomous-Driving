@@ -51,7 +51,7 @@ The [sequence dataset](src/autonomous_driving/sequence_dataset.py) loads frame-i
 
 ## Training readiness and reproducibility
 
-Real-data training requires a **reviewed label-provenance record** and a **passing, matching data preflight report**. See [DBNet label evidence](docs/dbnet-label-evidence.md), [data preflight runner](scripts/audit_dbnet_preflight.py), and [experiment protocol](docs/experiment-protocol.md). These checks validate channel configuration, frame-index membership and provisional physical ranges; they do **not** prove timestamp synchronization, authenticity of supporting documentation, or dataset file integrity. No real DBNet performance results are claimed.
+Real-data training requires a **reviewed label-provenance record** and a **passing, matching data preflight report**. See [DBNet label evidence](docs/dbnet-label-evidence.md), [data preflight runner](scripts/audit_dbnet_preflight.py), and [experiment protocol](docs/experiment-protocol.md). These checks validate channel configuration, frame-index membership and provisional physical ranges; they do **not** prove timestamp synchronization or authenticity of supporting documentation. Optional full sensor-file byte hashing is available; it does not establish semantic validity or dataset licensing. No real DBNet performance results are claimed.
 
 ```bash
 python scripts/audit_dbnet_preflight.py \
@@ -59,6 +59,7 @@ python scripts/audit_dbnet_preflight.py \
   --label-provenance path/to/reviewed-evidence.json \
   --steering-channel 0 --speed-channel 1 \
   --steering-unit deg --speed-unit km/h \
+  --hash-sensor-files \\
   --output results/dbnet-preflight.json
 
 python scripts/train_multimodal.py \
