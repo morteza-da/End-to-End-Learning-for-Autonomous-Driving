@@ -181,3 +181,8 @@ Config: `src/autonomous_driving/backbone_config.py`.
 **[USER-PROVIDED]** The researcher reports receiving dataset-use permission from the DBNet authors by email. The precise redistribution wording remains to be reviewed, but this does not prevent writing or privately executing dataset-aware code. The original train/val/test archives were previously uploaded to the researcher's ChatGPT file Library. They do not need to be uploaded again.
 
 **[RECONSTRUCTION]** `src/autonomous_driving/dbnet_layout.py` and `scripts/audit_dbnet.py` now recognize the documented extracted DBNet directory structure, pair JPEG/LAS by numeric index, preserve positional `behavior.csv` values without assuming units, and generate per-drive/split audit summaries. The test split may have no `behavior.csv`, per the source README. `docs/dbnet-local-data.md` describes safe local extraction and audit. **[OPEN]** Archive-wide decoding, correct label semantics, actual environment staging, and verified full-data training.
+
+
+## DBNet sensor decoding — reconstructed implementation
+
+**[RECONSTRUCTION]** `src/autonomous_driving/dbnet_media.py` and `scripts/inspect_dbnet_pair.py` now decode original DBNet JPEG frames and LAS point clouds, using Pillow and laspy optional dependencies. Camera images are resized to the researcher's confirmed 299×299 backbone input; the precise resizing interpolation is a new implementation choice. LAS XYZ is decoded with header scales/offsets. Raw behavior CSV fields remain positional and uninterpreted pending unit verification. **[OPEN]** 3D-to-2D LiDAR pixel projection, full sensor pair validation, and actual real-data training. See `docs/dbnet-media-pipeline.md`.
