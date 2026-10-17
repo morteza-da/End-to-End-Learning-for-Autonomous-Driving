@@ -27,6 +27,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_pool_config.py' -v
           python -m unittest discover -s tests -p 'test_label_provenance.py' -v
           python -m unittest discover -s tests -p 'test_dbnet_label_mapping.py' -v
+          python -m unittest discover -s tests -p 'test_label_quality.py' -v
           python -m unittest discover -s tests -p 'test_experiment_comparison.py' -v
           python -m unittest discover -s tests -p 'test_model_evaluation.py' -v
           python -m unittest discover -s tests -p 'test_multimodal_smoke.py' -v
