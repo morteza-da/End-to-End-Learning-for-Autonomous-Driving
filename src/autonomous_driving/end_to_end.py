@@ -4,14 +4,14 @@ from __future__ import annotations
 
 def build_end_to_end_model(camera_backbone, lidar_backbone, *,
                            input_size: int, hidden_size: int = 64,
-                           num_layers: int = 1):
+                           num_layers: int = 1, pool_size: int | None = None):
     """Combine two spatial CNN branches, Flatten/Concat, LSTM and attention.
 
-    input_size must equal the actual concatenated flattened feature width.
+    input_size must equal the actual fused width after optional pooling.\n    pool_size=None preserves the direct Flatten/Concat baseline.
     """
     import torch
     from torch import nn
-    from .temporal_model import build_temporal_model, stack_temporal_features
+    from .temporal_model import build_temporal_model, stack_temporal_features\n    from .feature_compression import pool_and_concatenate
 
     class EndToEndDrivingModel(nn.Module):
         def __init__(self):
@@ -29,7 +29,7 @@ def build_end_to_end_model(camera_backbone, lidar_backbone, *,
             )
             return self.temporal(fused)
 
-    return EndToEndDrivingModel()
+    if pool_size is not None and (not isinstance(pool_size, int) or pool_size < 1):\n        raise ValueError("pool_size must be a positive integer or None")\n    return EndToEndDrivingModel()
 
 
 def infer_feature_width(camera_backbone, lidar_backbone, *, device="cpu"):
