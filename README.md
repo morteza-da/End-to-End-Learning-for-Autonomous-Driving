@@ -35,7 +35,7 @@ python scripts/audit_sensor_pairing.py data/dbnet-2018 --output results/sensor_p
 python scripts/inspect_dbnet_pair.py data/dbnet-2018/train/1 0
 ```
 
-The last two commands require locally extracted DBNet data. See [dataset instructions](docs/dbnet-local-data.md) and [sensor processing](docs/dbnet-media-pipeline.md).
+The three dataset inspection commands require locally extracted DBNet data. See [dataset instructions](docs/dbnet-local-data.md) and [sensor processing](docs/dbnet-media-pipeline.md).
 
 ## Repository contents
 
@@ -54,19 +54,19 @@ The [sequence dataset](src/autonomous_driving/sequence_dataset.py) loads frame-i
 Real-data training requires a **reviewed label-provenance record** and a **passing, matching data preflight report**. See [DBNet label evidence](docs/dbnet-label-evidence.md), [data preflight runner](scripts/audit_dbnet_preflight.py), and [experiment protocol](docs/experiment-protocol.md). These checks validate channel configuration, frame-index membership and provisional physical ranges; they do **not** prove timestamp synchronization, authenticity of supporting documentation, or dataset file integrity. No real DBNet performance results are claimed.
 
 ```bash
-python scripts/audit_dbnet_preflight.py \\
-  --data-root data/dbnet-2018 \\
-  --label-provenance path/to/reviewed-evidence.json \\
-  --steering-channel 0 --speed-channel 1 \\
-  --steering-unit deg --speed-unit km/h \\
+python scripts/audit_dbnet_preflight.py \
+  --data-root data/dbnet-2018 \
+  --label-provenance path/to/reviewed-evidence.json \
+  --steering-channel 0 --speed-channel 1 \
+  --steering-unit deg --speed-unit km/h \
   --output results/dbnet-preflight.json
 
-python scripts/train_multimodal.py \\
-  --data-root data/dbnet-2018 \\
-  --label-provenance path/to/reviewed-evidence.json \\
-  --preflight-report results/dbnet-preflight.json \\
-  --steering-channel 0 --speed-channel 1 \\
-  --steering-unit deg --speed-unit km/h \\
+python scripts/train_multimodal.py \
+  --data-root data/dbnet-2018 \
+  --label-provenance path/to/reviewed-evidence.json \
+  --preflight-report results/dbnet-preflight.json \
+  --steering-channel 0 --speed-channel 1 \
+  --steering-unit deg --speed-unit km/h \
   --assignment A --pool-size 2
 ```
 
