@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from .label_quality import audit_target_ranges, require_plausible_targets
 from .dataset_fingerprint import fingerprint_windows
 from .target_fingerprint import fingerprint_targets
 from .sensor_integrity import fingerprint_sensor_files
@@ -45,6 +46,14 @@ def verify_preflight_report(path, *, observations, schema, sequence_length, stri
     }
     if report.get("plausibility_limits") != expected_limits:
         raise ValueError("Preflight plausibility bounds differ from training")
+    # Recompute target plausibility; do not trust an editable "passed" flag.
+    actual_ranges = audit_target_ranges(
+        observations, steering_limit_deg=steering_limit_deg,
+        speed_limit_kmh=speed_limit_kmh
+    )
+    require_plausible_targets(actual_ranges)
+    if report.get("target_ranges") is not None and report["target_ranges"] != actual_ranges:
+        raise ValueError("Preflight target range summary differs from training")
     windows = split_windows(build_sequence_manifest(
         observations, sequence_length=sequence_length, stride=stride
     ))
