@@ -46,6 +46,23 @@ class ExperimentTests(unittest.TestCase):
             self.assertEqual(saved["dataset_id"], "fixture")
             self.assertEqual(saved["metrics"]["sample_count"], 2)
 
+    def test_constant_target_r2_serializes_as_null(self):
+        metrics = evaluate_driving_predictions(
+            [2.0, 2.0], [2.0, 2.0],
+            [30.0, 30.0], [29.0, 31.0]
+        )
+        self.assertIsNone(metrics["steering_deg"]["r2"])
+        self.assertIsNone(metrics["speed_kmh"]["r2"])
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "report.json"
+            write_experiment_report(
+                path, config=ExperimentConfig(), metrics=metrics,
+                dataset_id="synthetic", split="val"
+            )
+            saved = json.loads(path.read_text(encoding="utf-8"))
+            self.assertIsNone(saved["metrics"]["steering_deg"]["r2"])
+            self.assertIsNone(saved["metrics"]["speed_kmh"]["r2"])
+
     def test_reject_nonfinite_report_metrics(self):
         with tempfile.TemporaryDirectory() as folder:
             with self.assertRaises(ValueError):
