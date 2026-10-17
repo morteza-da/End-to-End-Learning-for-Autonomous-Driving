@@ -7,6 +7,7 @@ This checklist separates software readiness from scientific validation.
 - [x] MIT code license and separate dataset attribution.
 - [x] Installation, unit tests, preflight, and training commands documented.
 - [x] Raw local data and environment secrets excluded from future commits via gitignore.
+- [x] CI tracked-file path policy rejects common raw sensor, model-weight, and credential filenames.
 - [x] Inspect current main-branch file tree for large binaries and common raw-data formats (no such files found in the inspected tree; placeholder .gitkeep files remain).
 - [ ] Review historical commits for previously tracked sensitive or restricted files; current-tree inspection does not cover Git history.
 
