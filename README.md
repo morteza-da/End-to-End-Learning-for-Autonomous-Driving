@@ -31,6 +31,7 @@ The repository includes a dataset layout audit, JPEG/LAS decoders, paired-frame 
 python -m pip install -e '.[data,model]'
 python -m unittest discover -s tests -v
 python scripts/audit_dbnet.py data/dbnet-2018
+python scripts/audit_sensor_pairing.py data/dbnet-2018 --output results/sensor_pairing_audit.json
 python scripts/inspect_dbnet_pair.py data/dbnet-2018/train/1 0
 ```
 
