@@ -24,6 +24,22 @@ class DBNetLayoutTests(unittest.TestCase):
             self.assertEqual(len(rows), 6)
             self.assertEqual(rows[0]["raw_label_columns"], (1.5, 20.0))
 
+    def test_sparse_frame_ids_use_index_span_not_file_count(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for split in ("train", "val"):
+                drive = root / split / "1"
+                (drive / "dvr_66x200").mkdir(parents=True)
+                (drive / "points_16384").mkdir()
+                for index in (0, 2, 3):
+                    (drive / "dvr_66x200" / f"{index}.jpg").touch()
+                    (drive / "points_16384" / f"{index}.las").touch()
+                (drive / "behavior.csv").write_text("1,2,3,4\\n10,20,30,40\\n")
+                self.assertEqual(audit_drive(drive, split).label_rows, 4)
+            records = build_labeled_observations(root)
+            self.assertEqual([r["frame_index"] for r in records[:3]], [0, 2, 3])
+            self.assertEqual(records[1]["raw_label_columns"], (3.0, 30.0))
+
     def test_detect_missing_pair(self):
         with tempfile.TemporaryDirectory() as tmp:
             drive = Path(tmp)
