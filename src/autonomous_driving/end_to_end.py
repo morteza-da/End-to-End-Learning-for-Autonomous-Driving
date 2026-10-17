@@ -7,7 +7,8 @@ def build_end_to_end_model(camera_backbone, lidar_backbone, *,
                            num_layers: int = 1, pool_size: int | None = None):
     """Combine two spatial CNN branches, Flatten/Concat, LSTM and attention.
 
-    input_size must equal the actual fused width after optional pooling.\n    pool_size=None preserves the direct Flatten/Concat baseline.
+    input_size must equal the actual fused width after optional pooling.
+    pool_size=None preserves the direct Flatten/Concat baseline.
     """
     import torch
     from torch import nn
@@ -24,16 +25,30 @@ def build_end_to_end_model(camera_backbone, lidar_backbone, *,
             )
 
         def forward(self, camera_frames, lidar_frames):
-            fused = stack_temporal_features(
-                self.camera_backbone, self.lidar_backbone,
-                camera_frames, lidar_frames
-            )
+            if pool_size is None:
+                fused = stack_temporal_features(
+                    self.camera_backbone, self.lidar_backbone,
+                    camera_frames, lidar_frames
+                )
+            else:
+                if camera_frames.ndim != 5 or lidar_frames.shape != camera_frames.shape:
+                    raise ValueError("Expected matching [B,T,3,299,299] modalities")
+                b, t = camera_frames.shape[:2]
+                if t < 2 or tuple(camera_frames.shape[2:]) != (3, 299, 299):
+                    raise ValueError("Expected at least two 299x299 RGB frames")
+                camera = self.camera_backbone(camera_frames.reshape(b * t, 3, 299, 299))
+                lidar = self.lidar_backbone(lidar_frames.reshape(b * t, 3, 299, 299))
+                fused = pool_and_concatenate(camera, lidar, pool_size=pool_size)
+                fused = fused.reshape(b, t, -1)
             return self.temporal(fused)
 
-    if pool_size is not None and (not isinstance(pool_size, int) or pool_size < 1):\n        raise ValueError("pool_size must be a positive integer or None")\n    return EndToEndDrivingModel()
+    if pool_size is not None and (not isinstance(pool_size, int) or pool_size < 1):
+        raise ValueError("pool_size must be a positive integer or None")
+    return EndToEndDrivingModel()
 
 
-def infer_feature_width(camera_backbone, lidar_backbone, *, device="cpu",\n                        pool_size: int | None = None):
+def infer_feature_width(camera_backbone, lidar_backbone, *, device="cpu",
+                        pool_size: int | None = None):
     """Infer flattened feature width from one 299x299 pair without gradients."""
     import torch
     from .backbone_extraction import flattened_concatenated_features 
@@ -45,9 +60,14 @@ def infer_feature_width(camera_backbone, lidar_backbone, *, device="cpu",\n     
         lidar_backbone.eval()
         with torch.no_grad():
             sample = torch.zeros(1, 3, 299, 299, device=device)
-            features = flattened_concatenated_features(
-                camera_backbone, lidar_backbone, sample, sample
-            )
+            if pool_size is None:
+                features = flattened_concatenated_features(
+                    camera_backbone, lidar_backbone, sample, sample
+                )
+            else:
+                features = pool_and_concatenate(
+                    camera_backbone(sample), lidar_backbone(sample), pool_size=pool_size
+                )
         return int(features.shape[1])
     finally:
         camera_backbone.train(was_camera_training)
