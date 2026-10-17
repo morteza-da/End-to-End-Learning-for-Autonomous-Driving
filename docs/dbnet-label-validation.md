@@ -38,3 +38,13 @@ The DBNet README describes CSV lines indexed by frame. Separate dataset inspecti
 ## Sparse frame IDs and alignment
 
 Camera and LiDAR files use numeric frame IDs. When IDs have gaps (for example, 0, 2, 3), the expected label matrix width/height is inferred from the largest frame ID plus one, **not** the number of files. Frame ID 2 maps to label position 2, never to the second available image. Sequence windows additionally require consecutive numeric IDs and do not cross missing frames or drive boundaries. This preserves positional alignment, but does not independently verify camera/LiDAR timestamps or sensor synchronization; such evidence must be established separately before making synchronization claims.
+
+## Camera–LiDAR pairing audit
+
+Before building temporal windows, run the read-only index-level audit:
+
+```bash
+python scripts/audit_sensor_pairing.py data/dbnet-2018 --output results/sensor_pairing_audit.json
+```
+
+The report includes per-drive camera/LiDAR counts, shared numeric frame IDs, unmatched IDs, empty files and contiguous paired-frame runs. An index-level match does **not** establish physical timestamp synchronization, calibration or media decodability. These require independent checks and dataset metadata. No measured pairing statistics are included in the repository.
