@@ -53,6 +53,7 @@ def main():
     from autonomous_driving.experiment_reporting import (
         seed_everything, write_experiment_report
     )
+    from autonomous_driving.model_evaluation import evaluate_driving_loader
     from autonomous_driving.sequence_dataset import make_sequence_dataset
     from autonomous_driving.target_mapping import TargetSchema, map_raw_observations
 
@@ -129,6 +130,7 @@ def main():
     }, indent=2) + "\n", encoding="utf-8")
 
     best_val = float("inf")
+    best_epoch = None
     for epoch in range(1, config.epochs + 1):
         train_loss = run_multimodal_epoch(
             model, loaders["train"], optimizer=optimizer, device=device,
@@ -144,6 +146,7 @@ def main():
               flush=True)
         if val_loss < best_val:
             best_val = val_loss
+            best_epoch = epoch
             torch.save({
                 "epoch": epoch,
                 "model_state_dict": model.state_dict(),
@@ -161,6 +164,23 @@ def main():
             checkpoint=output / "best.pt",
             notes="Batch-averaged weighted RMSE objectives; not per-target test metrics"
         )
+
+    # Reload the best validation checkpoint before reporting aggregate metrics.
+    checkpoint = torch.load(output / "best.pt", map_location=device, weights_only=True)
+    model.load_state_dict(checkpoint["model_state_dict"])
+    validation_metrics, validation_predictions = evaluate_driving_loader(
+        model, loaders["val"], device=device
+    )
+    (output / "validation_predictions.json").write_text(
+        json.dumps(validation_predictions, indent=2, allow_nan=False) + "\n",
+        encoding="utf-8"
+    )
+    write_experiment_report(
+        output / "validation_metrics.json", config=config,
+        metrics=validation_metrics, dataset_id="DBNet-2018", split="val",
+        checkpoint=output / "best.pt",
+        notes=f"Aggregate metrics at best validation epoch {best_epoch}; not test performance"
+    )
 
 
 if __name__ == "__main__":
