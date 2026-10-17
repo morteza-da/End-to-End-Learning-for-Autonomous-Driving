@@ -168,3 +168,7 @@ Training requires `--label-provenance path/to/reviewed-evidence.json` alongside 
 ### DBNet channel order verified against upstream implementation
 
 See `docs/dbnet-label-evidence.md` for exact primary-source code expressions and the distinction between source-code channel mapping and secondary-publication speed-unit corroboration. The documented working mapping is steering channel 0 in degrees and speed channel 1 in km/h; source-review provenance and actual dataset inspection are still required before any real training. Do not apply the original upstream normalized-speed transform to labels that are already interpreted in physical units.
+
+### Physical target-range preflight
+
+Before loading CNN weights, the training CLI audits all mapped train/validation labels. Its default **configurable research plausibility bounds** are steering between -40° and +40° and speed between 0 and 120 km/h (inclusive). Out-of-bound observations stop training rather than being clipped or silently discarded. Per-split observed minima, maxima and outlier counts are recorded in `run_metadata.json` for completed preflights. These limits are assumptions for this implementation, **not independently verified hard bounds for every DBNet sample**; inspect and revise the policy if legitimate data exceed them. Passing this audit does not establish label correctness or data quality.
