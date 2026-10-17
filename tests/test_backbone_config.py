@@ -1,4 +1,4 @@
-"""Standard-library-only checks for dissertation backbone assignments."""
+"""Standard-library-only checks for backbone modality assignments."""
 import unittest
 
 from autonomous_driving.backbone_config import (
