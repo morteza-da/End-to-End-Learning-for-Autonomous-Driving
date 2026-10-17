@@ -93,7 +93,8 @@ def main():
     require_plausible_targets(target_audit)
     verify_preflight_report(
         args.preflight_report, observations=observations, schema=schema,
-        sequence_length=config.sequence_length, stride=config.stride
+        sequence_length=config.sequence_length, stride=config.stride,
+        data_root=args.data_root, provenance_source=provenance["source_url"]
     )
     datasets = {
         split: make_sequence_dataset(
