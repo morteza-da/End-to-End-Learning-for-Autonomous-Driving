@@ -1,8 +1,4 @@
-"""implementation configuration for research's two backbone assignments.
-
-Source: research PDF pp. 105-106. Configuration here is declarative:
-it defines model configurations without loading pretrained weights.
-"""
+"""Camera–LiDAR backbone assignments and fine-tuning configuration."""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -24,7 +20,7 @@ class BackboneAssignment:
         if {self.camera_backbone, self.lidar_backbone} != SUPPORTED_BACKBONES:
             raise ValueError("Each configuration must use one Xception and one ResNeXt-50")
         if self.image_size != IMAGE_SIZE:
-            raise ValueError("research input resolution is 299 x 299")
+            raise ValueError("Model input resolution is 299 x 299")
 
 
 CONFIGURATIONS = {
@@ -34,7 +30,7 @@ CONFIGURATIONS = {
 
 
 def get_backbone_assignment(name: str) -> BackboneAssignment:
-    """Return immutable modality-to-backbone assignment from the research."""
+    """Return immutable modality-to-backbone assignment for multimodal experiments."""
     try:
         return CONFIGURATIONS[name.upper()]
     except (KeyError, AttributeError) as exc:
@@ -43,11 +39,7 @@ def get_backbone_assignment(name: str) -> BackboneAssignment:
 
 @dataclass(frozen=True)
 class FineTuningPlan:
-    """Explicit *new experiment* plan; previous frozen blocks are unknown.
-
-    Frozen/trainable module names must be supplied after inspecting a concrete
-    implementation. No arbitrary previous freeze boundary is assumed.
-    """
+    """Specify frozen and trainable modules for a concrete backbone.\n\n    Inspect the model registry and record the chosen module boundaries.\n    """
 
     frozen_module_names: tuple[str, ...]
     trainable_module_names: tuple[str, ...]
