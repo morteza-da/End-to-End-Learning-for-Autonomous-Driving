@@ -11,7 +11,8 @@ def build_end_to_end_model(camera_backbone, lidar_backbone, *,
     """
     import torch
     from torch import nn
-    from .temporal_model import build_temporal_model, stack_temporal_features\n    from .feature_compression import pool_and_concatenate
+    from .temporal_model import build_temporal_model, stack_temporal_features 
+    from .feature_compression import pool_and_concatenate
 
     class EndToEndDrivingModel(nn.Module):
         def __init__(self):
@@ -35,7 +36,8 @@ def build_end_to_end_model(camera_backbone, lidar_backbone, *,
 def infer_feature_width(camera_backbone, lidar_backbone, *, device="cpu",\n                        pool_size: int | None = None):
     """Infer flattened feature width from one 299x299 pair without gradients."""
     import torch
-    from .backbone_extraction import flattened_concatenated_features\n    from .feature_compression import pool_and_concatenate
+    from .backbone_extraction import flattened_concatenated_features 
+    from .feature_compression import pool_and_concatenate
     was_camera_training = camera_backbone.training
     was_lidar_training = lidar_backbone.training
     try:
