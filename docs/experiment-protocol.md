@@ -78,3 +78,9 @@ python scripts/compare_backbones.py results/multimodal/A/latest_metrics.json res
 ```
 
 The runner saves `config.json`, `run_metadata.json`, `latest_metrics.json`, and the best validation checkpoint `best.pt` in separate A/B folders. It reports batch-averaged joint training/validation objectives, then reloads the best checkpoint to produce `validation_metrics.json` (aggregate RMSE, R², and threshold accuracy) and `validation_predictions.json` (per-window targets and predictions). It does **not** evaluate the unlabeled DBNet test split. These commands have not been validated on the complete dataset. Full-resolution flattened CNN maps can require substantial GPU memory; inspect `feature_width` and memory requirements before training.
+
+## Memory preflight for flattened CNN features
+
+Before allocating the LSTM, the runner infers the concatenated flattened CNN feature width and calls `check_temporal_memory`. The estimator calculates exact LSTM/attention/head parameter counts for the configured widths and a conservative FP32 parameter+gradient+Adam-moments estimate. The default `--max-temporal-adam-mib 1024` rejects temporal parameter/optimizer footprints larger than 1024 MiB. Adjust this limit only after checking available memory.
+
+**Important:** This is **not** a whole-model peak GPU memory estimator. It excludes CNN weights, forward/backward activations, batch/sequence size effects, temporary tensors, and CUDA allocator overhead. Passing the preflight does not guarantee that training fits on a GPU. Direct Flatten → Concatenate → LSTM is retained; no unreported feature bottleneck is introduced.
