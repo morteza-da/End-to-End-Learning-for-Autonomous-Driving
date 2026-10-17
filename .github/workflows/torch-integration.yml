@@ -23,6 +23,8 @@ jobs:
       - name: Run model integration tests
         run: |
           python -m unittest discover -s tests -p 'test_end_to_end.py' -v
+          python -m unittest discover -s tests -p 'test_feature_compression.py' -v
+          python -m unittest discover -s tests -p 'test_pool_config.py' -v
           python -m unittest discover -s tests -p 'test_model_evaluation.py' -v
           python -m unittest discover -s tests -p 'test_multimodal_smoke.py' -v
           python -m unittest discover -s tests -p 'test_memory_budget.py' -v
