@@ -8,10 +8,10 @@ import math
 from collections.abc import Sequence
 
 
-def regression_metrics(y_true: Sequence[float], y_pred: Sequence[float]) -> dict[str, float]:
+def regression_metrics(y_true: Sequence[float], y_pred: Sequence[float]) -> dict[str, float | None]:
     """Return RMSE and R²; reject empty or mismatched inputs.
 
-    R² is undefined when the target has zero total variance.
+    R² is undefined when the target has zero total variance; return None (JSON null).
     """
     if not y_true or len(y_true) != len(y_pred):
         raise ValueError("Expected nonempty equal-length ground truth and predictions")
@@ -24,5 +24,5 @@ def regression_metrics(y_true: Sequence[float], y_pred: Sequence[float]) -> dict
     mean = sum(truth) / len(truth)
     total = sum((v - mean) ** 2 for v in truth)
     residual = sum(e * e for e in errors)
-    r2 = 1.0 - residual / total if total > 0 else float("nan")
+    r2 = 1.0 - residual / total if total > 0 else None
     return {"rmse": rmse, "r2": r2}
