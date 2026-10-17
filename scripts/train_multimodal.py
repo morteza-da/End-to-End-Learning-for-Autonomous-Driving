@@ -32,6 +32,8 @@ def parse_args():
     parser.add_argument("--camera-trainable-last-n", type=int, default=1)
     parser.add_argument("--lidar-trainable-last-n", type=int, default=1)
     parser.add_argument("--no-pretrained", action="store_true")
+    parser.add_argument("--pool-size", type=int, choices=(1, 2, 5),
+                        help="Optional pooled spatial grid; omit for full Flatten baseline")
     parser.add_argument("--max-temporal-adam-mib", type=float, default=1024.0,
                         help="Preflight limit for LSTM parameter+Adam state only")
     parser.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
@@ -106,7 +108,7 @@ def main():
         ),
     }
     camera, lidar = camera.to(device), lidar.to(device)
-    width = infer_feature_width(camera, lidar, device=device)
+    width = infer_feature_width(camera, lidar, device=device, pool_size=args.pool_size)
     budget = check_temporal_memory(
         width, hidden_size=config.hidden_size, num_layers=config.lstm_layers,
         max_adam_state_mib=args.max_temporal_adam_mib
@@ -116,14 +118,16 @@ def main():
           flush=True)
     model = build_end_to_end_model(
         camera, lidar, input_size=width,
-        hidden_size=config.hidden_size, num_layers=config.lstm_layers
+        hidden_size=config.hidden_size, num_layers=config.lstm_layers,
+        pool_size=args.pool_size
     ).to(device)
     optimizer = torch.optim.Adam(
         (p for p in model.parameters() if p.requires_grad),
         lr=config.learning_rate
     )
 
-    output = args.output / config.assignment
+    variant = "flatten" if args.pool_size is None else f"pool-{args.pool_size}x{args.pool_size}"
+    output = args.output / config.assignment / variant
     output.mkdir(parents=True, exist_ok=True)
     save_experiment_config(config, output / "config.json")
     (output / "run_metadata.json").write_text(json.dumps({
@@ -134,6 +138,8 @@ def main():
             "speed_unit": schema.speed_unit,
         },
         "feature_width": width,
+        "fusion_variant": variant,
+        "pool_size": args.pool_size,
         "temporal_parameter_count": budget.parameter_count,
         "temporal_adam_state_mib": budget.adam_training_state_mib,
         "temporal_memory_cap_mib": args.max_temporal_adam_mib,
@@ -166,6 +172,8 @@ def main():
                 "optimizer_state_dict": optimizer.state_dict(),
                 "config": config.as_dict(),
                 "feature_width": width,
+                "fusion_variant": variant,
+                "pool_size": args.pool_size,
             }, output / "best.pt")
         write_experiment_report(
             output / "latest_metrics.json", config=config,
