@@ -35,6 +35,10 @@ jobs:
         run: python scripts/probe_backbones.py --assignment A --output results/backbone-A.json
       - name: Measure configuration B
         run: python scripts/probe_backbones.py --assignment B --output results/backbone-B.json
+      - name: Print measured feature dimensions and memory estimates
+        run: |
+          cat results/backbone-A.json
+          cat results/backbone-B.json
       - name: Upload machine-readable measurements
         if: always()
         uses: actions/upload-artifact@v4
