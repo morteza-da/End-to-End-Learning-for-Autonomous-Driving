@@ -133,3 +133,7 @@ An **optional, distinct experimental variant** uses adaptive spatial average poo
 | 1×1 | 4,096 | 1% |
 
 These are feature-width calculations, **not training results**. Spatial pooling changes the model architecture and can discard spatial detail; benchmark each variant on identical drive-disjoint splits and the same steering/speed evaluation metrics before drawing performance conclusions. The existing baseline training path remains unchanged.
+
+### Explicit pooled end-to-end variant
+
+`build_end_to_end_model(..., pool_size=None)` remains the original full-spatial Flatten/Concat model. For a separate spatial-pooling experiment, pass `pool_size=1`, `2`, or `5` to both `infer_feature_width(camera, lidar, pool_size=N)` and `build_end_to_end_model(camera, lidar, input_size=width, pool_size=N)`. The pooling operation is differentiable and its CNN gradients are checked by the PyTorch integration test. It is not yet exposed as a flag in the training CLI; no dataset-based comparison or accuracy claim has been made.
