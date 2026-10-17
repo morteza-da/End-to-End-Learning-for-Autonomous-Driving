@@ -1,6 +1,6 @@
 """Split-safe temporal sequence manifest for synchronized driving observations.
 
-Generic reconstruction schema, NOT a claim about DBNet's original file layout.
+Generic implementation schema, NOT a claim about DBNet's original file layout.
 """
 from __future__ import annotations
 from dataclasses import dataclass
@@ -48,7 +48,7 @@ def build_sequence_manifest(observations: Iterable[Observation], *,
                             ) -> list[tuple[Observation, ...]]:
     """Construct windows within a drive/split; targets belong to last frame.
 
-    Last-frame target alignment and stride are RECONSTRUCTION choices.
+    Last-frame target alignment and stride are implementation choices.
     Missing frame indices break a window rather than silently skipping gaps.
     """
     if sequence_length < 2 or stride < 1:

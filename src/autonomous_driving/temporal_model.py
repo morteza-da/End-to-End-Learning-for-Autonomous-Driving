@@ -1,6 +1,6 @@
 """LSTM -> additive temporal attention -> joint steering/speed regression.
 
-A new reconstruction choice, NOT a verified historical attention mechanism.
+A new implementation choice, NOT a verified previous attention mechanism.
 Requires PyTorch only when instantiating the model.
 """
 from __future__ import annotations
