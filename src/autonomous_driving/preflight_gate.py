@@ -6,12 +6,14 @@ from pathlib import Path
 
 from .dataset_fingerprint import fingerprint_windows
 from .target_fingerprint import fingerprint_targets
+from .sensor_integrity import fingerprint_sensor_files
 from .sequence_manifest import build_sequence_manifest, split_windows
 
 
 def verify_preflight_report(path, *, observations, schema, sequence_length, stride,
                             steering_limit_deg=40.0, speed_limit_kmh=120.0,
-                            data_root=None, provenance_source=None):
+                            data_root=None, provenance_source=None,
+                            require_sensor_hashes=False):
     report = json.loads(Path(path).read_text(encoding="utf-8"))
     if not isinstance(report, dict) or report.get("readiness", {}).get("passed") is not True:
         raise ValueError("DBNet preflight did not pass")
@@ -21,6 +23,11 @@ def verify_preflight_report(path, *, observations, schema, sequence_length, stri
         raise ValueError("Preflight provenance source differs from training")
     if report.get("canonical_targets_sha256") != fingerprint_targets(observations):
         raise ValueError("Canonical target values or sample identities differ from preflight")
+    if require_sensor_hashes:
+        if data_root is None:
+            raise ValueError("Dataset root required for sensor content verification")
+        if report.get("sensor_content_integrity") != fingerprint_sensor_files(data_root, observations):
+            raise ValueError("Camera or LiDAR file bytes differ from preflight")
     expected_schema = {
         "steering_channel": schema.steering_channel,
         "speed_channel": schema.speed_channel,
