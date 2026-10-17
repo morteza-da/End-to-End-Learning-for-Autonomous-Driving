@@ -66,3 +66,15 @@ The evaluation utility computes MAE, RMSE, R², and threshold accuracy at steeri
 - Never commit restricted DBNet data, private correspondence, or large model checkpoints without confirming redistribution rights.
 
 Unit tests exercise config serialization, input validation, synthetic metric calculations, and report formatting. They are not substitutes for DBNet benchmark evaluation.
+
+## Training runner and checkpoint selection
+
+After confirming the dataset's label channels and physical units, use `scripts/train_multimodal.py`. Both label-channel flags and unit flags are mandatory; the script cannot infer them. The example values below are **placeholders** and must be replaced with verified dataset metadata:
+
+```bash
+python scripts/train_multimodal.py --data-root data/dbnet-2018 --assignment A --steering-channel 0 --speed-channel 1 --steering-unit deg --speed-unit km/h --output results/multimodal
+python scripts/train_multimodal.py --data-root data/dbnet-2018 --assignment B --steering-channel 0 --speed-channel 1 --steering-unit deg --speed-unit km/h --output results/multimodal
+python scripts/compare_backbones.py results/multimodal/A/latest_metrics.json results/multimodal/B/latest_metrics.json
+```
+
+The runner saves `config.json`, `run_metadata.json`, `latest_metrics.json`, and the best validation checkpoint `best.pt` in separate A/B folders. It reports batch-averaged joint training/validation objectives; it does **not** yet produce independently aggregated MAE/RMSE/R² or held-out test predictions. These commands have not been validated on the complete dataset. Full-resolution flattened CNN maps can require substantial GPU memory; inspect `feature_width` and memory requirements before training.
