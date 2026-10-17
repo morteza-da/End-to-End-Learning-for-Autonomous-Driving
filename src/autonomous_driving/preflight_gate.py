@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from .dataset_fingerprint import fingerprint_windows
+from .target_fingerprint import fingerprint_targets
 from .sequence_manifest import build_sequence_manifest, split_windows
 
 
@@ -18,6 +19,8 @@ def verify_preflight_report(path, *, observations, schema, sequence_length, stri
         raise ValueError("Preflight dataset root differs from training")
     if provenance_source is not None and report.get("provenance_source") != provenance_source:
         raise ValueError("Preflight provenance source differs from training")
+    if report.get("canonical_targets_sha256") != fingerprint_targets(observations):
+        raise ValueError("Canonical target values or sample identities differ from preflight")
     expected_schema = {
         "steering_channel": schema.steering_channel,
         "speed_channel": schema.speed_channel,
