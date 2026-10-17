@@ -31,7 +31,7 @@
 - [ ] Record data augmentation and early-stopping rules.
 
 ## 5. Evaluation
-- [ ] Report steering and speed metrics separately: MAE, RMSE, and R².
+- [ ] Report steering and speed metrics separately: RMSE and R².
 - [ ] Record units, aggregation rules, and sample counts.
 - [ ] Evaluate on a held-out test set untouched during tuning.
 - [ ] Compare camera-only, LiDAR-only, and fused baselines.
