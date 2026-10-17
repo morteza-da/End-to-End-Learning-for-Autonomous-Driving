@@ -9,10 +9,15 @@ from .sequence_manifest import build_sequence_manifest, split_windows
 
 
 def verify_preflight_report(path, *, observations, schema, sequence_length, stride,
-                            steering_limit_deg=40.0, speed_limit_kmh=120.0):
+                            steering_limit_deg=40.0, speed_limit_kmh=120.0,
+                            data_root=None, provenance_source=None):
     report = json.loads(Path(path).read_text(encoding="utf-8"))
     if not isinstance(report, dict) or report.get("readiness", {}).get("passed") is not True:
         raise ValueError("DBNet preflight did not pass")
+    if data_root is not None and report.get("dataset_root") != str(Path(data_root).resolve()):
+        raise ValueError("Preflight dataset root differs from training")
+    if provenance_source is not None and report.get("provenance_source") != provenance_source:
+        raise ValueError("Preflight provenance source differs from training")
     expected_schema = {
         "steering_channel": schema.steering_channel,
         "speed_channel": schema.speed_channel,
