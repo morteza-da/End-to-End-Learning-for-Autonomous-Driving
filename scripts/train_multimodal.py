@@ -82,9 +82,11 @@ def main():
         require_output_outside_dataset, require_fresh_experiment_directory
     )
 
-    require_output_outside_dataset(args.data_root, args.output)
     variant = "flatten" if args.pool_size is None else f"pool-{args.pool_size}x{args.pool_size}"
     output = args.output / args.assignment / variant
+    # Check the exact destination: a symlinked assignment/variant can otherwise
+    # redirect writes into the raw dataset even when the base output is safe.
+    require_output_outside_dataset(args.data_root, output)
     require_fresh_experiment_directory(output, allow_existing=args.overwrite_output)
     config = ExperimentConfig(
         assignment=args.assignment, sequence_length=args.sequence_length,
