@@ -78,7 +78,7 @@ See `docs/dataset-manifest.md` and `src/autonomous_driving/data_manifest.py`. Do
 
  PDF pp. 73–74: planar distance `sqrt(Px² + Py²)`; blue for distance below 20, green for 20–40, red from 40 upward, with scale divisors 20/40/60.
 
- `src/autonomous_driving/lidar_encoding.py` implements an explicit piecewise interpretation and round-to-uint8 conversion. It does **not** reconstruct the original 3D-to-2D pixel mapping.
+ `src/autonomous_driving/lidar_encoding.py` implements an explicit piecewise interpretation and round-to-uint8 conversion. It does **not** implement the 3D-to-2D pixel mapping.
 
 Notebook: `notebooks/02_LiDAR_Preprocessing.ipynb`. Tests: `tests/test_lidar_encoding.py`.
 
