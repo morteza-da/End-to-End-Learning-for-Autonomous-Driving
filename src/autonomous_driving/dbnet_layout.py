@@ -55,7 +55,7 @@ def audit_drive(drive_path: Path, split: str) -> DBNetDriveAudit:
     if labels is not None:
         from .label_inspection import inspect_behavior_csv
         label_report = inspect_behavior_csv(behavior_path, expected_frames=len(cameras | clouds))
-        if label_report['orientation'] == 'frame_count_mismatch':
+        if label_report['orientation'] in {'frame_count_mismatch', 'ambiguous'}:
             raise ValueError(f'Label/frame count mismatch: {behavior_path}')
     if labels is None and split != "test":
         raise FileNotFoundError(f"Missing behavior.csv for labeled split: {drive_path}")
@@ -93,8 +93,8 @@ def audit_dataset(root: Path) -> list[DBNetDriveAudit]:
 def build_labeled_observations(root: Path):
     """Map original positional labels to generic records.
 
-    Column 0/1 units and semantic order MUST be independently verified before
-    using steering_deg/speed_kmh; returns raw label strings instead.
+    Label channel meanings and units must be independently verified before
+    assigning steering_deg and speed_kmh; returns raw numeric tuples.
     """
     root = Path(root)
     rows = []
