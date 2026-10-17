@@ -172,3 +172,19 @@ See `docs/dbnet-label-evidence.md` for exact primary-source code expressions and
 ### Physical target-range preflight
 
 Before loading CNN weights, the training CLI audits all mapped train/validation labels. Its default **configurable research plausibility bounds** are steering between -40° and +40° and speed between 0 and 120 km/h (inclusive). Out-of-bound observations stop training rather than being clipped or silently discarded. Per-split observed minima, maxima and outlier counts are recorded in `run_metadata.json` for completed preflights. These limits are assumptions for this implementation, **not independently verified hard bounds for every DBNet sample**; inspect and revise the policy if legitimate data exceed them. Passing this audit does not establish label correctness or data quality.
+
+### Read-only DBNet preflight
+
+Before any real training, run the independent audit on a locally extracted, authorized dataset:
+
+```bash
+python scripts/audit_dbnet_preflight.py \
+  --data-root data/dbnet-2018 \
+  --label-provenance path/to/reviewed-evidence.json \
+  --steering-channel 0 --speed-channel 1 \
+  --steering-unit deg --speed-unit km/h \
+  --sequence-length 4 --stride 1 \
+  --output results/dbnet-preflight.json
+```
+
+The command does not train, load PyTorch, upload raw data, or copy sensor files. It reports sensor pairing counts, missing files, per-split label minima/maxima and outliers, valid temporal-window counts, and membership SHA-256 fingerprints. It exits nonzero when readiness checks fail; the JSON is still saved for diagnosis. The steering ±40° and speed 0–120 km/h limits are provisional research plausibility bounds, not guaranteed DBNet data bounds. A passing audit does not prove physical sensor synchronization, label provenance authenticity, or file integrity.
