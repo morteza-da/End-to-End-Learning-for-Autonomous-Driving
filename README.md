@@ -46,7 +46,7 @@ The last two commands require locally extracted DBNet data. See [dataset instruc
 
 ## End-to-end training interface
 
-The [sequence dataset](src/autonomous_driving/sequence_dataset.py) loads aligned camera/LiDAR windows and verified steering/speed targets. The [end-to-end model](src/autonomous_driving/end_to_end.py) connects two spatial feature extractors to the LSTM-attention regression head. See [training integration](docs/end-to-end-training.md). Dataset label units and column mappings must be established before real-data training.
+The [sequence dataset](src/autonomous_driving/sequence_dataset.py) loads aligned camera/LiDAR windows and verified steering/speed targets. The [end-to-end model](src/autonomous_driving/end_to_end.py) connects two spatial feature extractors to the LSTM-attention regression head. See [training integration](docs/end-to-end-training.md). Dataset label units and channel mappings must be established before real-data training; see [DBNet label validation](docs/dbnet-label-validation.md) and the explicit [target mapping module](src/autonomous_driving/target_mapping.py).
 
 ## Evaluation
 
