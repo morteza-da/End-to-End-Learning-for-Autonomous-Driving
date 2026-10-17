@@ -13,6 +13,7 @@ from autonomous_driving.experiment_config import ExperimentConfig
 def report(pool_size, *, samples=4, seed=42, split="val"):
     return {
         "dataset_id": "DBNet-2018",
+        "notes": "validation_window_sha256=" + "a" * 64,
         "split": split,
         "config": ExperimentConfig(pool_size=pool_size, seed=seed).as_dict(),
         "metrics": {
@@ -57,6 +58,14 @@ class ComparisonTests(unittest.TestCase):
     def test_reject_mismatched_samples(self):
         a = self.save("a.json", report(None))
         b = self.save("b.json", report(2, samples=3))
+        with self.assertRaises(ValueError):
+            load_comparison_rows([a, b])
+
+    def test_reject_mismatched_windows(self):
+        a = self.save("a.json", report(None))
+        altered = report(2)
+        altered["notes"] = "validation_window_sha256=" + "b" * 64
+        b = self.save("b.json", altered)
         with self.assertRaises(ValueError):
             load_comparison_rows([a, b])
 
