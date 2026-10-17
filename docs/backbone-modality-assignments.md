@@ -17,7 +17,7 @@ This document supersedes the earlier unresolved backbone-to-modality assignment 
 
 - Keep dataset splits, input representation, training budget, and evaluation procedure comparable between configurations.
 - Log the exact trainable blocks and optimizer hyperparameters for each experiment.
-- Compare steering and speed predictions using separately reported MAE, RMSE, and R², with target units and sample counts.
+- Compare steering and speed predictions using separately reported RMSE and R², with target units and sample counts.
 - Include model seeds, checkpoints, predictions, and split manifests in new experiments.
 - Report results only from verified research tables or newly executed runs.
 
