@@ -14,6 +14,8 @@ def main():
     parser.add_argument("--pretrained", action="store_true",
                         help="Download pretrained weights if available (default: disabled)")
     parser.add_argument("--device", default="cpu")
+    parser.add_argument("--max-temporal-adam-mib", type=float,
+                        help="Fail if temporal parameter/Adam estimate exceeds this cap")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     result = probe_backbones(
@@ -21,6 +23,15 @@ def main():
         hidden_size=args.hidden_size, num_layers=args.lstm_layers,
         device=args.device
     ).as_dict()
+    if args.max_temporal_adam_mib is not None:
+        if args.max_temporal_adam_mib <= 0:
+            parser.error("--max-temporal-adam-mib must be positive")
+        if result["temporal_adam_state_mib"] > args.max_temporal_adam_mib:
+            parser.error(
+                f"Temporal parameter/Adam estimate {result['temporal_adam_state_mib']:.1f} MiB "
+                f"exceeds cap {args.max_temporal_adam_mib:.1f} MiB; "
+                "backbone and activation memory are additional."
+            )
     result["pretrained_weights_requested"] = args.pretrained
     result["input_shape"] = [1, 3, 299, 299]
     result["total_training_memory_measured"] = False
