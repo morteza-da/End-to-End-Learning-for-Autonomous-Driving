@@ -50,7 +50,7 @@ The [sequence dataset](src/autonomous_driving/sequence_dataset.py) loads aligned
 
 ## Evaluation
 
-Report MAE, RMSE, R², and threshold accuracy separately for steering and speed. Include dataset version, split, random seed, preprocessing configuration, checkpoint, and environment with each measured result. Training and benchmark numbers are published only when accompanied by actual run artifacts.
+Use [validated experiment configurations](src/autonomous_driving/experiment_config.py) and [measured-result reporting](src/autonomous_driving/experiment_reporting.py) for reproducible A/B comparisons; see the [experiment protocol](docs/experiment-protocol.md). Report MAE, RMSE, R², and threshold accuracy separately for steering and speed. Include dataset version, split, random seed, preprocessing configuration, checkpoint, and environment with each measured result. Training and benchmark numbers are published only when accompanied by actual run artifacts.
 
 ## Research and collaboration
 
