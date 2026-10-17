@@ -63,7 +63,7 @@ Do not claim reproducibility until dependencies, datasets, seeds, checkpoints, a
 
 **[THESIS]** PDF pp. 105–106 describe an 80% training / 10% validation / 10% test division.
 
-**[OPEN]** Dataset download/permission, precise schema, sample identifiers, synchronization, historical temporal split policy, sequence sampling, and normalization.\n\n**[RECONSTRUCTION]** `src/autonomous_driving/sequence_manifest.py` validates a generic paired-frame manifest and generates contiguous windows within drive-disjoint splits. This is a defensive new choice, not a verified historical DBNet schema or split method. See `docs/sequence-training.md`.
+**[USER-UPLOAD VERIFIED]** The researcher previously uploaded DBNet archive files to their ChatGPT file Library, including archives representing train, validation, and test. A previous exploratory validation report confirms decoding one JPEG/LAS pair from one drive in each split; this does NOT establish full archive integrity. The supplied DBNet README describes per-drive ordered frames and matching image/LAS integer names, and reports train/val/test organization. **Do not imply the user still needs to upload the dataset.** These Library files are not automatically present in GitHub or in a remote training environment; a local data-access workflow is still required.\n\n**[OPEN]** Complete archive integrity, exact label-column units, full manifest counts, verified sensor synchronization beyond matching names, and training environment access.\n\n**[RECONSTRUCTION]** `src/autonomous_driving/sequence_manifest.py` validates a generic paired-frame manifest and generates contiguous windows within drive-disjoint splits. This is a defensive new choice, not a verified historical DBNet schema or split method. See `docs/sequence-training.md`.
 
 **[SOURCE ATTRIBUTION]** DBNet is credited to Chen et al. (2018), *LiDAR-Video Driving Dataset: Learning Driving Policies Effectively*, IEEE/CVF CVPR 2018. Official repository: https://github.com/driving-behavior/DBNet. Preserve this citation in every DBNet-based notebook, result, paper, and figure. The repository states its **code** is Apache 2.0; original dataset rights must be checked separately before redistribution. Full original-author BibTeX: `CITATION_DBNet.bib`; details: `docs/dbnet-attribution.md`.\n\nSee `docs/dataset-manifest.md` and `src/autonomous_driving/data_manifest.py`. Do not invent or distribute unlicensed dataset records.
 
@@ -151,7 +151,7 @@ Config: `src/autonomous_driving/backbone_config.py`.
 - [x] Define validated A/B backbone modality assignments
 - [x] Establish notebook structure and master archive
 - [ ] Verify CI test runs
-- [ ] Obtain/validate legal access to DBNet
+- [x] Locate previously uploaded DBNet train/validation/test archives in the user's file Library\n- [ ] Complete integrity audit of all supplied archives and stage data for training (do not upload raw data publicly)
 - [ ] Confirm 2D LiDAR projection algorithm or label a new one
 - [x] Add runnable PyTorch/timm backbone construction and synthetic shape-check notebook (execution not yet verified)
 - [ ] Pin verified pretrained backbones and dependency versions
