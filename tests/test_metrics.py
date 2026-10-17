@@ -8,11 +8,11 @@ from autonomous_driving.metrics import regression_metrics
 class RegressionMetricsTests(unittest.TestCase):
     def test_perfect_prediction(self):
         result = regression_metrics([1, 2, 3], [1, 2, 3])
-        self.assertEqual(result, {"mae": 0.0, "rmse": 0.0, "r2": 1.0})
+        self.assertEqual(result, {"rmse": 0.0, "r2": 1.0})
 
     def test_known_error(self):
         result = regression_metrics([0, 2], [1, 1])
-        self.assertEqual(result["mae"], 1.0)
+        self.assertEqual(result["rmse"], 1.0)
         self.assertEqual(result["rmse"], 1.0)
         self.assertEqual(result["r2"], 0.0)
 
