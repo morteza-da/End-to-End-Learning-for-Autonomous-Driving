@@ -146,6 +146,9 @@ def main():
         "temporal_memory_cap_mib": args.max_temporal_adam_mib,
         "trainable_stages": freeze_info,
         "window_counts": {split: len(ds) for split, ds in datasets.items()},
+        "window_membership_sha256": {
+            split: ds.window_membership_sha256 for split, ds in datasets.items()
+        },
         "device": device,
     }, indent=2) + "\n", encoding="utf-8")
 
@@ -201,7 +204,9 @@ def main():
         output / "validation_metrics.json", config=config,
         metrics=validation_metrics, dataset_id="DBNet-2018", split="val",
         checkpoint=output / "best.pt",
-        notes=f"Aggregate metrics at best validation epoch {best_epoch}; not test performance"
+        notes=(f"Aggregate metrics at best validation epoch {best_epoch}; "
+               f"validation_window_sha256={datasets['val'].window_membership_sha256}; "
+               "not test performance")
     )
 
 
