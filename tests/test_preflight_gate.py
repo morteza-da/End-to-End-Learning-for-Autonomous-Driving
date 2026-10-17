@@ -29,6 +29,8 @@ class PreflightGateTests(unittest.TestCase):
         windows = split_windows(build_sequence_manifest(self.rows, sequence_length=2))
         self.report = {
             "readiness": {"passed": True},
+            "dataset_root": str(Path(self.tmp.name).resolve()),
+            "provenance_source": "https://example.org/source",
             "target_schema": {
                 "steering_channel": 0, "speed_channel": 1,
                 "steering_unit": "deg", "speed_unit": "km/h",
@@ -49,7 +51,8 @@ class PreflightGateTests(unittest.TestCase):
         self.path.write_text(json.dumps(self.report), encoding="utf-8")
         return verify_preflight_report(
             self.path, observations=self.rows, schema=self.schema,
-            sequence_length=2, stride=1
+            sequence_length=2, stride=1,
+            data_root=self.tmp.name, provenance_source="https://example.org/source"
         )
 
     def test_accept_matching(self):
@@ -67,6 +70,16 @@ class PreflightGateTests(unittest.TestCase):
 
     def test_reject_changed_label_mapping(self):
         self.report["target_schema"]["speed_channel"] = 2
+        with self.assertRaises(ValueError):
+            self.check()
+
+    def test_reject_changed_dataset_root(self):
+        self.report["dataset_root"] = "/unrelated/dataset"
+        with self.assertRaises(ValueError):
+            self.check()
+
+    def test_reject_changed_evidence_source(self):
+        self.report["provenance_source"] = "https://example.org/other"
         with self.assertRaises(ValueError):
             self.check()
 
