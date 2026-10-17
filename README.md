@@ -17,7 +17,7 @@ Camera RGB (299×299) ── CNN ── Flatten ─┐
 LiDAR RGB (299×299) ── CNN ── Flatten ──┘
 ```
 
-The LiDAR RGB image is derived from a 3D point cloud using distance-based color encoding. Exact rasterization settings must be specified for each experiment.
+The LiDAR RGB input is produced from a 3D point cloud using [configurable spherical range-image projection](docs/lidar-range-image.md) and distance-based color encoding. Record angular field of view and rasterization settings for each experiment.
 
 ## Dataset
 
