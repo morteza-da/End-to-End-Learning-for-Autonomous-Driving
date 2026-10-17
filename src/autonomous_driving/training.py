@@ -1,14 +1,13 @@
 """Generic temporal-regression training helpers.
 
-These train the temporal head on PRECOMPUTED fused features. End-to-end
-backbone fine-tuning is a separate stage, not implemented by this helper.
+These train the temporal head on PRECOMPUTED fused features. End-to-end backbone fine-tuning is provided by end_to_end.py.
 """
 from __future__ import annotations
 
 
 def joint_rmse_loss(outputs, targets, *, steering_weight: float = 1.0,
                     speed_weight: float = 1.0):
-    """Weighted average of per-target RMSE; new reconstruction choice."""
+    """Weighted average of per-target RMSE for joint regression."""
     import torch
     if targets.ndim != 2 or targets.shape[1] != 2:
         raise ValueError("Targets must have shape [batch,2]")
