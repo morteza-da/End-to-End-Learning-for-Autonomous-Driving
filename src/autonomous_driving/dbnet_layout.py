@@ -52,15 +52,23 @@ def audit_drive(drive_path: Path, split: str) -> DBNetDriveAudit:
     clouds = numbered_files(drive_path / "points_16384", ".las")
     behavior_path = drive_path / "behavior.csv"
     labels = read_behavior_rows(behavior_path) if behavior_path.exists() else None
+    if labels is not None:
+        from .label_inspection import inspect_behavior_csv
+        label_report = inspect_behavior_csv(behavior_path, expected_frames=len(cameras | clouds))
+        if label_report['orientation'] == 'frame_count_mismatch':
+            raise ValueError(f'Label/frame count mismatch: {behavior_path}')
     if labels is None and split != "test":
         raise FileNotFoundError(f"Missing behavior.csv for labeled split: {drive_path}")
     camera_ids, lidar_ids = set(cameras), set(clouds)
     paired = camera_ids & lidar_ids
     expected = set(range(max(camera_ids | lidar_ids, default=-1) + 1))
-    missing_labels = tuple(sorted(i for i in paired if labels is not None and i >= len(labels)))
+    label_frame_count = (None if labels is None else
+                         len(labels) if label_report['orientation'] == 'frames_as_rows'
+                         else label_report['shape'][1])
+    missing_labels = tuple(sorted(i for i in paired if label_frame_count is not None and i >= label_frame_count))
     return DBNetDriveAudit(
         split, drive_path.name, len(cameras), len(clouds),
-        len(labels) if labels is not None else None, len(paired),
+        label_frame_count, len(paired),
         tuple(sorted((lidar_ids | expected) - camera_ids)),
         tuple(sorted((camera_ids | expected) - lidar_ids)),
         missing_labels,
@@ -96,7 +104,14 @@ def build_labeled_observations(root: Path):
                 continue
             cameras = numbered_files(drive / "dvr_66x200", ".jpg")
             lidars = numbered_files(drive / "points_16384", ".las")
-            labels = read_behavior_rows(drive / "behavior.csv")
+            from .label_inspection import inspect_behavior_csv, extract_raw_frame_labels
+            label_path = drive / "behavior.csv"
+            report = inspect_behavior_csv(label_path, expected_frames=len(set(cameras) | set(lidars)))
+            if report['orientation'] not in {'frames_as_rows', 'frames_as_columns'}:
+                raise ValueError(f'Unrecognized label orientation: {label_path}')
+            labels = extract_raw_frame_labels(
+                label_path, frame_count=len(set(cameras) | set(lidars)),
+                orientation=report['orientation'])
             for index in sorted(set(cameras) & set(lidars)):
                 if index >= len(labels):
                     raise ValueError(f"Missing label at {split}/{drive.name}/{index}")
