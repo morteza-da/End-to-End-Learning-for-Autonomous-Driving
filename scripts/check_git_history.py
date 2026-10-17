@@ -14,8 +14,8 @@ def suspicious_historical_paths(raw: bytes) -> list[str]:
 
     The --format='' setting omits commit headers; blank records are ignored.
     """
-    paths = {path for path in raw.decode("utf-8", errors="replace").split("\0")
-             if path and path.strip()}
+    paths = {path.strip() for path in raw.decode("utf-8", errors="replace").split("\0")
+             if path.strip()}
     return sorted(path for path in paths if unsafe_tracked_path(path))
 
 
