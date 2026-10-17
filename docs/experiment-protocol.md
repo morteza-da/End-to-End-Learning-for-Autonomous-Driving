@@ -198,3 +198,7 @@ The training CLI now requires `--preflight-report results/dbnet-preflight.json` 
 The preflight gate additionally requires the same resolved local dataset root and source URL in the reviewed evidence record. It cannot establish whether source evidence is authentic or whether unchanged file paths contain unchanged bytes.
 
 The audit now also records `canonical_targets_sha256` over sample/split/drive/frame identities and canonical steering/speed floating-point values. The training gate recomputes this digest and rejects modified labels even when window paths and counts are unchanged. This is a label-integrity check, **not** a hash of camera/LiDAR file contents.
+
+### Optional full sensor-content integrity gate
+
+To detect changed camera JPEG or LiDAR LAS bytes between audit and training, append `--hash-sensor-files` to `scripts/audit_dbnet_preflight.py` and append `--require-sensor-hashes` to `scripts/train_multimodal.py`. Both commands then stream SHA-256 hashes of every paired sensor file referenced by labeled observations; the training gate rejects any mismatch. The JSON report contains only a combined manifest digest and file count, not raw sensor bytes. This can be slow for large datasets and does not validate physical synchronization, file decodability, or dataset license. Without these flags, file-byte integrity is **not** checked.
