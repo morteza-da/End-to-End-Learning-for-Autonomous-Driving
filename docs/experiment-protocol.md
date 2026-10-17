@@ -202,3 +202,7 @@ The audit now also records `canonical_targets_sha256` over sample/split/drive/fr
 ### Optional full sensor-content integrity gate
 
 To detect changed camera JPEG or LiDAR LAS bytes between audit and training, append `--hash-sensor-files` to `scripts/audit_dbnet_preflight.py` and append `--require-sensor-hashes` to `scripts/train_multimodal.py`. Both commands then stream SHA-256 hashes of every paired sensor file referenced by labeled observations; the training gate rejects any mismatch. The JSON report contains only a combined manifest digest and file count, not raw sensor bytes. This can be slow for large datasets and does not validate physical synchronization, file decodability, or dataset license. Without these flags, file-byte integrity is **not** checked.
+
+### Synthetic preflight integration coverage
+
+`tests/test_preflight_pipeline.py` creates temporary synthetic camera and LiDAR files and raw steering/speed labels for separate train and validation drives. It checks target conversion, range auditing, temporal windows, canonical target hashes, optional file-byte hashes, and acceptance or rejection by the training preflight gate. The negative cases modify a sensor file or target after the report is built. These tests run in the PyTorch CPU integration workflow but do **not** perform model training, validate JPEG/LAS decoders, or establish DBNet benchmark performance.
