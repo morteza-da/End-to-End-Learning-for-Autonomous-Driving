@@ -22,9 +22,12 @@ jobs:
       - name: Install CPU model dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
           python -m pip install timm
           python -m pip install -e .
+      - name: Verify compatible PyTorch and torchvision operators
+        run: |
+          python -c "import torch, torchvision; print(torch.__version__, torchvision.__version__); print(torch.ops.torchvision.nms)"
       - name: Record installed model registry
         run: |
           python -c "import timm, torch; print('timm', timm.__version__); print('torch', torch.__version__); print('xception candidates:', timm.list_models('*xception*')); print('resnext candidates:', timm.list_models('*resnext50*'))"
