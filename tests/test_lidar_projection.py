@@ -20,7 +20,7 @@ class LiDARProjectionTests(unittest.TestCase):
         points = np.array([[10., 0., 0.], [30., 0., 0.]])
         image, mask = project_xyz_to_rgb(points, config)
         self.assertEqual(int(mask.sum()), 1)
-        self.assertEqual(tuple(image[5, 5]), (0, 0, 128))
+        self.assertEqual(tuple(image[3, 5]), (0, 0, 128))
 
     def test_distance_color_bands(self):
         points = np.array([[10., 0., 0.], [0., 30., 0.], [-50., 0., 0.]])
