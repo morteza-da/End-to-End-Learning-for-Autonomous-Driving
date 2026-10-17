@@ -34,7 +34,7 @@ class DBNetLayoutTests(unittest.TestCase):
                 for index in (0, 2, 3):
                     (drive / "dvr_66x200" / f"{index}.jpg").touch()
                     (drive / "points_16384" / f"{index}.las").touch()
-                (drive / "behavior.csv").write_text("1,2,3,4\\n10,20,30,40\\n")
+                (drive / "behavior.csv").write_text("1,2,3,4\n10,20,30,40\n")
                 self.assertEqual(audit_drive(drive, split).label_rows, 4)
             records = build_labeled_observations(root)
             self.assertEqual([r["frame_index"] for r in records[:3]], [0, 2, 3])
