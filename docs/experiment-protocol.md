@@ -118,3 +118,18 @@ python scripts/probe_backbones.py --assignment B --max-temporal-adam-mib 1024
 ```
 
 A failed cap is a deliberate preflight rejection; a passed cap does not certify total RAM/VRAM sufficiency. The full-backbone shape measurements for A and B are available as downloadable GitHub Actions artifacts from the dedicated workflow. Record the exact PyTorch/timm versions alongside measurements when comparing runs.
+
+## Measured backbone widths and optional pooling study
+
+The CPU shape probe on 2026-10-17 (Python 3.11.17, torch 2.14.1+cpu, timm 1.0.30, random backbone weights) measured a `[1,2048,10,10]` spatial output for **each** camera and LiDAR branch at 299×299 input, in both A and B assignments. Direct Flatten/Concat therefore yields 409,600 features per frame. At LSTM hidden size 64 and one layer, the temporal model has 104,874,691 parameters and an estimated 1,600.26 MiB for weights, gradients, and Adam moments alone. See [the measured GitHub Actions run](https://github.com/morteza-da/End-to-End-Learning-for-Autonomous-Driving/actions/runs/39048816595).
+
+An **optional, distinct experimental variant** uses adaptive spatial average pooling on each CNN output before flattening and concatenation (`feature_compression.py`). For the measured 2048-channel outputs:
+
+| Pool grid | Fused feature width | Relative input width |
+| --- | ---: | ---: |
+| None (baseline, 10×10) | 409,600 | 100% |
+| 5×5 | 102,400 | 25% |
+| 2×2 | 16,384 | 4% |
+| 1×1 | 4,096 | 1% |
+
+These are feature-width calculations, **not training results**. Spatial pooling changes the model architecture and can discard spatial detail; benchmark each variant on identical drive-disjoint splits and the same steering/speed evaluation metrics before drawing performance conclusions. The existing baseline training path remains unchanged.
