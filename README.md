@@ -23,7 +23,7 @@ The proposed research architecture combines **Xception** and **ResNeXt-50** feat
 
 ## Dataset
 
-The doctoral research used a driving dataset of more than 11,000 frames with camera and LiDAR information. Dataset access, preprocessing scripts, and train/validation/test split definitions will be documented as they are verified and reconstructed.
+The doctoral research used a driving dataset of more than 11,000 frames with camera and LiDAR information. The researcher has already supplied the original DBNet train, validation, and test archives for reconstruction. The original dataset is credited to **Chen et al., “LiDAR-Video Driving Dataset: Learning Driving Policies Effectively,” CVPR 2018** ([official DBNet repository](https://github.com/driving-behavior/DBNet); [BibTeX](CITATION_DBNet.bib)). The archives are available in the researcher's private file Library, **not** publicly hosted here. A real-layout local audit tool is available at [`scripts/audit_dbnet.py`](scripts/audit_dbnet.py), with instructions in [`docs/dbnet-local-data.md`](docs/dbnet-local-data.md). Full integrity checks and label-unit verification remain pending.
 
 ## Repository status
 
@@ -42,7 +42,7 @@ notebooks/     Exploratory analyses
 results/       Verified figures, metrics, and experiment logs
 ```
 
-These are **planned directories**, not a claim that all code and artifacts are already available.
+The repository now includes reconstructed modules, notebooks, documentation, tests, and a local DBNet audit script. **No full real-data training run has yet been verified.**
 
 ## Results and reproducibility
 
