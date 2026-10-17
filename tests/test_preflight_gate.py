@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from autonomous_driving.dataset_fingerprint import fingerprint_windows
+from autonomous_driving.target_fingerprint import fingerprint_targets
 from autonomous_driving.preflight_gate import verify_preflight_report
 from autonomous_driving.sequence_manifest import Observation, build_sequence_manifest, split_windows
 from autonomous_driving.target_mapping import TargetSchema
@@ -29,6 +30,7 @@ class PreflightGateTests(unittest.TestCase):
         windows = split_windows(build_sequence_manifest(self.rows, sequence_length=2))
         self.report = {
             "readiness": {"passed": True},
+            "canonical_targets_sha256": fingerprint_targets(self.rows),
             "dataset_root": str(Path(self.tmp.name).resolve()),
             "provenance_source": "https://example.org/source",
             "target_schema": {
@@ -70,6 +72,12 @@ class PreflightGateTests(unittest.TestCase):
 
     def test_reject_changed_label_mapping(self):
         self.report["target_schema"]["speed_channel"] = 2
+        with self.assertRaises(ValueError):
+            self.check()
+
+    def test_reject_modified_target_value(self):
+        from dataclasses import replace
+        self.rows[0] = replace(self.rows[0], steering_deg=19.0)
         with self.assertRaises(ValueError):
             self.check()
 
