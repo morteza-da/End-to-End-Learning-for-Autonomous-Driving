@@ -53,7 +53,7 @@ write_experiment_report(
 )
 ```
 
-The evaluation utility computes MAE, RMSE, R², and threshold accuracy at steering ±6° and speed ±5 km/h. The report stores the supplied metrics and experiment metadata; it does not run inference or invent results. R² is undefined for constant ground truth and may be NaN; the report writer rejects nonfinite metrics, so a constant-target evaluation requires an explicit reporting policy.
+The evaluation utility computes RMSE and R², and threshold accuracy at steering ±6° and speed ±5 km/h. The report stores the supplied metrics and experiment metadata; it does not run inference or invent results. R² is undefined for constant ground truth and may be NaN; the report writer rejects nonfinite metrics, so a constant-target evaluation requires an explicit reporting policy.
 
 ## Reproducibility checklist
 
@@ -77,4 +77,4 @@ python scripts/train_multimodal.py --data-root data/dbnet-2018 --assignment B --
 python scripts/compare_backbones.py results/multimodal/A/latest_metrics.json results/multimodal/B/latest_metrics.json
 ```
 
-The runner saves `config.json`, `run_metadata.json`, `latest_metrics.json`, and the best validation checkpoint `best.pt` in separate A/B folders. It reports batch-averaged joint training/validation objectives; it does **not** yet produce independently aggregated MAE/RMSE/R² or held-out test predictions. These commands have not been validated on the complete dataset. Full-resolution flattened CNN maps can require substantial GPU memory; inspect `feature_width` and memory requirements before training.
+The runner saves `config.json`, `run_metadata.json`, `latest_metrics.json`, and the best validation checkpoint `best.pt` in separate A/B folders. It reports batch-averaged joint training/validation objectives; it does **not** yet produce independently aggregated RMSE/R² or held-out test predictions. These commands have not been validated on the complete dataset. Full-resolution flattened CNN maps can require substantial GPU memory; inspect `feature_width` and memory requirements before training.
