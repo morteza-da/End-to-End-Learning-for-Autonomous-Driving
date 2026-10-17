@@ -23,12 +23,12 @@ def _uint8(value: float) -> int:
 def distance_to_rgb(distance: float) -> tuple[int, int, int]:
     """Return (red, green, blue) for one planar LiDAR distance.
 
-    Interpretation of dissertation Eq. (3-1):
+    Distance-based RGB channel encoding:
       distance < 20:  B = 255 * distance / 20
       20 <= distance < 40: G = 255 * distance / 40
       distance >= 40: R = min(255, 255 * distance / 60)
 
-    Inactive channels are zero. Integer rounding is a reconstruction choice.
+    Inactive channels are zero. Integer rounding follows the implemented quantization policy.
     """
     if not math.isfinite(distance) or distance < 0:
         raise ValueError("Distance must be finite and nonnegative")
