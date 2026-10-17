@@ -93,7 +93,7 @@ Use [the training runner](scripts/train_multimodal.py) to train configuration A 
 
 Use [validated experiment configurations](src/autonomous_driving/experiment_config.py) and [measured-result reporting](src/autonomous_driving/experiment_reporting.py) for reproducible A/B comparisons; see the [experiment protocol](docs/experiment-protocol.md). Report RMSE and R², and threshold accuracy separately for steering and speed. Include dataset version, split, random seed, preprocessing configuration, checkpoint, and environment with each measured result. Training and benchmark numbers are published only when accompanied by actual run artifacts.
 
-For a transparent overview of completed software checks and remaining scientific validation, see the [research repository review checklist](docs/postdoc-review-checklist.md).
+For a transparent overview of completed software checks and remaining scientific validation, see the [research repository review checklist](docs/postdoc-review-checklist.md) and [release-readiness summary](docs/release-readiness.md).
 
 ## Research and collaboration
 
