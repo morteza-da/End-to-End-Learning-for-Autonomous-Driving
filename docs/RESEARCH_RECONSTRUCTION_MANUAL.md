@@ -113,13 +113,13 @@ Config: `src/autonomous_driving/backbone_config.py`.
 
 **[RESEARCHER]** Multiple consecutive aligned frames, fed to an LSTM.
 
-**[OPEN]** Exact temporal window length, stride, label alignment, hidden size, number of layers, and recurrent dropout.
+**[OPEN]** Exact temporal window length, stride, label alignment, hidden size, number of layers, and recurrent dropout.\n\n**[RECONSTRUCTION]** `src/autonomous_driving/temporal_model.py` now provides a batch-first LSTM that directly accepts concatenated features `[B,T,F]`. `stack_temporal_features` constructs these tensors from aligned image sequences using the two spatial-map backbones. Notebook: `notebooks/05_LSTM_Attention_Model.ipynb` (synthetic demonstration only).
 
 ## Chapter 11 — Attention and joint outputs
 
 **[RESEARCHER]** LSTM → Attention → Dense, predicting steering angle and speed simultaneously.
 
-**[OPEN]** Attention scoring formula, layer widths, output head arrangement, and target scaling.
+**[OPEN]** Original attention scoring formula, layer widths, output head arrangement, and target scaling.\n\n**[RECONSTRUCTION]** A transparent additive temporal attention layer computes weights over LSTM outputs, followed by one two-unit Dense regression layer. This is a new implementation choice, not a historical fact. See `docs/temporal-lstm-attention.md`.
 
 ## Chapter 12 — Training
 
@@ -155,7 +155,7 @@ Config: `src/autonomous_driving/backbone_config.py`.
 - [ ] Confirm 2D LiDAR projection algorithm or label a new one
 - [x] Add runnable PyTorch/timm backbone construction and synthetic shape-check notebook (execution not yet verified)
 - [ ] Pin verified pretrained backbones and dependency versions
-- [ ] Implement Flatten → Concatenate → LSTM → Attention → Dense
+- [x] Add Flatten → Concatenate → LSTM → Attention → Dense code and synthetic notebook (end-to-end execution not yet verified)
 - [ ] Verify train/validation/test temporal separation
 - [ ] Execute controlled training, evaluation, and ablations
 - [ ] Archive seeds, manifests, hyperparameters, logs, plots, checkpoints, and results
@@ -173,4 +173,4 @@ Config: `src/autonomous_driving/backbone_config.py`.
 - `docs/lidar-color-encoding.md`
 - `docs/backbone-implementation-plan.md`
 - `docs/threshold-accuracy.md`
-- `docs/runnable-backbones.md`\n- `docs/dbnet-attribution.md`
+- `docs/runnable-backbones.md`\n- `docs/dbnet-attribution.md`\n- `docs/temporal-lstm-attention.md`
