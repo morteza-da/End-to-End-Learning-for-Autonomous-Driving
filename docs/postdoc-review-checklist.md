@@ -15,7 +15,7 @@ Before sending the link to a prospective collaborator, check the current Actions
 - [x] README local links validated automatically by CI.
 - [x] Raw local data and environment secrets excluded from future commits via gitignore.
 - [x] CI tracked-file path policy rejects common raw sensor, model-weight, and credential filenames.
-- [x] CI scans filenames in reachable Git history and applies conservative secret-pattern rules to reachable blobs (skipping blobs over 2 MB; not a comprehensive secret audit).
+- [x] CI scans filenames in reachable Git history and applies conservative secret-pattern rules to reachable blobs (skipping blobs over 2 MB and known synthetic scanner-test fixture blobs; not a comprehensive secret audit).
 - [x] Inspect current main-branch file tree for large binaries and common raw-data formats (no such files found in the inspected tree; placeholder .gitkeep files remain).
 - [ ] Manually review historical commits for previously tracked sensitive or restricted file **contents**, dataset rights, and secrets not covered by heuristic pattern matching.
 
