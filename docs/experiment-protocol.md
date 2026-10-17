@@ -164,3 +164,7 @@ Each dataset split now exposes a SHA-256 fingerprint of its sorted temporal wind
 ### Mandatory target-label provenance
 
 Training requires `--label-provenance path/to/reviewed-evidence.json` alongside the explicit steering/speed channel and unit flags. The JSON must supply a source title, HTTP(S) source URL, evidence excerpt, reviewer, review date, and the exact matching channel indices and physical units. A deliberately invalid placeholder is provided at `docs/label-provenance-template.json`; **do not use it as evidence or replace it with invented claims**. The guard verifies presence and consistency only; it does not independently authenticate the source or establish DBNet label meanings. An actual researcher must inspect authoritative documentation before enabling a DBNet experiment. The provenance record is copied into local run metadata; review it for confidential details before sharing.
+
+### DBNet channel order verified against upstream implementation
+
+See `docs/dbnet-label-evidence.md` for exact primary-source code expressions and the distinction between source-code channel mapping and secondary-publication speed-unit corroboration. The documented working mapping is steering channel 0 in degrees and speed channel 1 in km/h; source-review provenance and actual dataset inspection are still required before any real training. Do not apply the original upstream normalized-speed transform to labels that are already interpreted in physical units.
