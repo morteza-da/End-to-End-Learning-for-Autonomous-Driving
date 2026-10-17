@@ -54,7 +54,7 @@ def extract_raw_frame_labels(path, *, frame_count, orientation):
     report = inspect_behavior_csv(path, expected_frames=frame_count)
     if orientation not in {"frames_as_rows", "frames_as_columns"}:
         raise ValueError("Explicit orientation is required")
-    if report["orientation"] != orientation:
+    if report["orientation"] not in {orientation, "ambiguous"}:
         raise ValueError(
             f"Expected {orientation}, observed {report['orientation']}"
         )
