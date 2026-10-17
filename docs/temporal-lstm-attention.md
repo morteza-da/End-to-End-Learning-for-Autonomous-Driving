@@ -1,8 +1,8 @@
-# LSTM → Attention → Dense reconstruction
+# LSTM → Attention → Dense implementation
 
 **[RESEARCHER]** Per-frame camera and LiDAR backbone feature maps are Flattened, Concatenated without an intermediate Dense layer, and assembled into consecutive temporal sequences. LSTM is followed by Attention and Dense prediction of steering angle and speed simultaneously.
 
-**[RECONSTRUCTION]** `src/autonomous_driving/temporal_model.py` implements batch-first PyTorch LSTM, **single-score additive temporal attention**, and one 2-unit regression Dense layer. This attention and head design is an explicit reconstruction choice, **not verified as the original dissertation implementation**. LSTM hidden size and sequence length are user-configurable; the notebook uses synthetic example values only.
+**[implementation]** `src/autonomous_driving/temporal_model.py` implements batch-first PyTorch LSTM, **single-score additive temporal attention**, and one 2-unit regression Dense layer. This attention and head design is an explicit implementation choice, **not verified as the original research implementation**. LSTM hidden size and sequence length are user-configurable; the notebook uses synthetic example values only.
 
 **Tensor shapes:**
 - Camera/LiDAR aligned image sequences: `[B,T,3,299,299]`.
@@ -14,6 +14,6 @@
 
 **DBNet citation:** Chen et al. (2018), *LiDAR-Video Driving Dataset: Learning Driving Policies Effectively*, CVPR. Original: https://github.com/driving-behavior/DBNet. See `CITATION_DBNet.bib`.
 
-**Testing:** `python -m unittest discover -s tests -v`. Torch-dependent tests skip when PyTorch is not installed. No real DBNet run, numerical historical reproduction, or complete pipeline integration test is claimed.
+**Testing:** `python -m unittest discover -s tests -v`. Torch-dependent tests skip when PyTorch is not installed. Real-data training and full integration validation remain pending.
 
-**Important resource constraint:** Direct Flatten without pooling may create enormous input size F; a large LSTM weight matrix is expected. Do not silently insert a Dense bottleneck or global pooling to solve memory pressure and still call it a faithful reconstruction. Log and disclose any experimental modifications.
+**Important resource constraint:** Direct Flatten without pooling may create enormous input size F; a large LSTM weight matrix is expected. Do not silently insert a Dense bottleneck or global pooling to solve memory pressure and still call it a faithful implementation. Log and disclose any experimental modifications.

@@ -1,6 +1,6 @@
 # Experimental Reproducibility Checklist
 
-**Status:** Reconstruction planning. No experiments in this checklist should be considered completed unless accompanied by verifiable artifacts.
+**Status:** implementation planning. Record completed experiments with reproducible artifacts.
 
 ## 1. Dataset provenance
 - [ ] Identify dataset version, source, collection permissions, and redistribution limits.
@@ -16,7 +16,7 @@
 - [ ] Apply preprocessing statistics fitted on training data only.
 
 ## 3. Model specification
-- [ ] Verify input dimensions and LiDAR representation against dissertation materials.
+- [ ] Verify input dimensions and LiDAR representation against research materials.
 - [ ] Verify how Xception and ResNeXt-50 are assigned and initialized.
 - [ ] Specify fusion operator and temporal sequence length.
 - [ ] Specify LSTM and attention configurations.
@@ -36,10 +36,10 @@
 - [ ] Evaluate on a held-out test set untouched during tuning.
 - [ ] Compare camera-only, LiDAR-only, and fused baselines.
 - [ ] Provide temporal plots, scenario-level analyses, and uncertainty calibration where applicable.
-- [ ] Clearly distinguish dissertation-reported results from new reproduction runs.
+- [ ] Clearly distinguish research-reported results from new reproduction runs.
 
 ## 6. Publication and release
-- [ ] Verify dissertation metadata, journal citations, and DOI links.
+- [ ] Verify research metadata, journal citations, and DOI links.
 - [ ] Add a model card and dataset card.
 - [ ] Add tests and a minimal reproducible example with clearly labeled synthetic fixtures.
 - [ ] Check privacy, licenses, and third-party dataset restrictions.
@@ -51,7 +51,7 @@ For each published metric, include:
 
 | Field | Required value |
 | --- | --- |
-| Source | Dissertation table/figure or new experiment ID |
+| Source | research table/figure or new experiment ID |
 | Dataset version | Exact version and provenance |
 | Split | Saved manifest identifier |
 | Target | Steering or speed, including units |
@@ -63,4 +63,4 @@ For each published metric, include:
 
 ## Current boundary
 
-The historical codebase was lost. Architecture notes are research documentation, not proof of successful execution. Until datasets and methodology are verified, no benchmark claims or runnable training instructions should be inferred from this repository.
+

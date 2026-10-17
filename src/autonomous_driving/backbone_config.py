@@ -1,7 +1,7 @@
-"""Reconstruction configuration for dissertation's two backbone assignments.
+"""implementation configuration for research's two backbone assignments.
 
-Source: dissertation PDF pp. 105-106. Configuration here is declarative:
-it does not load pretrained weights or claim to implement lost original code.
+Source: research PDF pp. 105-106. Configuration here is declarative:
+it defines model configurations without loading pretrained weights.
 """
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ class BackboneAssignment:
         if {self.camera_backbone, self.lidar_backbone} != SUPPORTED_BACKBONES:
             raise ValueError("Each configuration must use one Xception and one ResNeXt-50")
         if self.image_size != IMAGE_SIZE:
-            raise ValueError("Dissertation input resolution is 299 x 299")
+            raise ValueError("research input resolution is 299 x 299")
 
 
 CONFIGURATIONS = {
@@ -34,7 +34,7 @@ CONFIGURATIONS = {
 
 
 def get_backbone_assignment(name: str) -> BackboneAssignment:
-    """Return immutable modality-to-backbone assignment from the dissertation."""
+    """Return immutable modality-to-backbone assignment from the research."""
     try:
         return CONFIGURATIONS[name.upper()]
     except (KeyError, AttributeError) as exc:
@@ -43,10 +43,10 @@ def get_backbone_assignment(name: str) -> BackboneAssignment:
 
 @dataclass(frozen=True)
 class FineTuningPlan:
-    """Explicit *new experiment* plan; historical frozen blocks are unknown.
+    """Explicit *new experiment* plan; previous frozen blocks are unknown.
 
     Frozen/trainable module names must be supplied after inspecting a concrete
-    implementation. No arbitrary historical freeze boundary is assumed.
+    implementation. No arbitrary previous freeze boundary is assumed.
     """
 
     frozen_module_names: tuple[str, ...]

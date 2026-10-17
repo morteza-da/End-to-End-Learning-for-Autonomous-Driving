@@ -10,7 +10,7 @@ def load_camera(path: str | Path, size: tuple[int, int] = (299, 299)):
     """Return RGB float32 CHW image in [0,1].
 
     Resizing to 299x299 is documented by the researcher; interpolation is a
-    disclosed reconstruction choice (Pillow bilinear).
+    disclosed implementation choice (Pillow bilinear).
     """
     import numpy as np
     from PIL import Image

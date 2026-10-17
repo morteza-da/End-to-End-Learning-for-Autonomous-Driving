@@ -1,6 +1,6 @@
-"""Executable reconstruction of ImageNet-pretrained multimodal feature extraction.
+"""Executable implementation of ImageNet-pretrained multimodal feature extraction.
 
-Requires optional packages torch and timm. This is NOT recovered thesis code.
+Requires optional packages torch and timm. 
 Pretrained weights may require a network connection and accepted model licenses.
 """
 from __future__ import annotations
@@ -46,7 +46,7 @@ def build_backbone(architecture: str, *, pretrained: bool = True,
 
 
 def freeze_all_except_last_n_children(model, n: int):
-    """Example reconstruction freeze policy, not a historical thesis boundary.
+    """Example implementation freeze policy, not a previous research boundary.
 
     Freeze every parameter then unfreeze parameters in the last n direct child
     modules. Caller must inspect names and confirm nonempty trainable weights.

@@ -9,10 +9,10 @@
 - `tests/test_sequence_manifest.py` and `tests/test_training.py`: tests, not yet confirmed executed by CI.
 
 ## Explicit new choices
-- Drive-disjoint splits to reduce leakage. The dissertation specifies 80/10/10 but does not establish this split policy.
+- Drive-disjoint splits to reduce leakage. The research specifies 80/10/10 but does not establish this split policy.
 - Last-frame steering/speed targets per window.
 - Weighted average of separate steering and speed RMSE, with weights defaulting to 1.0. The original joint target loss aggregation is unknown.
-- Illustrative sequence length 3 in notebook; this is **not** an original dissertation parameter.
+- Illustrative sequence length 3 in notebook; this is **not** an original research parameter.
 
 ## Limitations
 No real DBNet parser or sensor synchronization implementation, no verified original LiDAR pixel projection, no checkpointing or full image-to-regression training. `run_epoch` currently consumes synthetic/precomputed fused features, so it does **not** fine-tune the camera/LiDAR backbones. Batch-averaged RMSE is a monitoring statistic and not identical to dataset-wide RMSE; compute final evaluation on all held-out predictions. Do not report notebook random-data losses as research results.

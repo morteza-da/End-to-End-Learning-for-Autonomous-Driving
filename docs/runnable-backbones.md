@@ -1,8 +1,8 @@
-# Runnable backbone extraction: reconstruction protocol
+# Runnable backbone extraction: implementation protocol
 
 **Implementation:** `src/autonomous_driving/backbone_extraction.py` and `notebooks/03b_Runnable_Backbone_Features.ipynb`.
 
-This stage uses **PyTorch + timm inside Jupyter Notebook**, not PyTorch instead of notebooks. The framework is a **new reconstruction decision**; the original research framework is not confirmed.
+This stage uses **PyTorch + timm inside Jupyter Notebook**, not PyTorch instead of notebooks. The framework is a **new implementation decision**; Record the exact framework and dependency versions for each run.
 
 ## Install
 
@@ -21,12 +21,12 @@ Package versions and hashes must be pinned after a verified run. timm model regi
 - Each branch is configured to return a **spatial feature map**, not classifier logits or globally pooled vectors.
 - `torch.flatten(..., start_dim=1)` is applied independently to each branch.
 - `torch.cat(..., dim=1)` concatenates per-frame feature vectors.
-- Example freeze policy unfreezes the final top-level child only. **This is not a verified historical freeze boundary.**
-- `pretrained=False` is a quick synthetic shape test, **not** the dissertation transfer-learning configuration. Use `pretrained=True` and confirm ImageNet checkpoint provenance before a real experiment.
+- Example freeze policy unfreezes the final top-level child only. **This is not a verified previous freeze boundary.**
+- `pretrained=False` is a quick synthetic shape test, **not** the research transfer-learning configuration. Use `pretrained=True` and confirm ImageNet checkpoint provenance before a real experiment.
 
 ## Verification status
 
-Files committed to GitHub; pretrained weight loading, forward-pass execution, memory use and numerical training have **not** been verified in the target environment. Synthetic inputs cannot establish scientific performance. The full historical LiDAR 3D→2D projection remains unknown.
+Files committed to GitHub; pretrained weight loading, forward-pass execution, memory use and numerical training have **not** been verified in the target environment. Synthetic inputs cannot establish scientific performance. The full previous LiDAR 3D→2D projection remains unknown.
 
 ## Next steps
 
@@ -34,4 +34,4 @@ Files committed to GitHub; pretrained weight loading, forward-pass execution, me
 2. Run synthetic feature extraction for both assignments and log shapes.
 3. Pin versions and record early/upper layer boundaries.
 4. Add temporal batching and memory-safe LSTM design without inserting an undocumented Dense bottleneck.
-5. Complete the master archive `docs/RESEARCH_RECONSTRUCTION_MANUAL.md`.
+5. Complete the master archive `docs/RESEARCH_METHODS.md`.
