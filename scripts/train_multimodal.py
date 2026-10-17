@@ -2,6 +2,7 @@
 
 Usage:
   python scripts/train_multimodal.py --data-root data/dbnet-2018 \
+    --label-provenance path/to/reviewed-evidence.json \
     --steering-channel 0 --speed-channel 1 \
     --steering-unit deg --speed-unit km/h --assignment A
 
@@ -64,6 +65,7 @@ def main():
     from autonomous_driving.sequence_dataset import make_sequence_dataset
     from autonomous_driving.target_mapping import TargetSchema, map_raw_observations
     from autonomous_driving.label_provenance import load_verified_label_provenance
+    from autonomous_driving.label_quality import audit_target_ranges, require_plausible_targets
 
     config = ExperimentConfig(
         assignment=args.assignment, sequence_length=args.sequence_length,
@@ -83,6 +85,8 @@ def main():
     seed_everything(config.seed)
     raw = build_labeled_observations(args.data_root)
     observations = map_raw_observations(raw, schema)
+    target_audit = audit_target_ranges(observations)
+    require_plausible_targets(target_audit)
     datasets = {
         split: make_sequence_dataset(
             observations, args.data_root, sequence_length=config.sequence_length,
@@ -137,6 +141,7 @@ def main():
     save_experiment_config(config, output / "config.json")
     (output / "run_metadata.json").write_text(json.dumps({
         "label_provenance": provenance,
+        "target_range_audit": target_audit,
         "target_schema": {
             "steering_channel": schema.steering_channel,
             "speed_channel": schema.speed_channel,
