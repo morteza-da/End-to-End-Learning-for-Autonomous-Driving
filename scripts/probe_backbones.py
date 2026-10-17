@@ -32,6 +32,20 @@ def main():
                 f"exceeds cap {args.max_temporal_adam_mib:.1f} MiB; "
                 "backbone and activation memory are additional."
             )
+    import platform
+    import torch
+    import timm
+
+    result["environment"] = {
+        "python": platform.python_version(),
+        "torch": torch.__version__,
+        "timm": timm.__version__,
+        "device": args.device,
+    }
+    result["temporal_config"] = {
+        "hidden_size": args.hidden_size,
+        "num_layers": args.lstm_layers,
+    }
     result["pretrained_weights_requested"] = args.pretrained
     result["input_shape"] = [1, 3, 299, 299]
     result["total_training_memory_measured"] = False
