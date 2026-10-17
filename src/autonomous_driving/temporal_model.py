@@ -1,6 +1,6 @@
 """LSTM -> additive temporal attention -> joint steering/speed regression.
 
-A new implementation choice, NOT a verified previous attention mechanism.
+Temporal attention implementation for sequence-level regression.
 Requires PyTorch only when instantiating the model.
 """
 from __future__ import annotations
