@@ -15,6 +15,8 @@ This checklist separates software readiness from scientific validation.
 
 ## Reproducible software
 - [x] Automated Python tests and CPU model integration workflow, with live badges in README.
+- [x] Training output safety checks prevent writing into raw data and accidental overwrite of existing results.
+- [x] Training metadata records Git revision, tracked worktree status, Python and key package versions.
 - [x] Training CLI supports explicit temporal stride to match the preflight report.
 - [x] Synthetic CLI preflight and train-gate acceptance/rejection checks.
 - [x] Explicit target mapping, provenance requirements, and label plausibility checks.
