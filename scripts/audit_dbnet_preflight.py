@@ -27,6 +27,7 @@ def main():
     from autonomous_driving.label_quality import audit_target_ranges
     from autonomous_driving.sequence_manifest import build_sequence_manifest, split_windows
     from autonomous_driving.dataset_fingerprint import fingerprint_windows
+    from autonomous_driving.target_fingerprint import fingerprint_targets
 
     schema = TargetSchema(
         steering_channel=args.steering_channel,
@@ -60,6 +61,7 @@ def main():
             "speed_max_kmh": args.speed_limit_kmh,
         },
         "target_ranges": ranges,
+        "canonical_targets_sha256": fingerprint_targets(observations),
         "drives": [
             {
                 "split": d.split, "drive": d.drive,
