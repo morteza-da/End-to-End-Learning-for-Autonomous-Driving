@@ -9,6 +9,7 @@ This checklist separates software readiness from scientific validation.
 - [x] README local links validated automatically by CI.
 - [x] Raw local data and environment secrets excluded from future commits via gitignore.
 - [x] CI tracked-file path policy rejects common raw sensor, model-weight, and credential filenames.
+- [x] CI also scans filenames in reachable Git history (not file contents).
 - [x] Inspect current main-branch file tree for large binaries and common raw-data formats (no such files found in the inspected tree; placeholder .gitkeep files remain).
 - [ ] Review historical commits for previously tracked sensitive or restricted file **contents**; automated history filename scanning is a preliminary check only.
 
