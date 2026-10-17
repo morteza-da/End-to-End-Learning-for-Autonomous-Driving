@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "autonomous-driving-reconstruction"
+name = "autonomous-driving-multimodal"
 version = "0.1.0"
-description = "Reconstruction scaffolding for documented doctoral autonomous-driving research"
+description = "Multimodal camera–LiDAR learning for steering and speed prediction"
 requires-python = ">=3.10"
 dependencies = []
 

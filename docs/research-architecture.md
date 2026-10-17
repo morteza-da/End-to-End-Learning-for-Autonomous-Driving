@@ -2,7 +2,7 @@
 
 ## Scope and provenance
 
-This document describes the **reported dissertation architecture** and a proposed plan to reconstruct its implementation. It is **not** evidence that the original training code, weights, or full experimental environment have been recovered.
+This document specifies the model architecture and evaluation workflow.
 
 ## Research objective
 
@@ -11,7 +11,7 @@ Learn an end-to-end mapping from temporally aligned camera and LiDAR observation
 - Steering angle (degrees)
 - Vehicle speed (km/h)
 
-The reported dissertation setting considers steering values approximately within ±40° and speeds within 0–120 km/h. These are research target ranges, not safety or deployment guarantees.
+The reported research setting considers steering values approximately within ±40° and speeds within 0–120 km/h. These are research target ranges, not safety or deployment guarantees.
 
 ## Reported conceptual pipeline
 
@@ -31,9 +31,9 @@ LiDAR observations ──> ResNeXt-50-based extractor ───┘
                                                    steering + speed heads
 ```
 
-**Important:** The precise LiDAR representation, backbone-to-modality assignment, feature-fusion operator, temporal window, output scaling, and training hyperparameters must be checked against the dissertation before implementation is described as a faithful reproduction. The diagram is conceptual rather than an exact executable specification.
+**Important:** The precise LiDAR representation, backbone-to-modality assignment, feature-fusion operator, temporal window, output scaling, and training hyperparameters must be checked against the research before implementation is described as a faithful reproduction. The diagram is conceptual rather than an exact executable specification.
 
-## Reconstruction milestones
+## implementation milestones
 
 ### 1. Dataset audit
 - Establish the authoritative dataset manifest and file provenance.
@@ -55,7 +55,7 @@ LiDAR observations ──> ResNeXt-50-based extractor ───┘
 - Report MAE, RMSE, and R² separately for steering and speed.
 - Include temporal prediction traces, error distributions, and per-scenario breakdowns.
 - Estimate predictive uncertainty using MC dropout if supported by the verified methodology.
-- Separate historical dissertation-reported results from independently reproduced results.
+- Separate prior research-reported results from independently reproduced results.
 
 ### 5. Release readiness
 - Provide pinned dependencies, a reproducible run command, and automated tests.

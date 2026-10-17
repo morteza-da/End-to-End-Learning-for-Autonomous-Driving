@@ -1,68 +1,57 @@
 # End-to-End Learning for Autonomous Driving
 
-**PhD research project | Deep Learning · Camera–LiDAR Fusion · Intelligent Vehicle Control**
+**Camera–LiDAR Fusion · Deep Learning · Intelligent Vehicle Control**
 
-**Researcher:** Morteza Aghamohammadi, PhD in Mechanical Engineering  
-**Location:** Toronto, Canada  
-**LinkedIn:** https://www.linkedin.com/in/morteza-a/  
-**ORCID:** https://orcid.org/0009-0001-4837-2298
+**Morteza Aghamohammadi, PhD** · Toronto, Canada  
+[LinkedIn](https://www.linkedin.com/in/morteza-a/) · [ORCID](https://orcid.org/0009-0001-4837-2298)
 
-## Research overview
+## Overview
 
-This repository documents doctoral research on end-to-end learning for autonomous driving. The research investigates multimodal perception and temporal modeling for predicting **steering angle and vehicle speed** from camera and LiDAR observations.
+Multimodal learning for joint **steering-angle and vehicle-speed prediction** from temporally aligned camera and LiDAR observations. The model combines ImageNet-pretrained **Xception** and **ResNeXt-50** feature extractors, feature-level concatenation, an **LSTM**, temporal **attention**, and regression outputs. Both camera/backbone assignments are supported.
 
-The proposed research architecture combines **Xception** and **ResNeXt-50** feature extraction with **LSTM** temporal modeling and an **attention mechanism**. Monte Carlo dropout is investigated for uncertainty estimation.
+## Model pipeline
 
-## Research workflow
+```text
+Camera RGB (299×299) ── CNN ── Flatten ─┐
+                                       ├─ Concatenate ─ LSTM ─ Attention ─ Dense ─ Steering + Speed
+LiDAR RGB (299×299) ── CNN ── Flatten ──┘
+```
 
-1. Prepare and synchronize camera and LiDAR observations.
-2. Extract complementary visual and spatial features.
-3. Fuse multimodal features and model temporal dependencies.
-4. Predict steering and speed.
-5. Evaluate prediction accuracy, generalization, and uncertainty.
+The LiDAR RGB image is derived from a 3D point cloud using distance-based color encoding. Exact rasterization settings must be specified for each experiment.
 
 ## Dataset
 
-The doctoral research used a driving dataset of more than 11,000 frames with camera and LiDAR information. The researcher has already supplied the original DBNet train, validation, and test archives for reconstruction. The original dataset is credited to **Chen et al., “LiDAR-Video Driving Dataset: Learning Driving Policies Effectively,” CVPR 2018** ([official DBNet repository](https://github.com/driving-behavior/DBNet); [BibTeX](CITATION_DBNet.bib)). The archives are available in the researcher's private file Library, **not** publicly hosted here. A real-layout local audit tool is available at [`scripts/audit_dbnet.py`](scripts/audit_dbnet.py), with instructions in [`docs/dbnet-local-data.md`](docs/dbnet-local-data.md). Full integrity checks and label-unit verification remain pending.
+Experiments use **DBNet**, introduced by Chen et al., *LiDAR-Video Driving Dataset: Learning Driving Policies Effectively* (CVPR 2018). [Official dataset](https://github.com/driving-behavior/DBNet) · [BibTeX](CITATION_DBNet.bib) · [Data setup](docs/dbnet-local-data.md).
 
-## Repository status
+The repository includes a dataset layout audit, JPEG/LAS decoders, paired-frame validation, and temporal sequence utilities. Dataset files are not included in this public repository.
 
-> **Reconstruction in progress.** The original local source-code files were lost before they could be uploaded to GitHub. This repository is being rebuilt from dissertation materials and available research records. Newly written implementations must not be interpreted as the original historical training code.
+## Getting started
 
-The architecture described above reflects the dissertation's research design. Reconstructed scripts, dependency versions, datasets, pretrained weights, and reproducibility instructions will be added only after they are implemented and checked.
-
-## Planned organization
-
-```text
-docs/          Research methodology and architecture documentation
-src/           Reconstructed data processing, modeling, and evaluation code
-configs/       Experiment configurations
-tests/         Unit and integration tests
-notebooks/     Exploratory analyses
-results/       Verified figures, metrics, and experiment logs
+```bash
+python -m pip install -e '.[data,model]'
+python -m unittest discover -s tests -v
+python scripts/audit_dbnet.py data/dbnet-2018
+python scripts/inspect_dbnet_pair.py data/dbnet-2018/train/1 0
 ```
 
-The repository now includes reconstructed modules, notebooks, documentation, tests, and a local DBNet audit script. **No full real-data training run has yet been verified.**
+The last two commands require locally extracted DBNet data. See [dataset instructions](docs/dbnet-local-data.md) and [sensor processing](docs/dbnet-media-pipeline.md).
 
-## Results and reproducibility
+## Repository contents
 
-Quantitative results, baselines, split definitions, evaluation scripts, and reproducible run commands will be published here after verification against the dissertation and available experimental records. No placeholder scores are presented as independently reproduced results.
+- `src/autonomous_driving/` — dataset utilities, CNN backbones, LiDAR encoding, fusion, LSTM-attention model, metrics, and training utilities
+- `notebooks/` — LiDAR processing, backbone features, temporal modeling, and training examples
+- `scripts/` — DBNet dataset audit and sensor-pair inspection
+- `tests/` — unit tests for data, model interfaces, and metrics
+- `docs/` — [research methods](docs/RESEARCH_METHODS.md), architecture, and experiment protocols
 
-## Research interests
+## Evaluation
 
-- Autonomous driving and intelligent transportation systems
-- Deep learning and computer vision
-- Multimodal sensor fusion (camera and LiDAR)
-- Temporal sequence modeling and attention
-- Vehicle dynamics and intelligent control
-- Reliable and interpretable machine learning
+Report MAE, RMSE, R², and threshold accuracy separately for steering and speed. Include dataset version, split, random seed, preprocessing configuration, checkpoint, and environment with each measured result. Training and benchmark numbers are published only when accompanied by actual run artifacts.
 
-## Collaboration
+## Research and collaboration
 
-Interested in academic research collaborations and postdoctoral opportunities in autonomous driving, intelligent vehicles, and multimodal machine learning, particularly in Canada.
-
-**Connect:** [LinkedIn](https://www.linkedin.com/in/morteza-a/) · [ORCID](https://orcid.org/0009-0001-4837-2298)
+Research interests include autonomous driving, multimodal perception, temporal learning, intelligent vehicles, uncertainty estimation, and vehicle dynamics. Open to academic collaborations and postdoctoral research opportunities.
 
 ## Acknowledgment
 
-This project is based on doctoral research. Full academic acknowledgments, references, publication links, and citation details will be added after verification.
+DBNet dataset credit: Chen et al. (CVPR 2018). Dataset access and redistribution are governed by the original authors' terms.

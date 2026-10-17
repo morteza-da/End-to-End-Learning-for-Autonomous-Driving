@@ -1,6 +1,5 @@
-# Dissertation Methodology Notes
+# Model Methodology Notes
 
-These notes summarize the supplied 156-page doctoral dissertation. They describe historical research and do not imply that reconstructed code has reproduced the results.
 
 ## Training (PDF pp. 105–107)
 
@@ -19,7 +18,7 @@ These notes summarize the supplied 156-page doctoral dissertation. They describe
 
 ## LiDAR transformation (PDF pp. 73–74)
 
-- The dissertation describes mapping 3D LiDAR points into a color-coded 2D RGB image.
+- The research describes mapping 3D LiDAR points into a color-coded 2D RGB image.
 - Its distance formula is sqrt(Px^2 + Py^2), with blue, green, and red channels using scales 20, 40, and 60 respectively.
 - The printed conditional layout is ambiguous, so exact branch logic and point-to-pixel mapping must be verified before implementation.
 

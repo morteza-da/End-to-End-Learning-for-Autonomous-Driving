@@ -1,32 +1,15 @@
 # Implementation Status
 
-This repository is being rebuilt from dissertation documentation after loss of the original local source code.
-
-| Component | Status |
+| Component | Current state |
 | --- | --- |
-| Architecture documentation | Drafted; requires cross-checking with thesis |
-| Dataset manifests and validation | Not implemented |
-| Camera preprocessing | Not implemented |
-| LiDAR preprocessing | Not implemented |
-| Xception / ResNeXt-50 branches | Not implemented |
-| Sensor fusion and temporal LSTM | Not implemented |
-| Attention and prediction heads | Not implemented |
-| MC dropout uncertainty | Not implemented |
-| Training and checkpointing | Not implemented |
-| Evaluation utilities | Initial framework-independent MAE, RMSE, R² functions added; tests written but not yet executed in CI |
-| Historical experimental reproduction | Not attempted |
+| Dataset layout audit and manifest validation | Implemented; full dataset scan pending |
+| JPEG and LAS decoding | Implemented; full dataset scan pending |
+| LiDAR distance color encoding | Implemented; 2D rasterization pending |
+| Xception / ResNeXt-50 feature extractors | Implemented; target-environment verification pending |
+| Feature Flatten and Concatenation | Implemented |
+| LSTM, attention, steering/speed heads | Implemented |
+| Sequence windows and temporal-head training | Implemented; real-data training pending |
+| Checkpoints and full backbone fine-tuning | Pending |
+| MAE, RMSE, R², threshold metrics | Implemented; benchmark runs pending |
 
-## Local validation
-
-Install the package and run the unit tests:
-
-```bash
-python -m pip install -e .
-python -m unittest discover -s tests -v
-```
-
-These tests use synthetic numbers solely to verify metric calculations. They do not validate the doctoral model or historical dissertation metrics.
-
-## Before implementing the neural network
-
-Confirm dataset layout, sensor calibration, target units, split manifests, sequence length, preprocessing, and model hyperparameters from primary research materials. Preserve provenance for all newly reconstructed code.
+Run `python -m pip install -e '.[data,model]'` and `python -m unittest discover -s tests -v`. Unit tests and illustrative examples are not substitutes for benchmark evaluations.
