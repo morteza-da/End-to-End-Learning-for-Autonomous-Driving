@@ -7,7 +7,7 @@
 
 ## Overview
 
-Multimodal learning for joint **steering-angle and vehicle-speed prediction** from temporally aligned camera and LiDAR observations. The model combines ImageNet-pretrained **Xception** and **ResNeXt-50** feature extractors, feature-level concatenation, an **LSTM**, temporal **attention**, and regression outputs. Both camera/backbone assignments are supported.
+Multimodal learning for joint **steering-angle and vehicle-speed prediction** from frame-index-paired camera and LiDAR observations. The model combines ImageNet-pretrained **Xception** and **ResNeXt-50** feature extractors, feature-level concatenation, an **LSTM**, temporal **attention**, and regression outputs. Both camera/backbone assignments are supported.
 
 ## Model pipeline
 
@@ -47,7 +47,30 @@ The last two commands require locally extracted DBNet data. See [dataset instruc
 
 ## End-to-end training interface
 
-The [sequence dataset](src/autonomous_driving/sequence_dataset.py) loads aligned camera/LiDAR windows and verified steering/speed targets. The [end-to-end model](src/autonomous_driving/end_to_end.py) connects two spatial feature extractors to the LSTM-attention regression head. See [training integration](docs/end-to-end-training.md). Dataset label units and channel mappings must be established before real-data training; see [DBNet label validation](docs/dbnet-label-validation.md) and the explicit [target mapping module](src/autonomous_driving/target_mapping.py).
+The [sequence dataset](src/autonomous_driving/sequence_dataset.py) loads frame-index-paired camera/LiDAR windows and verified steering/speed targets. The [end-to-end model](src/autonomous_driving/end_to_end.py) connects two spatial feature extractors to the LSTM-attention regression head. See [training integration](docs/end-to-end-training.md). Dataset label units and channel mappings must be established before real-data training; see [DBNet label validation](docs/dbnet-label-validation.md) and the explicit [target mapping module](src/autonomous_driving/target_mapping.py).
+
+## Training readiness and reproducibility
+
+Real-data training requires a **reviewed label-provenance record** and a **passing, matching data preflight report**. See [DBNet label evidence](docs/dbnet-label-evidence.md), [data preflight runner](scripts/audit_dbnet_preflight.py), and [experiment protocol](docs/experiment-protocol.md). These checks validate channel configuration, frame-index membership and provisional physical ranges; they do **not** prove timestamp synchronization, authenticity of supporting documentation, or dataset file integrity. No real DBNet performance results are claimed.
+
+```bash
+python scripts/audit_dbnet_preflight.py \\
+  --data-root data/dbnet-2018 \\
+  --label-provenance path/to/reviewed-evidence.json \\
+  --steering-channel 0 --speed-channel 1 \\
+  --steering-unit deg --speed-unit km/h \\
+  --output results/dbnet-preflight.json
+
+python scripts/train_multimodal.py \\
+  --data-root data/dbnet-2018 \\
+  --label-provenance path/to/reviewed-evidence.json \\
+  --preflight-report results/dbnet-preflight.json \\
+  --steering-channel 0 --speed-channel 1 \\
+  --steering-unit deg --speed-unit km/h \\
+  --assignment A --pool-size 2
+```
+
+The optional `--pool-size 2` selects an experimental 2×2 pooled variant. Omit it for the direct spatial Flatten baseline, which has a substantially larger temporal parameter footprint. The commands require an authorized local dataset and genuine supporting evidence; they have not been validated against the full DBNet data.
 
 ## Training and checkpointing
 
