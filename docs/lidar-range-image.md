@@ -20,3 +20,15 @@ print(rgb_chw.shape, occupied.sum())
 ```
 
 The exact camera–LiDAR calibration, angle limits, and model preprocessing statistics should be recorded with each experiment. Raw dataset content is not committed to the repository. Cite Chen et al. (CVPR 2018) for DBNet.
+
+## Paired camera and LiDAR inputs
+
+Use `src/autonomous_driving/sensor_pair.py` to load synchronized camera JPEG and LiDAR LAS frames into two CHW float32 RGB arrays. Both inputs have matching spatial dimensions and are ready for backbone-specific normalization and temporal batching.
+
+```python
+from autonomous_driving.sensor_pair import load_indexed_pair
+sample = load_indexed_pair("data/dbnet-2018/train/1", 0)
+print(sample["camera"].shape, sample["lidar"].shape)
+```
+
+The returned LiDAR occupancy mask is available for diagnostics. Behavior labels must be mapped to steering/speed only after verifying the CSV schema and units.
