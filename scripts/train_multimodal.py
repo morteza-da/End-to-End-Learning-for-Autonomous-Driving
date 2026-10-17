@@ -76,6 +76,7 @@ def main():
     from autonomous_driving.label_provenance import load_verified_label_provenance
     from autonomous_driving.label_quality import audit_target_ranges, require_plausible_targets
     from autonomous_driving.preflight_gate import verify_preflight_report
+    from autonomous_driving.run_identity import git_run_identity
     from autonomous_driving.output_safety import (
         require_output_outside_dataset, require_fresh_experiment_directory
     )
@@ -183,6 +184,7 @@ def main():
             split: ds.window_membership_sha256 for split, ds in datasets.items()
         },
         "device": device,
+        "code_revision": git_run_identity(Path(__file__).resolve().parents[1]),
     }, indent=2) + "\n", encoding="utf-8")
 
     best_val = float("inf")
