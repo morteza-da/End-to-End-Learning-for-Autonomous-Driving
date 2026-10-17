@@ -54,7 +54,7 @@ Use [the training runner](scripts/train_multimodal.py) to train configuration A 
 
 ## Evaluation
 
-Use [validated experiment configurations](src/autonomous_driving/experiment_config.py) and [measured-result reporting](src/autonomous_driving/experiment_reporting.py) for reproducible A/B comparisons; see the [experiment protocol](docs/experiment-protocol.md). Report MAE, RMSE, R², and threshold accuracy separately for steering and speed. Include dataset version, split, random seed, preprocessing configuration, checkpoint, and environment with each measured result. Training and benchmark numbers are published only when accompanied by actual run artifacts.
+Use [validated experiment configurations](src/autonomous_driving/experiment_config.py) and [measured-result reporting](src/autonomous_driving/experiment_reporting.py) for reproducible A/B comparisons; see the [experiment protocol](docs/experiment-protocol.md). Report RMSE and R², and threshold accuracy separately for steering and speed. Include dataset version, split, random seed, preprocessing configuration, checkpoint, and environment with each measured result. Training and benchmark numbers are published only when accompanied by actual run artifacts.
 
 ## Research and collaboration
 
