@@ -2,7 +2,7 @@
 
 ## Modalities and spatial dimensions
 
-The doctoral research used two **different sensor modalities**, each represented as a **299 × 299 image** before backbone feature extraction.
+The research used two **different sensor modalities**, each represented as a **299 × 299 image** before backbone feature extraction.
 
 | Modality | Source | Transformation | Backbone input |
 | --- | --- | --- | --- |
@@ -29,4 +29,4 @@ The two branches consume **different sensor representations**. The exact mapping
 
 ## Reproducibility boundary
 
-The input shape and high-level LiDAR transformation are confirmed by the researcher. No specific projection algorithm, calibration matrix, distance colormap, or backbone mapping is asserted without further evidence. The original code was lost; reconstructed code must be clearly labeled and validated.
+The input shape and high-level LiDAR transformation are confirmed by the researcher. No specific projection algorithm, calibration matrix, distance colormap, or backbone mapping is asserted without further evidence. 

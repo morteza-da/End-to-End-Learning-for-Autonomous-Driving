@@ -2,7 +2,7 @@
 
 **Original project:** https://github.com/driving-behavior/DBNet
 
-**Mandatory scholarly reference for this reconstruction whenever DBNet data are used:**
+**Mandatory scholarly reference for this implementation whenever DBNet data are used:**
 
 Chen, Y., Wang, J., Li, J., Lu, C., Luo, Z., Xue, H., & Wang, C. (2018). *LiDAR-Video Driving Dataset: Learning Driving Policies Effectively*. Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR).
 
@@ -22,7 +22,7 @@ The repository also provides the exact entry as `CITATION_DBNet.bib`.
 
 ## Suggested dataset acknowledgment
 
-> This research reconstruction uses the DBNet LiDAR-video driving dataset introduced by Chen et al. (CVPR 2018). DBNet's creators retain attribution for the original dataset and baseline resources. This reconstruction's model implementation and any newly generated experiments are independent and should not be attributed to the original dataset authors.
+> This research implementation uses the DBNet LiDAR-video driving dataset introduced by Chen et al. (CVPR 2018). DBNet's creators retain attribution for the original dataset and baseline resources. This implementation's model implementation and any newly generated experiments are independent and should not be attributed to the original dataset authors.
 
 ## Attribution locations
 

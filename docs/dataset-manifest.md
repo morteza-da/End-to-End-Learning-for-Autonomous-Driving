@@ -1,6 +1,6 @@
 # Dataset Manifest Contract (Draft)
 
-The reconstructed project uses an explicit CSV manifest rather than assuming a particular directory structure.
+The implemented project uses an explicit CSV manifest rather than assuming a particular directory structure.
 
 Required columns:
 
@@ -13,7 +13,7 @@ Required columns:
 | steering | Numeric steering target; **unit to be confirmed** |
 | speed | Numeric speed target; **unit to be confirmed** |
 
-Example **synthetic** record (not from the dissertation):
+Example **synthetic** record (not from the research):
 
 ```csv
 sample_id,split,camera_path,lidar_path,steering,speed
@@ -22,7 +22,7 @@ synthetic-001,train,camera/001.png,lidar/001.bin,0.0,10.0
 
 The validation utility checks column presence, unique IDs, split values, finite labels, path safety, and optionally that sensor files exist. It **does not** prove camera–LiDAR synchronization, calibration, temporal independence, leakage-free splits, label units, or data quality.
 
-Before training, confirm the actual dissertation dataset format, timestamps, calibration, steering convention, speed units, sequence construction, and licensing. Do not publish private or restricted data. Never represent synthetic examples as historical research samples.
+Before training, confirm the actual research dataset format, timestamps, calibration, steering convention, speed units, sequence construction, and licensing. Do not publish private or restricted data. Never represent synthetic examples as previous research samples.
 
 Local use after `python -m pip install -e .`:
 

@@ -18,7 +18,7 @@ This is **partial fine-tuning / transfer learning**, not training both backbones
 3. Record the exact frozen/trainable parameter names and counts in experiment logs.
 4. Train on DBNet training split only, using validation data for model selection.
 5. Do not infer layer boundaries, feature dimensions, image preprocessing, optimizer settings, or the training schedule without primary source evidence.
-6. Distinguish newly reconstructed experiments from historical dissertation findings.
+6. Distinguish newly implemented experiments from previous research findings.
 
 ## Still requiring confirmation
 
@@ -30,4 +30,4 @@ This is **partial fine-tuning / transfer learning**, not training both backbones
 - Learning rates, epochs, and checkpoint selection
 - DBNet train/validation/test split construction
 
-**Evidence status:** The transfer-learning setup above is directly confirmed by the researcher. Other implementation choices remain open pending dissertation/code documentation.
+**Evidence status:** The transfer-learning setup above is directly confirmed by the researcher. Other implementation choices remain open pending research/code documentation.

@@ -20,7 +20,7 @@ In mathematical notation, `fused_t = concat(camera_features_t, lidar_features_t,
 
 ## Confirmed feature-map vectorization
 
-The researcher confirms that **Flatten** was used to convert each backbone's feature maps into a feature vector **before concatenation**. Thus the intended path is **backbone feature maps → Flatten (per branch) → feature concatenation → LSTM**. Global Average Pooling (GAP) must not be substituted for Flatten in the faithful reconstruction.
+The researcher confirms that **Flatten** was used to convert each backbone's feature maps into a feature vector **before concatenation**. Thus the intended path is **backbone feature maps → Flatten (per branch) → feature concatenation → LSTM**. Global Average Pooling (GAP) must not be substituted for Flatten in the faithful implementation.
 
 The researcher confirms **no Dense layer between concatenation and LSTM**. The concatenated feature vector was fed directly to the LSTM. The processing order after fusion was **LSTM → Attention → Dense**. Exact feature-map shapes, concatenated feature dimensions, temporal sequence length, and Dense/output-head settings still require verification.
 
@@ -28,11 +28,11 @@ The researcher confirms **no Dense layer between concatenation and LSTM**. The c
 
 The researcher confirms that the LSTM processed **sequences of multiple consecutive driving frames**, not isolated camera–LiDAR pairs. At each time step, features from the synchronized camera and LiDAR representations were separately flattened and concatenated; the ordered fused vectors then formed the LSTM input of conceptual shape `[batch, sequence_length, fused_feature_dimension]` (batch-first convention shown for clarity, not a verified framework setting).
 
-The **exact sequence length, stride, temporal sampling interval, sequence boundaries, and target alignment** are not yet confirmed. No particular frame count should be presented as historical fact.
+The **exact sequence length, stride, temporal sampling interval, sequence boundaries, and target alignment** are not yet confirmed. No particular frame count should be presented as previous fact.
 
 ## Confirmed prediction targets
 
-The model **simultaneously predicted steering angle and vehicle speed** from the shared temporal representation. This is a joint two-target regression task. Whether the final implementation used one two-unit Dense layer or two separate output heads remains unconfirmed; do not assume either arrangement without dissertation evidence.
+The model **simultaneously predicted steering angle and vehicle speed** from the shared temporal representation. This is a joint two-target regression task. Whether the final implementation used one two-unit Dense layer or two separate output heads remains unconfirmed; do not assume either arrangement without research evidence.
 
 ## Implementation constraints
 
@@ -41,7 +41,7 @@ The model **simultaneously predicted steering angle and vehicle speed** from the
 - Keep the temporal ordering intact for the LSTM.
 - Preserve the two feature branches at fusion; do not introduce averaging, addition, or a learned gating step unless documented.
 - Flatten the backbone feature maps separately before concatenating their feature vectors.
-- Place Attention after the LSTM and Dense after Attention; verify attention variant and the exact Dense/output-head design from the dissertation.
+- Place Attention after the LSTM and Dense after Attention; verify attention variant and the exact Dense/output-head design from the research.
 
 **Scientific precision:** Concatenation retains the extracted feature components in the fused representation; it does **not** prove that all information from the original sensor measurements survives backbone extraction or later network processing.
 
