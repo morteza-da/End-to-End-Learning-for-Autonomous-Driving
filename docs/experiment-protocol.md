@@ -156,3 +156,7 @@ python scripts/compare_fusion_variants.py \
 ```
 
 The tool reads existing validation JSON reports and extracts steering/speed RMSE, R² (blank if undefined), threshold accuracies (±6° steering; ±5 km/h speed), and sample counts. It rejects mismatched configurations, validation counts, non-validation reports, and duplicate fusion variants. It never fabricates results or compares validation with test scores. Equal sample counts alone do **not** prove identical underlying frame/drive membership; dataset-manifest identity must be established independently before a publishable comparison.
+
+### Exact temporal-window membership verification
+
+Each dataset split now exposes a SHA-256 fingerprint of its sorted temporal windows, based on split, drive ID, frame indices, sample IDs and relative sensor paths. The training CLI records train/validation hashes in `run_metadata.json` and includes the validation fingerprint in `validation_metrics.json` notes. The comparison tool refuses reports without a matching validation fingerprint, even if their sample counts agree. This establishes **manifest window membership identity only**; it does not establish sensor timestamp synchronization, calibration, equality of underlying file bytes, or equality of label contents.
