@@ -174,3 +174,10 @@ Config: `src/autonomous_driving/backbone_config.py`.
 - `docs/backbone-implementation-plan.md`
 - `docs/threshold-accuracy.md`
 - `docs/runnable-backbones.md`\n- `docs/dbnet-attribution.md`\n- `docs/temporal-lstm-attention.md`\n- `docs/sequence-training.md`
+
+
+## DBNet original-data access and executable layout audit (October 2026)
+
+**[USER-PROVIDED]** The researcher reports receiving dataset-use permission from the DBNet authors by email. The precise redistribution wording remains to be reviewed, but this does not prevent writing or privately executing dataset-aware code. The original train/val/test archives were previously uploaded to the researcher's ChatGPT file Library. They do not need to be uploaded again.
+
+**[RECONSTRUCTION]** `src/autonomous_driving/dbnet_layout.py` and `scripts/audit_dbnet.py` now recognize the documented extracted DBNet directory structure, pair JPEG/LAS by numeric index, preserve positional `behavior.csv` values without assuming units, and generate per-drive/split audit summaries. The test split may have no `behavior.csv`, per the source README. `docs/dbnet-local-data.md` describes safe local extraction and audit. **[OPEN]** Archive-wide decoding, correct label semantics, actual environment staging, and verified full-data training.
