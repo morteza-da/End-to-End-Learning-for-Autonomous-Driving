@@ -88,3 +88,7 @@ Before allocating the LSTM, the runner infers the concatenated flattened CNN fea
 ## Synthetic end-to-end smoke test
 
 Run `python scripts/smoke_test_multimodal.py --sequence-length 2 --batch-size 2` to check the two-branch spatial interface, flattened fusion, temporal attention, output heads and aggregate evaluation on **synthetic** tensors. The smoke test uses tiny randomly initialized CNNs, not Xception/ResNeXt50 or DBNet. It is a software interface check, **not** an accuracy benchmark. GitHub Actions `PyTorch CPU integration` installs CPU PyTorch to execute these tests rather than silently skipping optional model tests.
+
+## Undefined R² handling
+
+When validation targets have zero variance, R² is mathematically undefined. The evaluation output records `null` for R² in strict JSON rather than inventing a score or emitting non-standard `NaN`. RMSE and threshold accuracy remain defined for finite nonempty arrays. This is an explicit undefined metric, not a measured performance value.
