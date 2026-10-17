@@ -3,6 +3,7 @@
 Usage:
   python scripts/train_multimodal.py --data-root data/dbnet-2018 \
     --label-provenance path/to/reviewed-evidence.json \
+    --preflight-report results/dbnet-preflight.json \
     --steering-channel 0 --speed-channel 1 \
     --steering-unit deg --speed-unit km/h --assignment A
 
@@ -19,6 +20,8 @@ from pathlib import Path
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data-root", type=Path, required=True)
+    parser.add_argument("--preflight-report", type=Path, required=True,
+                        help="Passing audit_dbnet_preflight.py JSON for the same dataset")
     parser.add_argument("--label-provenance", type=Path, required=True,
                         help="Reviewed source record confirming target channels and units")
     parser.add_argument("--output", type=Path, default=Path("results/multimodal"))
@@ -66,6 +69,7 @@ def main():
     from autonomous_driving.target_mapping import TargetSchema, map_raw_observations
     from autonomous_driving.label_provenance import load_verified_label_provenance
     from autonomous_driving.label_quality import audit_target_ranges, require_plausible_targets
+    from autonomous_driving.preflight_gate import verify_preflight_report
 
     config = ExperimentConfig(
         assignment=args.assignment, sequence_length=args.sequence_length,
@@ -87,6 +91,10 @@ def main():
     observations = map_raw_observations(raw, schema)
     target_audit = audit_target_ranges(observations)
     require_plausible_targets(target_audit)
+    verify_preflight_report(
+        args.preflight_report, observations=observations, schema=schema,
+        sequence_length=config.sequence_length, stride=config.stride
+    )
     datasets = {
         split: make_sequence_dataset(
             observations, args.data_root, sequence_length=config.sequence_length,
@@ -141,6 +149,7 @@ def main():
     save_experiment_config(config, output / "config.json")
     (output / "run_metadata.json").write_text(json.dumps({
         "label_provenance": provenance,
+        "preflight_report": str(args.preflight_report),
         "target_range_audit": target_audit,
         "target_schema": {
             "steering_channel": schema.steering_channel,
