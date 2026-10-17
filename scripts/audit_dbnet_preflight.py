@@ -21,6 +21,8 @@ def main():
     parser.add_argument("--hash-sensor-files", action="store_true",
                         help="Stream and hash all paired camera/LiDAR file bytes (slow)")
     parser.add_argument("--output", type=Path, default=Path("results/dbnet-preflight.json"))
+    parser.add_argument("--overwrite-report", action="store_true",
+                        help="Explicitly replace an existing preflight report")
     args = parser.parse_args()
 
     from autonomous_driving.dbnet_layout import audit_dataset, build_labeled_observations
@@ -34,6 +36,8 @@ def main():
     from autonomous_driving.output_safety import require_output_outside_dataset
 
     require_output_outside_dataset(args.data_root, args.output)
+    if args.output.exists() and not args.overwrite_report:
+        raise ValueError("Preflight report already exists; choose a fresh --output or pass --overwrite-report")
 
     schema = TargetSchema(
         steering_channel=args.steering_channel,
