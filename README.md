@@ -23,7 +23,7 @@ The LiDAR RGB input is produced from a 3D point cloud using [configurable spheri
 
 Experiments use **DBNet**, introduced by Chen et al., *LiDAR-Video Driving Dataset: Learning Driving Policies Effectively* (CVPR 2018). [Official dataset](https://github.com/driving-behavior/DBNet) · [BibTeX](CITATION_DBNet.bib) · [Data setup](docs/dbnet-local-data.md).
 
-The repository includes a dataset layout audit, JPEG/LAS decoders, paired-frame validation, and temporal sequence utilities. Dataset files are not included in this public repository.
+The repository includes a dataset layout audit, JPEG/LAS decoders, paired-frame validation, temporal sequence utilities, and an integrated CNN–LSTM–attention training interface. Dataset files are not included in this public repository.
 
 ## Getting started
 
@@ -43,6 +43,10 @@ The last two commands require locally extracted DBNet data. See [dataset instruc
 - `scripts/` — DBNet dataset audit and sensor-pair inspection
 - `tests/` — unit tests for data, model interfaces, and metrics
 - `docs/` — [research methods](docs/RESEARCH_METHODS.md), architecture, and experiment protocols
+
+## End-to-end training interface
+
+The [sequence dataset](src/autonomous_driving/sequence_dataset.py) loads aligned camera/LiDAR windows and verified steering/speed targets. The [end-to-end model](src/autonomous_driving/end_to_end.py) connects two spatial feature extractors to the LSTM-attention regression head. See [training integration](docs/end-to-end-training.md). Dataset label units and column mappings must be established before real-data training.
 
 ## Evaluation
 
