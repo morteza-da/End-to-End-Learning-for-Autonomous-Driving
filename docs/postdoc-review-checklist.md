@@ -2,6 +2,12 @@
 
 This checklist separates software readiness from scientific validation.
 
+## Final handoff criteria
+
+The public repository can be shared as a **tested research-software demonstration** when its latest Python and CPU integration workflows pass, README links resolve, and the source/data boundary is clear. It must not be presented as a completed DBNet benchmark until real-data experiments and independent scientific review are finished.
+
+Before sending the link to a prospective collaborator, check the current Actions status, confirm the latest README and license, and perform a manual review of Git history **contents** for secrets and restricted material. Automated filename checks cannot certify this.
+
 ## Public presentation
 - [x] Clear camera–LiDAR, CNN–LSTM–attention project scope and author links in README.
 - [x] MIT code license and separate dataset attribution.
