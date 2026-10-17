@@ -68,6 +68,31 @@ class PreflightCLITests(unittest.TestCase):
         self.assertEqual(report["sensor_content_integrity"]["file_count"], 20)
         self.assertEqual(len(report["canonical_targets_sha256"]), 64)
 
+    def test_cli_report_is_accepted_by_training_gate(self):
+        from autonomous_driving.dbnet_layout import build_labeled_observations
+        from autonomous_driving.target_mapping import TargetSchema, map_raw_observations
+        from autonomous_driving.preflight_gate import verify_preflight_report
+
+        result = self.run_cli("--hash-sensor-files")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        schema = TargetSchema(0, 1, "deg", "km/h")
+        observations = map_raw_observations(
+            build_labeled_observations(self.data), schema
+        )
+        kwargs = {
+            "observations": observations,
+            "schema": schema,
+            "sequence_length": 4,
+            "stride": 1,
+            "data_root": self.data,
+            "provenance_source": "https://example.org/synthetic-test-only",
+            "require_sensor_hashes": True,
+        }
+        self.assertTrue(verify_preflight_report(self.output, **kwargs))
+        (self.data / "train/1/dvr_66x200/0.jpg").write_bytes(b"modified")
+        with self.assertRaisesRegex(ValueError, "Camera or LiDAR"):
+            verify_preflight_report(self.output, **kwargs)
+
     def test_cli_rejects_missing_lidar(self):
         (self.data / "train/1/points_16384/2.las").unlink()
         result = self.run_cli()
