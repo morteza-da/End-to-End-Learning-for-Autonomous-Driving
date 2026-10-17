@@ -7,7 +7,14 @@
 
 ## Overview
 
-Multimodal learning for joint **steering-angle and vehicle-speed prediction** from frame-index-paired camera and LiDAR observations. The model supports optionally ImageNet-pretrained **Xception** and **ResNeXt-50** feature extractors, feature-level concatenation, an **LSTM**, temporal **attention**, and regression outputs. Both camera/backbone assignments are supported.
+Multimodal learning for joint **steering-angle and vehicle-speed prediction** from frame-index-paired camera and LiDAR observations. The model supports **Xception** and **ResNeXt-50** feature extractors with optional ImageNet-pretrained weights, feature-level concatenation, an **LSTM**, temporal **attention**, and regression outputs. Both camera/backbone assignments are supported.
+
+## Verification status
+
+- **Automated checks:** Python unit tests and PyTorch CPU integration tests run in GitHub Actions, including synthetic sensor/label preflight tests and model smoke tests.
+- **Implemented interfaces:** paired-frame dataset processing, configurable dual-CNN fusion, temporal modeling, checkpointing, and evaluation/reporting utilities.
+- **Not yet established:** end-to-end training on the full DBNet dataset, measured benchmark accuracy, and physical timestamp synchronization. No experimental RMSE or R² values are asserted here.
+- **Reproduction prerequisites:** authorized local DBNet files, reviewed target-channel/unit evidence, a matching passing preflight report, appropriate pretrained-weight access (if enabled), and sufficient memory/compute.
 
 ## Model pipeline
 
