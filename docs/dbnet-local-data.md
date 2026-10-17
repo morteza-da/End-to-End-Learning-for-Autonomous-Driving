@@ -1,14 +1,14 @@
-# Using the researcher's existing DBNet archives
+# DBNet local dataset setup
 
-**[USER-PROVIDED]** Train, validation and test RAR archives have already been uploaded to the user's ChatGPT file Library.  One JPEG/LAS pair from each split was decoded; the whole collection has not been audited. Do not ask the researcher to re-upload the archives.
+The dataset is managed locally and is not distributed with this repository. A limited JPEG/LAS sample check does not replace a complete dataset integrity audit.
 
-**[SOURCE]** The original DBNet-2018 README describes `train/<drive>/dvr_66x200/*.jpg`, `points_16384/*.las`, and `behavior.csv`; likewise for `val`. Its `test` split lacks behavioral labels in the documented layout. Filenames are zero-based frame numbers, and CSV row i maps to `i-1.jpg` and `i-1.las`. Verify the actual extracted directory spelling before running the script.
+**[SOURCE]** The original DBNet-2018 README describes `train/<drive>/dvr_66x200/*.jpg`, `points_16384/*.las`, and `behavior.csv`; likewise for `val`. Its `test` split lacks behavioral labels in the documented layout. Filenames are zero-based frame numbers, and the dataset documentation describes CSV row i as mapping to frame i−1; however, inspected CSV matrices can be channel-major (two rows spanning many frames). Detect the actual matrix orientation before indexing labels. Verify the actual extracted directory spelling before running the script.
 
 ## Local setup
 
 Install the project: `python -m pip install -e .`
 
-Extract the already-owned archives into an ignored local folder, e.g.:
+Extract the dataset archives into an ignored local folder, e.g.:
 
 ```text
 data/dbnet-2018/
@@ -25,13 +25,17 @@ Run: `python scripts/audit_dbnet.py data/dbnet-2018 --output results/local_dbnet
 
 The audit detects missing pairs and missing labels and counts drive-level records. It does not decode all JPEG/LAS bytes, establish steering/speed label semantics, or prove prior temporal synchronization.
 
-`build_labeled_observations` returns **raw label columns** to avoid inventing physical units. Do not feed them into `Observation(steering_deg, speed_kmh)` until official label definitions are verified.
+`build_labeled_observations` returns **raw numeric label tuples** to avoid inventing physical units. Do not feed them into `Observation(steering_deg, speed_kmh)` until official label definitions are verified.
 
 **Citation:** Chen et al. (2018), *LiDAR-Video Driving Dataset: Learning Driving Policies Effectively*, CVPR. Official repository: https://github.com/driving-behavior/DBNet. See `CITATION_DBNet.bib`.
 
-**Licensing:** Dataset use has been authorized by the DBNet authors, according to the project researcher. The exact redistribution terms remain unverified pending the original email. Keep the dataset out of the public GitHub repository for now; code and download instructions are shareable.
+**Licensing:** Check the official dataset terms and obtain any required permissions. Redistribution rights have not been verified. Keep the dataset out of the public GitHub repository for now; code and download instructions are shareable.
 
 
 ## Sensor decoding
 
-After `python -m pip install -e '.[data]'`, inspect a genuine frame pair with `python scripts/inspect_dbnet_pair.py data/dbnet-2018/train/1 0`. See `docs/dbnet-media-pipeline.md`. This verifies one pair and preserves label columns as raw strings; it does not infer steering/speed units or LiDAR pixel projection.
+After `python -m pip install -e '.[data]'`, inspect a genuine frame pair with `python scripts/inspect_dbnet_pair.py data/dbnet-2018/train/1 0`. See `docs/dbnet-media-pipeline.md`. This verifies one pair and preserves raw label values; it does not infer steering/speed units or LiDAR pixel projection.
+
+## Label matrix orientation
+
+Use `autonomous_driving.label_inspection.inspect_behavior_csv` to compare the label matrix shape with the number of indexed frames. Both `frames_as_rows` (N×channels) and `frames_as_columns` (channels×N) are supported. Ambiguous square matrices must be reviewed explicitly. Label values remain unnamed until the dataset's physical units and channel meanings are verified.
