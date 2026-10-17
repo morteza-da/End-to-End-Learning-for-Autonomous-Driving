@@ -5,7 +5,8 @@ try:
 except ImportError:
     np = None
 
-from autonomous_driving.lidar_projection import RangeImageConfig, project_xyz_to_rgb
+if np is not None:
+    from autonomous_driving.lidar_projection import RangeImageConfig, project_xyz_to_rgb
 
 
 @unittest.skipUnless(np is not None, "numpy not installed")
