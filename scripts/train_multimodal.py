@@ -67,6 +67,7 @@ def main():
         batch_size=args.batch_size, epochs=args.epochs,
         learning_rate=args.learning_rate, seed=args.seed,
         pretrained=not args.no_pretrained,
+        pool_size=args.pool_size,
         camera_trainable_last_n=args.camera_trainable_last_n,
         lidar_trainable_last_n=args.lidar_trainable_last_n,
     )
@@ -126,7 +127,7 @@ def main():
         lr=config.learning_rate
     )
 
-    variant = "flatten" if args.pool_size is None else f"pool-{args.pool_size}x{args.pool_size}"
+    variant = "flatten" if config.pool_size is None else f"pool-{config.pool_size}x{config.pool_size}"
     output = args.output / config.assignment / variant
     output.mkdir(parents=True, exist_ok=True)
     save_experiment_config(config, output / "config.json")
