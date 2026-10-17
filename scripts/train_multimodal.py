@@ -18,6 +18,8 @@ from pathlib import Path
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data-root", type=Path, required=True)
+    parser.add_argument("--label-provenance", type=Path, required=True,
+                        help="Reviewed source record confirming target channels and units")
     parser.add_argument("--output", type=Path, default=Path("results/multimodal"))
     parser.add_argument("--assignment", choices=("A", "B"), required=True)
     parser.add_argument("--steering-channel", type=int, required=True)
@@ -61,6 +63,7 @@ def main():
     from autonomous_driving.memory_budget import check_temporal_memory
     from autonomous_driving.sequence_dataset import make_sequence_dataset
     from autonomous_driving.target_mapping import TargetSchema, map_raw_observations
+    from autonomous_driving.label_provenance import load_verified_label_provenance
 
     config = ExperimentConfig(
         assignment=args.assignment, sequence_length=args.sequence_length,
@@ -76,6 +79,7 @@ def main():
         speed_channel=args.speed_channel,
         steering_unit=args.steering_unit, speed_unit=args.speed_unit
     )
+    provenance = load_verified_label_provenance(args.label_provenance, schema)
     seed_everything(config.seed)
     raw = build_labeled_observations(args.data_root)
     observations = map_raw_observations(raw, schema)
@@ -132,6 +136,7 @@ def main():
     output.mkdir(parents=True, exist_ok=True)
     save_experiment_config(config, output / "config.json")
     (output / "run_metadata.json").write_text(json.dumps({
+        "label_provenance": provenance,
         "target_schema": {
             "steering_channel": schema.steering_channel,
             "speed_channel": schema.speed_channel,
