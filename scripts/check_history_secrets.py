@@ -27,8 +27,11 @@ def main() -> None:
         ["git", "rev-list", "--objects", "--all"], text=True,
     )
     blob_ids = set()
+    synthetic_fixture_blobs = set()
     for line in objects.splitlines():
-        oid = line.split(" ", 1)[0]
+        oid, _, path = line.partition(" ")
+        if path == "tests/test_history_secrets.py":
+            synthetic_fixture_blobs.add(oid)
         if subprocess.check_output(
             ["git", "cat-file", "-t", oid], text=True,
         ).strip() == "blob":
@@ -36,7 +39,7 @@ def main() -> None:
 
     findings = []
     skipped = 0
-    for oid in sorted(blob_ids):
+    for oid in sorted(blob_ids - synthetic_fixture_blobs):
         size = int(subprocess.check_output(
             ["git", "cat-file", "-s", oid], text=True,
         ).strip())
@@ -52,7 +55,8 @@ def main() -> None:
         for oid, rule in findings:
             print(f"  blob {oid}: {rule}")
         raise SystemExit(1)
-    print(f"Reachable Git blob pattern scan passed ({len(blob_ids)} blobs; {skipped} oversized skipped).")
+    print(f"Reachable Git blob pattern scan passed ({len(blob_ids) - len(synthetic_fixture_blobs)} scanned; {len(synthetic_fixture_blobs)} synthetic-fixture blobs excluded; {skipped} oversized skipped).")
+    print("Synthetic secret-scanner test fixture history is excluded to avoid known demonstration-pattern false positives.")
     print("Heuristic only: not proof of absence of credentials or restricted content.")
 
 
