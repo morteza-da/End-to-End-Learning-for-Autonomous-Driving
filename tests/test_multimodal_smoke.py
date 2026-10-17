@@ -25,7 +25,13 @@ class MultimodalSmokeTests(unittest.TestCase):
         self.assertEqual(result["prediction_count"], 2)
 
     def test_reject_short_sequences(self):
-        from scripts.smoke_test_multimodal import run_smoke_test
+        import importlib.util
+        from pathlib import Path
+        path = Path(__file__).resolve().parents[1] / "scripts" / "smoke_test_multimodal.py"
+        spec = importlib.util.spec_from_file_location("smoke_test_multimodal", path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        run_smoke_test = module.run_smoke_test
         with self.assertRaises(ValueError):
             run_smoke_test(sequence_length=1)
 
