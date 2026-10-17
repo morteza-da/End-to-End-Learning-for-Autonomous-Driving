@@ -7,7 +7,8 @@ This checklist separates software readiness from scientific validation.
 - [x] MIT code license and separate dataset attribution.
 - [x] Installation, unit tests, preflight, and training commands documented.
 - [x] Raw local data and environment secrets excluded from future commits via gitignore.
-- [ ] Manually verify no sensitive or third-party restricted files were tracked in earlier commits.
+- [x] Inspect current main-branch file tree for large binaries and common raw-data formats (no such files found in the inspected tree; placeholder .gitkeep files remain).
+- [ ] Review historical commits for previously tracked sensitive or restricted files; current-tree inspection does not cover Git history.
 
 ## Reproducible software
 - [x] Automated Python tests and CPU model integration workflow, with live badges in README.
@@ -29,3 +30,7 @@ This checklist separates software readiness from scientific validation.
 - [ ] Preserve measured configs, software versions, checkpoint identifiers and run artifacts.
 
 **Interpretation:** A checked item indicates repository implementation or test coverage, not that a full DBNet benchmark has been completed. Automated tests may pass without validating the scientific performance of a trained model.
+
+## Public tree inspection
+
+The current main-branch tree was inspected via the GitHub Git Trees API (recursive, non-truncated). It contained 135 tree entries at inspection time. No tracked blobs above 150 KB or files ending in .las, .laz, .jpg, .jpeg, .png, .csv, .pt, .pth, .h5, .env, or .zip were identified by that filename/size scan. This is **not** a comprehensive secrets scan, file-content audit, or review of previous commits. In particular, tracked files with other extensions and Git history still need separate review.
