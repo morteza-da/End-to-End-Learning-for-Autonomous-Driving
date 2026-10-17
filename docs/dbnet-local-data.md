@@ -30,3 +30,8 @@ The audit detects missing pairs and missing labels and counts drive-level record
 **Citation:** Chen et al. (2018), *LiDAR-Video Driving Dataset: Learning Driving Policies Effectively*, CVPR. Official repository: https://github.com/driving-behavior/DBNet. See `CITATION_DBNet.bib`.
 
 **Licensing:** The researcher reports email permission from DBNet's authors to use the dataset. The exact redistribution terms remain unverified pending the original email. Keep the dataset out of the public GitHub repository for now; code and download instructions are shareable.
+
+
+## Sensor decoding
+
+After `python -m pip install -e '.[data]'`, inspect a genuine frame pair with `python scripts/inspect_dbnet_pair.py data/dbnet-2018/train/1 0`. See `docs/dbnet-media-pipeline.md`. This verifies one pair and preserves label columns as raw strings; it does not infer steering/speed units or LiDAR pixel projection.
