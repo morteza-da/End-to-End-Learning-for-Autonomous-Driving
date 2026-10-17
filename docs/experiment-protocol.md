@@ -210,3 +210,7 @@ To detect changed camera JPEG or LiDAR LAS bytes between audit and training, app
 ### Command-line preflight test
 
 `tests/test_preflight_cli.py` invokes the actual `scripts/audit_dbnet_preflight.py` process against a temporary, synthetic DBNet-shaped folder with separate train, validation, and test drives. It checks successful JSON reporting and nonzero exit status for a missing LiDAR file or implausible speed. The test uses placeholder sensor bytes and synthetic evidence; it is not a JPEG/LAS decoding test and does not establish actual DBNet dataset readiness.
+
+### Repository data-safety defaults
+
+The root `.gitignore` excludes local `data/`, `datasets/`, LAS/LAZ point-cloud files, environment secrets, and model checkpoints. These patterns reduce accidental publication risk but do not retroactively remove tracked files or establish permission to share any third-party material. Review staged changes before every public push.
