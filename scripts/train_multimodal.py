@@ -34,6 +34,10 @@ def parse_args():
     parser.add_argument("--speed-channel", type=int, required=True)
     parser.add_argument("--steering-unit", choices=("deg", "rad"), required=True)
     parser.add_argument("--speed-unit", choices=("km/h", "m/s", "mph"), required=True)
+    parser.add_argument("--steering-limit-deg", type=float, default=40.0,
+                        help="Reviewed steering plausibility bound; must match preflight")
+    parser.add_argument("--speed-limit-kmh", type=float, default=120.0,
+                        help="Reviewed speed plausibility bound; must match preflight")
     parser.add_argument("--sequence-length", type=int, default=4)
     parser.add_argument("--stride", type=int, default=1,
                         help="Temporal window stride; must match preflight")
@@ -107,13 +111,18 @@ def main():
     seed_everything(config.seed)
     raw = build_labeled_observations(args.data_root)
     observations = map_raw_observations(raw, schema)
-    target_audit = audit_target_ranges(observations)
+    target_audit = audit_target_ranges(
+        observations, steering_limit_deg=args.steering_limit_deg,
+        speed_limit_kmh=args.speed_limit_kmh
+    )
     require_plausible_targets(target_audit)
     verify_preflight_report(
         args.preflight_report, observations=observations, schema=schema,
         sequence_length=config.sequence_length, stride=config.stride,
         data_root=args.data_root, provenance_source=provenance["source_url"],
-        require_sensor_hashes=args.require_sensor_hashes
+        require_sensor_hashes=args.require_sensor_hashes,
+        steering_limit_deg=args.steering_limit_deg,
+        speed_limit_kmh=args.speed_limit_kmh
     )
     datasets = {
         split: make_sequence_dataset(
@@ -169,6 +178,11 @@ def main():
         "label_provenance": provenance,
         "preflight_report": str(args.preflight_report),
         "target_range_audit": target_audit,
+        "plausibility_limits": {
+            "steering_abs_deg": args.steering_limit_deg,
+            "speed_min_kmh": 0,
+            "speed_max_kmh": args.speed_limit_kmh,
+        },
         "target_schema": {
             "steering_channel": schema.steering_channel,
             "speed_channel": schema.speed_channel,
