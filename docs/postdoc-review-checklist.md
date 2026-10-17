@@ -6,7 +6,7 @@ This checklist separates software readiness from scientific validation.
 
 The public repository can be shared as a **tested research-software demonstration** when its latest Python and CPU integration workflows pass, README links resolve, and the source/data boundary is clear. It must not be presented as a completed DBNet benchmark until real-data experiments and independent scientific review are finished.
 
-Before sending the link to a prospective collaborator, check the current Actions status, confirm the latest README and license, and perform a manual review of Git history **contents** for secrets and restricted material. Automated filename checks cannot certify this.
+Before sending the link to a prospective collaborator, check the current Actions status, confirm the latest README and license, and perform a manual review of Git history **contents** for secrets and restricted material. Automated filename and secret-pattern checks cannot certify this.
 
 ## Public presentation
 - [x] Clear camera–LiDAR, CNN–LSTM–attention project scope and author links in README.
@@ -15,9 +15,9 @@ Before sending the link to a prospective collaborator, check the current Actions
 - [x] README local links validated automatically by CI.
 - [x] Raw local data and environment secrets excluded from future commits via gitignore.
 - [x] CI tracked-file path policy rejects common raw sensor, model-weight, and credential filenames.
-- [x] CI also scans filenames in reachable Git history (not file contents).
+- [x] CI scans filenames in reachable Git history and applies conservative secret-pattern rules to reachable blobs (skipping blobs over 2 MB; not a comprehensive secret audit).
 - [x] Inspect current main-branch file tree for large binaries and common raw-data formats (no such files found in the inspected tree; placeholder .gitkeep files remain).
-- [ ] Review historical commits for previously tracked sensitive or restricted file **contents**; automated history filename scanning is a preliminary check only.
+- [ ] Manually review historical commits for previously tracked sensitive or restricted file **contents**, dataset rights, and secrets not covered by heuristic pattern matching.
 
 ## Reproducible software
 - [x] Automated Python tests and CPU model integration workflow, with live badges in README.
