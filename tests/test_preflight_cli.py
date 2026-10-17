@@ -93,6 +93,17 @@ class PreflightCLITests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Camera or LiDAR"):
             verify_preflight_report(self.output, **kwargs)
 
+    def test_cli_refuses_to_overwrite_existing_report_without_opt_in(self):
+        first = self.run_cli()
+        self.assertEqual(first.returncode, 0, first.stderr)
+        original = self.output.read_bytes()
+        second = self.run_cli()
+        self.assertNotEqual(second.returncode, 0)
+        self.assertIn("already exists", second.stderr)
+        self.assertEqual(self.output.read_bytes(), original)
+        third = self.run_cli("--overwrite-report")
+        self.assertEqual(third.returncode, 0, third.stderr)
+
     def test_cli_rejects_report_inside_raw_dataset(self):
         unsafe_output = self.data / "train" / "preflight-report.json"
         result = self.run_cli("--output", str(unsafe_output))
