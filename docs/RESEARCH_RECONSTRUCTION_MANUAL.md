@@ -63,7 +63,7 @@ Do not claim reproducibility until dependencies, datasets, seeds, checkpoints, a
 
 **[THESIS]** PDF pp. 105–106 describe an 80% training / 10% validation / 10% test division.
 
-**[OPEN]** Dataset download/permission, precise schema, sample identifiers, synchronization, temporal split leakage prevention, sequence sampling, and normalization.
+**[OPEN]** Dataset download/permission, precise schema, sample identifiers, synchronization, historical temporal split policy, sequence sampling, and normalization.\n\n**[RECONSTRUCTION]** `src/autonomous_driving/sequence_manifest.py` validates a generic paired-frame manifest and generates contiguous windows within drive-disjoint splits. This is a defensive new choice, not a verified historical DBNet schema or split method. See `docs/sequence-training.md`.
 
 **[SOURCE ATTRIBUTION]** DBNet is credited to Chen et al. (2018), *LiDAR-Video Driving Dataset: Learning Driving Policies Effectively*, IEEE/CVF CVPR 2018. Official repository: https://github.com/driving-behavior/DBNet. Preserve this citation in every DBNet-based notebook, result, paper, and figure. The repository states its **code** is Apache 2.0; original dataset rights must be checked separately before redistribution. Full original-author BibTeX: `CITATION_DBNet.bib`; details: `docs/dbnet-attribution.md`.\n\nSee `docs/dataset-manifest.md` and `src/autonomous_driving/data_manifest.py`. Do not invent or distribute unlicensed dataset records.
 
@@ -125,7 +125,7 @@ Config: `src/autonomous_driving/backbone_config.py`.
 
 **[THESIS]** PDF p. 107 describes RMSE as the training loss; PDF pp. 105–106 mention Adam.
 
-**[OPEN]** Exact joint loss aggregation, learning rate, batch size, epoch count, early stopping, seed and checkpoint selection.
+**[OPEN]** Exact historical joint loss aggregation, learning rate, batch size, epoch count, early stopping, seed and checkpoint selection.\n\n**[RECONSTRUCTION]** `src/autonomous_driving/training.py` implements a configurable weighted mean of separate steering and speed RMSE and an epoch helper for **precomputed fused features only**. `notebooks/06_Sequence_Training.ipynb` demonstrates it on synthetic data; this is **not** end-to-end backbone fine-tuning or a DBNet result.
 
 ## Chapter 13 — Evaluation
 
@@ -156,7 +156,7 @@ Config: `src/autonomous_driving/backbone_config.py`.
 - [x] Add runnable PyTorch/timm backbone construction and synthetic shape-check notebook (execution not yet verified)
 - [ ] Pin verified pretrained backbones and dependency versions
 - [x] Add Flatten → Concatenate → LSTM → Attention → Dense code and synthetic notebook (end-to-end execution not yet verified)
-- [ ] Verify train/validation/test temporal separation
+- [x] Add generic drive-disjoint split checks and contiguous sequence-window code (synthetic only)\n- [x] Add a synthetic temporal-head training and validation notebook (not full end-to-end training)\n- [ ] Verify train/validation/test temporal separation on real DBNet
 - [ ] Execute controlled training, evaluation, and ablations
 - [ ] Archive seeds, manifests, hyperparameters, logs, plots, checkpoints, and results
 - [ ] Export this living manual as a final navigable PDF and DOCX with all code listings, figures, appendices, and an environment lockfile
@@ -173,4 +173,4 @@ Config: `src/autonomous_driving/backbone_config.py`.
 - `docs/lidar-color-encoding.md`
 - `docs/backbone-implementation-plan.md`
 - `docs/threshold-accuracy.md`
-- `docs/runnable-backbones.md`\n- `docs/dbnet-attribution.md`\n- `docs/temporal-lstm-attention.md`
+- `docs/runnable-backbones.md`\n- `docs/dbnet-attribution.md`\n- `docs/temporal-lstm-attention.md`\n- `docs/sequence-training.md`
