@@ -27,6 +27,8 @@ def parse_args():
     parser.add_argument("--label-provenance", type=Path, required=True,
                         help="Reviewed source record confirming target channels and units")
     parser.add_argument("--output", type=Path, default=Path("results/multimodal"))
+    parser.add_argument("--overwrite-output", action="store_true",
+                        help="Explicitly allow replacing artifacts in an existing experiment folder")
     parser.add_argument("--assignment", choices=("A", "B"), required=True)
     parser.add_argument("--steering-channel", type=int, required=True)
     parser.add_argument("--speed-channel", type=int, required=True)
@@ -74,9 +76,14 @@ def main():
     from autonomous_driving.label_provenance import load_verified_label_provenance
     from autonomous_driving.label_quality import audit_target_ranges, require_plausible_targets
     from autonomous_driving.preflight_gate import verify_preflight_report
-    from autonomous_driving.output_safety import require_output_outside_dataset
+    from autonomous_driving.output_safety import (
+        require_output_outside_dataset, require_fresh_experiment_directory
+    )
 
     require_output_outside_dataset(args.data_root, args.output)
+    variant = "flatten" if args.pool_size is None else f"pool-{args.pool_size}x{args.pool_size}"
+    output = args.output / args.assignment / variant
+    require_fresh_experiment_directory(output, allow_existing=args.overwrite_output)
     config = ExperimentConfig(
         assignment=args.assignment, sequence_length=args.sequence_length,
         stride=args.stride,
@@ -152,8 +159,6 @@ def main():
         lr=config.learning_rate
     )
 
-    variant = "flatten" if config.pool_size is None else f"pool-{config.pool_size}x{config.pool_size}"
-    output = args.output / config.assignment / variant
     output.mkdir(parents=True, exist_ok=True)
     save_experiment_config(config, output / "config.json")
     (output / "run_metadata.json").write_text(json.dumps({
