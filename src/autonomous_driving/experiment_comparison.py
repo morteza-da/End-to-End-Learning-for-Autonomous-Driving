@@ -10,11 +10,22 @@ def load_comparison_rows(paths):
     """Load genuine validation reports and reject incompatible experiments."""
     rows = []
     baseline = None
+    expected_window_sha256 = None
     for item in paths:
         path = Path(item)
         report = json.loads(path.read_text(encoding="utf-8"))
         if report.get("split") != "val":
             raise ValueError(f"{path}: expected validation split")
+        import re
+        notes = report.get("notes") or ""
+        match = re.search(r"validation_window_sha256=([0-9a-f]{64})", notes)
+        if not match:
+            raise ValueError(f"{path}: missing validation window fingerprint")
+        window_sha256 = match.group(1)
+        if expected_window_sha256 is None:
+            expected_window_sha256 = window_sha256
+        elif window_sha256 != expected_window_sha256:
+            raise ValueError(f"{path}: validation window membership differs")
         config = report.get("config")
         metrics = report.get("metrics")
         if not isinstance(config, dict) or not isinstance(metrics, dict):
