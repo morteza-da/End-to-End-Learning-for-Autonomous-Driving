@@ -84,3 +84,7 @@ The runner saves `config.json`, `run_metadata.json`, `latest_metrics.json`, and 
 Before allocating the LSTM, the runner infers the concatenated flattened CNN feature width and calls `check_temporal_memory`. The estimator calculates exact LSTM/attention/head parameter counts for the configured widths and a conservative FP32 parameter+gradient+Adam-moments estimate. The default `--max-temporal-adam-mib 1024` rejects temporal parameter/optimizer footprints larger than 1024 MiB. Adjust this limit only after checking available memory.
 
 **Important:** This is **not** a whole-model peak GPU memory estimator. It excludes CNN weights, forward/backward activations, batch/sequence size effects, temporary tensors, and CUDA allocator overhead. Passing the preflight does not guarantee that training fits on a GPU. Direct Flatten → Concatenate → LSTM is retained; no unreported feature bottleneck is introduced.
+
+## Synthetic end-to-end smoke test
+
+Run `python scripts/smoke_test_multimodal.py --sequence-length 2 --batch-size 2` to check the two-branch spatial interface, flattened fusion, temporal attention, output heads and aggregate evaluation on **synthetic** tensors. The smoke test uses tiny randomly initialized CNNs, not Xception/ResNeXt50 or DBNet. It is a software interface check, **not** an accuracy benchmark. GitHub Actions `PyTorch CPU integration` installs CPU PyTorch to execute these tests rather than silently skipping optional model tests.
