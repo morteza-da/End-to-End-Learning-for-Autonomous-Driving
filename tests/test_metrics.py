@@ -1,5 +1,4 @@
 """Regression metric tests with synthetic numeric fixtures."""
-import math
 import unittest
 
 from autonomous_driving.metrics import regression_metrics
@@ -16,7 +15,7 @@ class RegressionMetricsTests(unittest.TestCase):
         self.assertEqual(result["r2"], 0.0)
 
     def test_constant_target_r2_undefined(self):
-        self.assertTrue(math.isnan(regression_metrics([1, 1], [1, 1])["r2"]))
+        self.assertIsNone(regression_metrics([1, 1], [1, 1])["r2"])
 
     def test_bad_inputs(self):
         with self.assertRaises(ValueError):
