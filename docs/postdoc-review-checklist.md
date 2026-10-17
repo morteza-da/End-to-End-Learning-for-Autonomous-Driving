@@ -6,6 +6,7 @@ This checklist separates software readiness from scientific validation.
 - [x] Clear camera–LiDAR, CNN–LSTM–attention project scope and author links in README.
 - [x] MIT code license and separate dataset attribution.
 - [x] Installation, unit tests, preflight, and training commands documented.
+- [x] README local links validated automatically by CI.
 - [x] Raw local data and environment secrets excluded from future commits via gitignore.
 - [x] CI tracked-file path policy rejects common raw sensor, model-weight, and credential filenames.
 - [x] Inspect current main-branch file tree for large binaries and common raw-data formats (no such files found in the inspected tree; placeholder .gitkeep files remain).
