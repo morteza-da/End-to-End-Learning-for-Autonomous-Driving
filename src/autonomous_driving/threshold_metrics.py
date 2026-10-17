@@ -1,9 +1,4 @@
-"""Dissertation-defined threshold accuracy for continuous driving outputs.
-
-Thresholds from dissertation PDF p. 110:
-steering angle: absolute error <= 6 degrees
-vehicle speed: absolute error <= 5 km/h
-"""
+"""Threshold-based regression accuracy for steering and speed.\n\nDefault tolerances: steering <= 6 degrees; speed <= 5 km/h.\n"""
 from __future__ import annotations
 
 import math
@@ -35,10 +30,9 @@ def driving_threshold_accuracies(
     speed_true_kmh: Sequence[float],
     speed_pred_kmh: Sequence[float],
 ) -> dict[str, float]:
-    """Compute separate dissertation threshold accuracies for both targets.
+    """Compute separate driving-output threshold accuracies for both targets.
 
-    The dissertation reports per-target percentages; no joint sample-level
-    accuracy is implied by this function.
+    Returns separate per-target percentages, not joint sample accuracy.
     """
     lengths = {
         len(steering_true_deg), len(steering_pred_deg),
