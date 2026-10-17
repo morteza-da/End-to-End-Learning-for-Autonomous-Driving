@@ -1,4 +1,4 @@
-"""Split-safe temporal sequence manifest for synchronized driving observations.
+"""Split-safe temporal sequence manifest for frame-index-paired driving observations.
 
 Generic implementation schema, NOT a claim about DBNet's original file layout.
 """
