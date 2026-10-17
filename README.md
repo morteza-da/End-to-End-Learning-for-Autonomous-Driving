@@ -1,5 +1,7 @@
 # End-to-End Learning for Autonomous Driving
 
+[![Python unit tests](https://github.com/morteza-da/End-to-End-Learning-for-Autonomous-Driving/actions/workflows/python-tests.yml/badge.svg)](https://github.com/morteza-da/End-to-End-Learning-for-Autonomous-Driving/actions/workflows/python-tests.yml) [![PyTorch CPU integration](https://github.com/morteza-da/End-to-End-Learning-for-Autonomous-Driving/actions/workflows/torch-integration.yml/badge.svg)](https://github.com/morteza-da/End-to-End-Learning-for-Autonomous-Driving/actions/workflows/torch-integration.yml)
+
 **Camera–LiDAR Fusion · Deep Learning · Intelligent Vehicle Control**
 
 **Morteza Aghamohammadi, PhD** · Toronto, Canada  
@@ -67,6 +69,7 @@ python scripts/audit_dbnet_preflight.py \
   --steering-channel 0 --speed-channel 1 \
   --steering-unit deg --speed-unit km/h \
   --hash-sensor-files \
+  --sequence-length 4 --stride 1 \
   --output results/dbnet-preflight.json
 
 python scripts/train_multimodal.py \
@@ -74,6 +77,7 @@ python scripts/train_multimodal.py \
   --label-provenance path/to/reviewed-evidence.json \
   --preflight-report results/dbnet-preflight.json \
   --require-sensor-hashes \
+  --sequence-length 4 --stride 1 \
   --steering-channel 0 --speed-channel 1 \
   --steering-unit deg --speed-unit km/h \
   --assignment A --pool-size 2
