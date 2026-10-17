@@ -4,9 +4,9 @@
 
 The repository provides an installable Python package, dataset inspection tools, a camera–LiDAR CNN–LSTM–attention implementation, configurable backbone assignments, optional spatial pooling, experiment reporting, and reproducibility documentation.
 
-Automated GitHub Actions cover Python unit tests, synthetic preflight CLI and training-gate checks, CPU model integration, and a tracked-file filename/path policy. Workflow badges and run histories in the README are the authoritative current CI status; this document does not claim that future runs will always pass.
+Automated GitHub Actions cover Python unit tests, synthetic preflight CLI and training-gate checks, CPU model integration, tracked-file and reachable-history filename/path policies, and local README link validation. Workflow badges and run histories in the README are the authoritative current CI status; this document does not claim that future runs will always pass.
 
-The README's internal links were checked against the current main-branch tree: all 24 relative links resolved at inspection time.
+The README's internal links were checked against the main-branch tree: all 24 relative links resolved during the initial inspection. CI now checks local README links on subsequent changes.
 
 ## What a reviewer can verify today
 
@@ -23,7 +23,7 @@ The README's internal links were checked against the current main-branch tree: a
 - Frame-index-paired camera and LiDAR files are not proof of physical timestamp synchronization.
 - Label channel/unit evidence and dataset rights require independent review.
 - The baseline spatial Flatten model can have a large memory footprint; pooled variants must be reported separately.
-- Current-tree filename checks and CI path policy do not scan Git history, secrets embedded in source, or third-party licensing compliance.
+- Current-tree and reachable-Git-history **filename** checks do not inspect secrets embedded in file contents, unreachable Git objects, or third-party licensing compliance.
 
 ## Remaining work before a scientific results release
 
