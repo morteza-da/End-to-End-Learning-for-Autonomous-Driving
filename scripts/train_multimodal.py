@@ -20,6 +20,8 @@ from pathlib import Path
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data-root", type=Path, required=True)
+    parser.add_argument("--require-sensor-hashes", action="store_true",
+                        help="Rehash sensor bytes and require a matching hashed preflight")
     parser.add_argument("--preflight-report", type=Path, required=True,
                         help="Passing audit_dbnet_preflight.py JSON for the same dataset")
     parser.add_argument("--label-provenance", type=Path, required=True,
@@ -94,7 +96,8 @@ def main():
     verify_preflight_report(
         args.preflight_report, observations=observations, schema=schema,
         sequence_length=config.sequence_length, stride=config.stride,
-        data_root=args.data_root, provenance_source=provenance["source_url"]
+        data_root=args.data_root, provenance_source=provenance["source_url"],
+        require_sensor_hashes=args.require_sensor_hashes
     )
     datasets = {
         split: make_sequence_dataset(
