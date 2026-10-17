@@ -206,3 +206,7 @@ To detect changed camera JPEG or LiDAR LAS bytes between audit and training, app
 ### Synthetic preflight integration coverage
 
 `tests/test_preflight_pipeline.py` creates temporary synthetic camera and LiDAR files and raw steering/speed labels for separate train and validation drives. It checks target conversion, range auditing, temporal windows, canonical target hashes, optional file-byte hashes, and acceptance or rejection by the training preflight gate. The negative cases modify a sensor file or target after the report is built. These tests run in the PyTorch CPU integration workflow but do **not** perform model training, validate JPEG/LAS decoders, or establish DBNet benchmark performance.
+
+### Command-line preflight test
+
+`tests/test_preflight_cli.py` invokes the actual `scripts/audit_dbnet_preflight.py` process against a temporary, synthetic DBNet-shaped folder with separate train, validation, and test drives. It checks successful JSON reporting and nonzero exit status for a missing LiDAR file or implausible speed. The test uses placeholder sensor bytes and synthetic evidence; it is not a JPEG/LAS decoding test and does not establish actual DBNet dataset readiness.
