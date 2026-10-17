@@ -25,5 +25,6 @@ jobs:
           python -m unittest discover -s tests -p 'test_end_to_end.py' -v
           python -m unittest discover -s tests -p 'test_model_evaluation.py' -v
           python -m unittest discover -s tests -p 'test_multimodal_smoke.py' -v
+          python -m unittest discover -s tests -p 'test_memory_budget.py' -v
       - name: Run synthetic multimodal smoke test
         run: python scripts/smoke_test_multimodal.py --sequence-length 2 --batch-size 2
