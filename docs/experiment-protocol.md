@@ -188,3 +188,7 @@ python scripts/audit_dbnet_preflight.py \
 ```
 
 The command does not train, load PyTorch, upload raw data, or copy sensor files. It reports sensor pairing counts, missing files, per-split label minima/maxima and outliers, valid temporal-window counts, and membership SHA-256 fingerprints. It exits nonzero when readiness checks fail; the JSON is still saved for diagnosis. The steering ±40° and speed 0–120 km/h limits are provisional research plausibility bounds, not guaranteed DBNet data bounds. A passing audit does not prove physical sensor synchronization, label provenance authenticity, or file integrity.
+
+### Mandatory matching preflight for training
+
+The training CLI now requires `--preflight-report results/dbnet-preflight.json` as well as `--label-provenance`. It rejects failed audits, mismatched label channel/unit mappings, temporal sequence length or stride, plausibility limits, window counts, and exact train/validation window membership hashes **before constructing neural networks**. Generate the report using `scripts/audit_dbnet_preflight.py` on the same dataset root and configuration. This gate checks manifest identity, not file-content hashes, timestamps, source authenticity, or the underlying physical meaning of labels.
