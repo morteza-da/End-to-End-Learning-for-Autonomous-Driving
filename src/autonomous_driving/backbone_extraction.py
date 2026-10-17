@@ -46,7 +46,7 @@ def build_backbone(architecture: str, *, pretrained: bool = True,
 
 
 def freeze_all_except_last_n_children(model, n: int):
-    """Example implementation freeze policy, not a previous research boundary.
+    """Configurable freezing policy for backbone fine-tuning.
 
     Freeze every parameter then unfreeze parameters in the last n direct child
     modules. Caller must inspect names and confirm nonempty trainable weights.
