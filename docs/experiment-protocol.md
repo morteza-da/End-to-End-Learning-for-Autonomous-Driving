@@ -107,3 +107,14 @@ python scripts/probe_backbones.py --assignment B --output results/backbone-B.jso
 ```
 
 The command uses 299×299 synthetic input and randomly initialized backbone weights by default, avoiding a pretrained-weight download. It reports each branch's measured `[1,C,H,W]` output, the concatenated flattened width, and the corresponding temporal-model parameter and Adam-state estimates. This is not a measurement of total GPU memory and not a dataset accuracy evaluation. The CI probe tests use small mocked backbones; **the full timm Xception and ResNeXt-50 forward passes have not been verified by those tests**. Run the commands in a suitable environment and inspect the generated JSON before selecting hardware.
+
+### Optional temporal-memory cap
+
+After measuring the installed CNN output shapes, enforce an explicit cap on the *temporal parameter/Adam-state estimate*:
+
+```bash
+python scripts/probe_backbones.py --assignment A --max-temporal-adam-mib 1024
+python scripts/probe_backbones.py --assignment B --max-temporal-adam-mib 1024
+```
+
+A failed cap is a deliberate preflight rejection; a passed cap does not certify total RAM/VRAM sufficiency. The full-backbone shape measurements for A and B are available as downloadable GitHub Actions artifacts from the dedicated workflow. Record the exact PyTorch/timm versions alongside measurements when comparing runs.
