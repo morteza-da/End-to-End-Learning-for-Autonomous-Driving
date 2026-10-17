@@ -143,3 +143,16 @@ These are feature-width calculations, **not training results**. Spatial pooling 
 The training command accepts `--pool-size 1`, `--pool-size 2`, or `--pool-size 5`. Omit the flag for the original direct Flatten/Concat baseline. The output layout isolates checkpoints and metrics in `results/multimodal/A/flatten/`, `results/multimodal/A/pool-2x2/`, etc. `run_metadata.json` and the best checkpoint record the selected variant. All variants still require independently verified steering/speed label channels and units. The CLI does **not** imply that training has been executed or that any variant is more accurate.
 
 The canonical `ExperimentConfig` now records `pool_size` (`null` for the full-spatial baseline, or `1`, `2`, `5` for explicit pooled variants). Configuration round-trip and invalid-value tests run in CPU CI. Compare only runs with matching data split, target schema, random seed, pretrained-weight policy, optimization schedule and backbone trainability. Report steering/speed RMSE, R² where defined, and the documented threshold accuracies; do not infer an accuracy benefit from parameter savings alone.
+
+### Validation comparison CSV (measured results only)
+
+After running real, separately configured experiments, generate a comparison table:
+
+```bash
+python scripts/compare_fusion_variants.py \
+  results/multimodal/A/flatten/validation_metrics.json \
+  results/multimodal/A/pool-2x2/validation_metrics.json \
+  --output results/fusion-comparison.csv
+```
+
+The tool reads existing validation JSON reports and extracts steering/speed RMSE, R² (blank if undefined), threshold accuracies (±6° steering; ±5 km/h speed), and sample counts. It rejects mismatched configurations, validation counts, non-validation reports, and duplicate fusion variants. It never fabricates results or compares validation with test scores. Equal sample counts alone do **not** prove identical underlying frame/drive membership; dataset-manifest identity must be established independently before a publishable comparison.
