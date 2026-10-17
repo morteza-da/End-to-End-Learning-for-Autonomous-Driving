@@ -1,4 +1,4 @@
-"""Synthetic-only tests for dissertation-defined threshold accuracy."""
+"""Synthetic-only tests for steering and speed threshold accuracy."""
 import math
 import unittest
 
