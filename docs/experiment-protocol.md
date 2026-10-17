@@ -96,3 +96,14 @@ When validation targets have zero variance, R² is mathematically undefined. The
 ## Temporal parameter-memory validation
 
 The CPU integration workflow instantiates representative PyTorch LSTM + attention + regression-head models and checks that their actual parameter counts equal the analytic `estimate_temporal_memory` calculation. The reported Adam-state memory assumes four copies of each parameter's element storage (weights, gradients and two moments); it **excludes** convolutional backbones, intermediate activations, input batches, temporary buffers, optimizer metadata and allocator overhead. Passing the preflight cap does **not** guarantee a training run will fit in GPU memory. Backbone output widths must be measured for the installed `timm` models and chosen input size before making any hardware sizing claim.
+
+## Backbone feature-map inspection
+
+With `torch` and `timm` installed, inspect the actual spatial outputs before training:
+
+```bash
+python scripts/probe_backbones.py --assignment A --output results/backbone-A.json
+python scripts/probe_backbones.py --assignment B --output results/backbone-B.json
+```
+
+The command uses 299×299 synthetic input and randomly initialized backbone weights by default, avoiding a pretrained-weight download. It reports each branch's measured `[1,C,H,W]` output, the concatenated flattened width, and the corresponding temporal-model parameter and Adam-state estimates. This is not a measurement of total GPU memory and not a dataset accuracy evaluation. The CI probe tests use small mocked backbones; **the full timm Xception and ResNeXt-50 forward passes have not been verified by those tests**. Run the commands in a suitable environment and inspect the generated JSON before selecting hardware.
