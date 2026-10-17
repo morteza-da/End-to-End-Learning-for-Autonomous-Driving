@@ -62,13 +62,15 @@ def write_experiment_report(path, *, config, metrics, dataset_id,
         elif isinstance(obj, (list, tuple)):
             for value in obj:
                 validate_metrics(value)
+        elif obj is None:
+            pass  # Explicitly undefined R² is serialized as JSON null.
         elif isinstance(obj, bool):
             raise ValueError("Boolean is not a metric")
         elif isinstance(obj, (int, float)):
             if not math.isfinite(obj):
                 raise ValueError("Metrics must be finite")
         else:
-            raise ValueError("Metrics must contain only finite numeric values")
+            raise ValueError("Metrics must contain finite numbers or explicit null for undefined metrics")
 
     validate_metrics(metrics)
     report = {
