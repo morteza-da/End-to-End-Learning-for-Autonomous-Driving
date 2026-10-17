@@ -93,6 +93,13 @@ class PreflightCLITests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Camera or LiDAR"):
             verify_preflight_report(self.output, **kwargs)
 
+    def test_cli_rejects_report_inside_raw_dataset(self):
+        unsafe_output = self.data / "train" / "preflight-report.json"
+        result = self.run_cli("--output", str(unsafe_output))
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("outside the raw dataset", result.stderr)
+        self.assertFalse(unsafe_output.exists())
+
     def test_cli_rejects_missing_lidar(self):
         (self.data / "train/1/points_16384/2.las").unlink()
         result = self.run_cli()
