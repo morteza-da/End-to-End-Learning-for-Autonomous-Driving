@@ -74,7 +74,9 @@ def main():
     from autonomous_driving.label_provenance import load_verified_label_provenance
     from autonomous_driving.label_quality import audit_target_ranges, require_plausible_targets
     from autonomous_driving.preflight_gate import verify_preflight_report
+    from autonomous_driving.output_safety import require_output_outside_dataset
 
+    require_output_outside_dataset(args.data_root, args.output)
     config = ExperimentConfig(
         assignment=args.assignment, sequence_length=args.sequence_length,
         stride=args.stride,
