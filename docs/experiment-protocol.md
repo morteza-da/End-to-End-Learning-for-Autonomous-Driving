@@ -69,13 +69,15 @@ Unit tests exercise config serialization, input validation, synthetic metric cal
 
 ## Training runner and checkpoint selection
 
-After confirming the dataset's label channels and physical units, use `scripts/train_multimodal.py`. Both label-channel flags and unit flags are mandatory; the script cannot infer them. The example values below are **placeholders** and must be replaced with verified dataset metadata:
+After confirming the dataset's label channels and physical units, use `scripts/train_multimodal.py`. Both label-channel flags and unit flags are mandatory; the script cannot infer them. The upstream DBNet provider establishes steering channel 0 in degrees; speed channel 1 is corroborated in km/h by secondary literature. Consult [the evidence record](dbnet-label-evidence.md) and verify the actual dataset before training. Both a reviewed evidence JSON and a passing matching preflight report are mandatory:
 
 ```bash
-python scripts/train_multimodal.py --data-root data/dbnet-2018 --assignment A --steering-channel 0 --speed-channel 1 --steering-unit deg --speed-unit km/h --output results/multimodal
-python scripts/train_multimodal.py --data-root data/dbnet-2018 --assignment B --steering-channel 0 --speed-channel 1 --steering-unit deg --speed-unit km/h --output results/multimodal
-python scripts/compare_backbones.py results/multimodal/A/latest_metrics.json results/multimodal/B/latest_metrics.json
+python scripts/audit_dbnet_preflight.py --data-root data/dbnet-2018 --label-provenance path/to/reviewed-evidence.json --steering-channel 0 --speed-channel 1 --steering-unit deg --speed-unit km/h
+python scripts/train_multimodal.py --data-root data/dbnet-2018 --label-provenance path/to/reviewed-evidence.json --preflight-report results/dbnet-preflight.json --assignment A --steering-channel 0 --speed-channel 1 --steering-unit deg --speed-unit km/h --pool-size 2
+python scripts/train_multimodal.py --data-root data/dbnet-2018 --label-provenance path/to/reviewed-evidence.json --preflight-report results/dbnet-preflight.json --assignment B --steering-channel 0 --speed-channel 1 --steering-unit deg --speed-unit km/h --pool-size 2
 ```
+
+The optional pooling is a separate experimental variant; omit `--pool-size` for direct Flatten. A/B output folders are organized by assignment and fusion variant; for example `results/multimodal/A/pool-2x2/validation_metrics.json`. For matched validation comparisons use `scripts/compare_fusion_variants.py` with compatible reports.
 
 The runner saves `config.json`, `run_metadata.json`, `latest_metrics.json`, and the best validation checkpoint `best.pt` in separate A/B folders. It reports batch-averaged joint training/validation objectives, then reloads the best checkpoint to produce `validation_metrics.json` (aggregate RMSE, R², and threshold accuracy) and `validation_predictions.json` (per-window targets and predictions). It does **not** evaluate the unlabeled DBNet test split. These commands have not been validated on the complete dataset. Full-resolution flattened CNN maps can require substantial GPU memory; inspect `feature_width` and memory requirements before training.
 
