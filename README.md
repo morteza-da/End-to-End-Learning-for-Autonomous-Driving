@@ -99,6 +99,8 @@ For a transparent overview of completed software checks and remaining scientific
 
 Research interests include autonomous driving, multimodal perception, temporal learning, intelligent vehicles, uncertainty estimation, and vehicle dynamics. Open to academic collaborations and postdoctoral research opportunities.
 
+**Potential collaboration directions:** reproducible camera–LiDAR sensor-fusion benchmarks; controlled comparisons of direct spatial Flatten and pooled fusion; uncertainty-aware steering/speed prediction; and evaluation of semantic scene understanding against continuous driving-control outputs. These are prospective research directions, not claims of completed experiments.
+
 ## License and citation
 
 The project source code is distributed under the [MIT License](LICENSE). For academic use, cite this software using [CITATION.cff](CITATION.cff). When using the DBNet dataset, also cite the original dataset authors via [CITATION_DBNet.bib](CITATION_DBNet.bib). The software license does not grant rights to redistribute third-party datasets.
