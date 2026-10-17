@@ -81,6 +81,8 @@ The optional pooling is a separate experimental variant; omit `--pool-size` for 
 
 Both the preflight runner and training runner refuse output paths equal to or nested inside the dataset root, to avoid writing reports or experiment artifacts into raw DBNet folders. Keep `--output` in a separate working directory. Training also rejects a nonempty assignment/variant output directory by default, preventing accidental replacement of existing checkpoints and reports. Use a fresh output directory for independent runs; `--overwrite-output` is an explicit override and can replace prior artifacts.
 
+The training metadata includes the local Git commit and whether tracked files had modifications at capture time. An unavailable Git repository is recorded as unknown rather than inventing a revision. This check does not include untracked files or prove exact installed dependency versions.
+
 The runner saves `config.json`, `run_metadata.json`, `latest_metrics.json`, and the best validation checkpoint `best.pt` in separate A/B folders. It reports batch-averaged joint training/validation objectives, then reloads the best checkpoint to produce `validation_metrics.json` (aggregate RMSE, R², and threshold accuracy) and `validation_predictions.json` (per-window targets and predictions). It does **not** evaluate the unlabeled DBNet test split. These commands have not been validated on the complete dataset. Full-resolution flattened CNN maps can require substantial GPU memory; inspect `feature_width` and memory requirements before training.
 
 ## Memory preflight for flattened CNN features
