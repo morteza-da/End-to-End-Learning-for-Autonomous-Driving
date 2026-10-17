@@ -33,6 +33,8 @@ def parse_args():
     parser.add_argument("--steering-unit", choices=("deg", "rad"), required=True)
     parser.add_argument("--speed-unit", choices=("km/h", "m/s", "mph"), required=True)
     parser.add_argument("--sequence-length", type=int, default=4)
+    parser.add_argument("--stride", type=int, default=1,
+                        help="Temporal window stride; must match preflight")
     parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument("--epochs", type=int, default=10)
     parser.add_argument("--learning-rate", type=float, default=1e-4)
@@ -75,6 +77,7 @@ def main():
 
     config = ExperimentConfig(
         assignment=args.assignment, sequence_length=args.sequence_length,
+        stride=args.stride,
         batch_size=args.batch_size, epochs=args.epochs,
         learning_rate=args.learning_rate, seed=args.seed,
         pretrained=not args.no_pretrained,
