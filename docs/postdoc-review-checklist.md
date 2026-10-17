@@ -46,6 +46,14 @@ At commit `6a70c1b73d2c3b622eb03dcecb1e1cdcd7606574`, both GitHub Actions checks
 
 **Interpretation:** A checked item indicates repository implementation or test coverage, not that a full DBNet benchmark has been completed. Automated tests may pass without validating the scientific performance of a trained model.
 
+## Historical review sampling — 2026-10-17
+
+- Enumerated 342 commits through the GitHub commits API (four pages). This is a commit-list review, **not** a full manual inspection of all historical blob contents.
+- Examined changes in two early `data/src` folder-deletion commits: both removed `.gitkeep` placeholders, not raw sensor files.
+- Inspected recursive Git trees at the initial commit and two intermediate commits; those three snapshots had no filenames with the checked raw-data/checkpoint extensions and no blobs larger than 150 KB.
+- Inspected the change history of an older research document: it was removed as part of a documentation restructuring, and is not present in the current tree. Its historical text should not be treated as independently verified dataset evidence.
+- Automated history secret-pattern checks passed in the verified Python CI run. These findings do **not** complete the pending manual review of every historical content blob or dataset redistribution rights.
+
 ## Public tree inspection
 
 The main-branch tree was re-inspected via the GitHub Git Trees API (recursive, non-truncated) on 2026-10-17. The latest scan found 137 tracked blobs, none over 150 KB, and no filenames matching the common raw sensor, checkpoint, archive, or credential extensions checked below. No tracked blobs above 150 KB or files ending in .las, .laz, .jpg, .jpeg, .png, .csv, .pt, .pth, .ckpt, .h5, .env, or .zip were identified by that filename/size scan. This is **not** a comprehensive secrets scan, file-content audit, or review of previous commits. In particular, tracked files with other extensions and Git history still need separate review.
