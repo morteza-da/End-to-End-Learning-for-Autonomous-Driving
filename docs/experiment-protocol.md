@@ -137,3 +137,7 @@ These are feature-width calculations, **not training results**. Spatial pooling 
 ### Explicit pooled end-to-end variant
 
 `build_end_to_end_model(..., pool_size=None)` remains the original full-spatial Flatten/Concat model. For a separate spatial-pooling experiment, pass `pool_size=1`, `2`, or `5` to both `infer_feature_width(camera, lidar, pool_size=N)` and `build_end_to_end_model(camera, lidar, input_size=width, pool_size=N)`. The pooling operation is differentiable and its CNN gradients are checked by the PyTorch integration test. It is not yet exposed as a flag in the training CLI; no dataset-based comparison or accuracy claim has been made.
+
+### Training CLI: isolated fusion variants
+
+The training command accepts `--pool-size 1`, `--pool-size 2`, or `--pool-size 5`. Omit the flag for the original direct Flatten/Concat baseline. The output layout isolates checkpoints and metrics in `results/multimodal/A/flatten/`, `results/multimodal/A/pool-2x2/`, etc. `run_metadata.json` and the best checkpoint record the selected variant. All variants still require independently verified steering/speed label channels and units. The CLI does **not** imply that training has been executed or that any variant is more accurate.
