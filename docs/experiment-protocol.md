@@ -141,3 +141,5 @@ These are feature-width calculations, **not training results**. Spatial pooling 
 ### Training CLI: isolated fusion variants
 
 The training command accepts `--pool-size 1`, `--pool-size 2`, or `--pool-size 5`. Omit the flag for the original direct Flatten/Concat baseline. The output layout isolates checkpoints and metrics in `results/multimodal/A/flatten/`, `results/multimodal/A/pool-2x2/`, etc. `run_metadata.json` and the best checkpoint record the selected variant. All variants still require independently verified steering/speed label channels and units. The CLI does **not** imply that training has been executed or that any variant is more accurate.
+
+The canonical `ExperimentConfig` now records `pool_size` (`null` for the full-spatial baseline, or `1`, `2`, `5` for explicit pooled variants). Configuration round-trip and invalid-value tests run in CPU CI. Compare only runs with matching data split, target schema, random seed, pretrained-weight policy, optimization schedule and backbone trainability. Report steering/speed RMSE, R² where defined, and the documented threshold accuracies; do not infer an accuracy benefit from parameter savings alone.
