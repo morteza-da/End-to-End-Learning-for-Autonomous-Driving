@@ -22,3 +22,7 @@ There are **131 extra Full-HD images** relative to the low-resolution/LiDAR pair
 ## Evidence boundary
 
 These are transcribed, recomputed aggregate observations from the local inventory, **not independently reproduced experimental results**. The original RAR archives and CSV are intentionally not committed. File-list overlap does **not** establish image/LAS decode validity, LiDAR numerical validity, camera–LiDAR timestamp synchronization, steering/speed channel units, licensing, or model performance. A complete, independently repeatable byte-level audit and reviewed target provenance remain prerequisites to scientific claims.
+
+## Target-range blocker for real-data training
+
+The separately audited local `label_audit.csv` reports steering-channel extrema outside the current default ±40° gate in `src/autonomous_driving/label_quality.py` (for example, −180° to +180° in some drives). The same report includes a validation speed-channel maximum of 227 and minimum of −4 in different drives. These are **raw label observations**, not verified physical measurements or evidence of faulty sensors. The current `require_plausible_targets` check intentionally rejects values outside its configured limits, so a real DBNet training run **cannot be claimed ready** merely because the archive inventory matches. The channel semantics, unit evidence, and any scientifically justified outlier policy must be reviewed before changing limits or excluding observations. Never silently clip or drop these rows.
