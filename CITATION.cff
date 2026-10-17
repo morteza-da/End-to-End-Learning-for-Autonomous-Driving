@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software in academic work, please cite it using the metadata in this file."
+type: software
+title: "End-to-End Learning for Autonomous Driving"
+abstract: >-
+  Research software for multimodal camera-LiDAR perception, spatial feature
+  extraction with Xception and ResNeXt-50, temporal LSTM-attention modeling,
+  and joint steering-angle and vehicle-speed prediction.
+authors:
+  - family-names: Aghamohammadi
+    given-names: Morteza
+    orcid: "https://orcid.org/0009-0001-4837-2298"
+repository-code: "https://github.com/morteza-da/End-to-End-Learning-for-Autonomous-Driving"
+license: MIT
+keywords:
+  - autonomous driving
+  - multimodal sensor fusion
+  - LiDAR
+  - computer vision
+  - LSTM
+  - attention
+  - deep learning
