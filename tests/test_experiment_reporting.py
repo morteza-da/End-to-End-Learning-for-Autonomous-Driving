@@ -31,7 +31,7 @@ class ExperimentTests(unittest.TestCase):
             [20.0, 30.0], [22.0, 29.0]
         )
         self.assertEqual(metrics["sample_count"], 2)
-        self.assertAlmostEqual(metrics["steering_deg"]["mae"], 1.0)
+        self.assertAlmostEqual(metrics["steering_deg"]["rmse"], 1.0)
         self.assertEqual(
             metrics["threshold_accuracy_percent"]["steering_accuracy_percent"],
             100.0
