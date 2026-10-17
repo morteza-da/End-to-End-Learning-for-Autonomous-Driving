@@ -92,3 +92,7 @@ Run `python scripts/smoke_test_multimodal.py --sequence-length 2 --batch-size 2`
 ## Undefined R² handling
 
 When validation targets have zero variance, R² is mathematically undefined. The evaluation output records `null` for R² in strict JSON rather than inventing a score or emitting non-standard `NaN`. RMSE and threshold accuracy remain defined for finite nonempty arrays. This is an explicit undefined metric, not a measured performance value.
+
+## Temporal parameter-memory validation
+
+The CPU integration workflow instantiates representative PyTorch LSTM + attention + regression-head models and checks that their actual parameter counts equal the analytic `estimate_temporal_memory` calculation. The reported Adam-state memory assumes four copies of each parameter's element storage (weights, gradients and two moments); it **excludes** convolutional backbones, intermediate activations, input batches, temporary buffers, optimizer metadata and allocator overhead. Passing the preflight cap does **not** guarantee a training run will fit in GPU memory. Backbone output widths must be measured for the installed `timm` models and chosen input size before making any hardware sizing claim.
