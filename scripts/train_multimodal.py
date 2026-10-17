@@ -4,7 +4,6 @@ Usage:
   python scripts/train_multimodal.py --data-root data/dbnet-2018 \
     --label-provenance path/to/reviewed-evidence.json \
     --preflight-report results/dbnet-preflight.json \
-    --preflight-report results/dbnet-preflight.json \
     --steering-channel 0 --speed-channel 1 \
     --steering-unit deg --speed-unit km/h --assignment A
 
