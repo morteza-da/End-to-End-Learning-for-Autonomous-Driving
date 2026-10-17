@@ -52,7 +52,7 @@ LiDAR observations ──> ResNeXt-50-based extractor ───┘
 - Track model versions, random seeds, preprocessing, and configuration.
 
 ### 4. Evaluation
-- Report MAE, RMSE, and R² separately for steering and speed.
+- Report RMSE and R² separately for steering and speed.
 - Include temporal prediction traces, error distributions, and per-scenario breakdowns.
 - Estimate predictive uncertainty using MC dropout if supported by the verified methodology.
 - Separate prior research-reported results from independently reproduced results.
