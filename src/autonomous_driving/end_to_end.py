@@ -32,10 +32,10 @@ def build_end_to_end_model(camera_backbone, lidar_backbone, *,
     if pool_size is not None and (not isinstance(pool_size, int) or pool_size < 1):\n        raise ValueError("pool_size must be a positive integer or None")\n    return EndToEndDrivingModel()
 
 
-def infer_feature_width(camera_backbone, lidar_backbone, *, device="cpu"):
+def infer_feature_width(camera_backbone, lidar_backbone, *, device="cpu",\n                        pool_size: int | None = None):
     """Infer flattened feature width from one 299x299 pair without gradients."""
     import torch
-    from .backbone_extraction import flattened_concatenated_features
+    from .backbone_extraction import flattened_concatenated_features\n    from .feature_compression import pool_and_concatenate
     was_camera_training = camera_backbone.training
     was_lidar_training = lidar_backbone.training
     try:
