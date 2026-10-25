@@ -32,7 +32,7 @@ The LiDAR RGB input is produced from a 3D point cloud using [configurable spheri
 
 Experiments use **DBNet**, introduced by Chen et al., *LiDAR-Video Driving Dataset: Learning Driving Policies Effectively* (CVPR 2018). [Official dataset](https://github.com/driving-behavior/DBNet) · [BibTeX](CITATION_DBNet.bib) · [Data setup](docs/dbnet-local-data.md).
 
-The repository includes a dataset layout audit, JPEG/LAS decoders, paired-frame validation, temporal sequence utilities, and an integrated CNN–LSTM–attention training interface. Dataset files are not included in this public repository.
+**Dataset download:** [DBNet archive on Google Drive](https://drive.google.com/file/d/1WxzOrhvMnHCOkh6EFGWltflyPb_UnGqo/view) (linked by the original DBNet project; approximately 10.2 GB as observed during download). Download access may depend on the source owner's sharing settings. Verify the archive contents and split layout before extraction; the archive is not hosted in this repository.\n\nThe repository includes a dataset layout audit, JPEG/LAS decoders, paired-frame validation, temporal sequence utilities, and an integrated CNN–LSTM–attention training interface. Dataset files are not included in this public repository.
 
 ## Getting started
 
