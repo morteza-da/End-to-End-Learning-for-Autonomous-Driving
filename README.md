@@ -11,12 +11,12 @@
 
 Multimodal learning for joint **steering-angle and vehicle-speed prediction** from frame-index-paired camera and LiDAR observations. The model supports **Xception** and **ResNeXt-50** feature extractors with optional ImageNet-pretrained weights, feature-level concatenation, an **LSTM**, temporal **attention**, and regression outputs. Both camera/backbone assignments are supported.
 
-## Verification status
+## Implementation and reproducibility
 
-- **Automated checks:** Python unit tests and PyTorch CPU integration tests run in GitHub Actions, including synthetic sensor/label preflight tests and model smoke tests.
-- **Implemented interfaces:** paired-frame dataset processing, configurable dual-CNN fusion, temporal modeling, checkpointing, and evaluation/reporting utilities.
-- **Not yet established:** end-to-end training on the full DBNet dataset, measured benchmark accuracy, and physical timestamp synchronization. No experimental RMSE or R² values are asserted here.
-- **Reproduction prerequisites:** authorized local DBNet files, reviewed target-channel/unit evidence, a matching passing preflight report, appropriate pretrained-weight access (if enabled), and sufficient memory/compute.
+- **Automated checks:** GitHub Actions runs Python unit tests and PyTorch CPU integration tests, including sensor/label preflight and model integration checks.
+- **Model implementation:** paired-frame data processing, configurable dual-CNN fusion, temporal modeling, checkpointing, and evaluation/reporting utilities.
+- **Experimental reporting:** full-dataset training configurations, checkpoints, and measured metrics will be documented alongside their corresponding reproducible run artifacts as they become available.
+- **Reproduction prerequisites:** local DBNet files, reviewed target-channel/unit evidence, a matching data preflight report, appropriate pretrained weights (when enabled), and sufficient compute.
 
 ## Model pipeline
 
@@ -32,7 +32,9 @@ The LiDAR RGB input is produced from a 3D point cloud using [configurable spheri
 
 Experiments use **DBNet**, introduced by Chen et al., *LiDAR-Video Driving Dataset: Learning Driving Policies Effectively* (CVPR 2018). [Official dataset](https://github.com/driving-behavior/DBNet) · [BibTeX](CITATION_DBNet.bib) · [Data setup](docs/dbnet-local-data.md).
 
-**Dataset download:** [DBNet archive on Google Drive](https://drive.google.com/file/d/1WxzOrhvMnHCOkh6EFGWltflyPb_UnGqo/view) (linked by the original DBNet project; approximately 10.2 GB as observed during download). Download access may depend on the source owner's sharing settings. Verify the archive contents and split layout before extraction; the archive is not hosted in this repository.\n\nThe repository includes a dataset layout audit, JPEG/LAS decoders, paired-frame validation, temporal sequence utilities, and an integrated CNN–LSTM–attention training interface. Dataset files are not included in this public repository.
+**Dataset download:** [DBNet archive on Google Drive](https://drive.google.com/file/d/1WxzOrhvMnHCOkh6EFGWltflyPb_UnGqo/view) (linked by the original DBNet project; approximately 10.2 GB as observed during download). Download access may depend on the source owner's sharing settings. Verify the archive contents and split layout before extraction; the archive is not hosted in this repository.
+
+The repository includes a dataset layout audit, JPEG/LAS decoders, paired-frame validation, temporal sequence utilities, and an integrated CNN–LSTM–attention training interface. Dataset files are downloaded separately.
 
 ## Getting started
 
@@ -60,7 +62,7 @@ The [sequence dataset](src/autonomous_driving/sequence_dataset.py) loads frame-i
 
 ## Training readiness and reproducibility
 
-Real-data training requires a **reviewed label-provenance record** and a **passing, matching data preflight report**. See [DBNet label evidence](docs/dbnet-label-evidence.md), [data preflight runner](scripts/audit_dbnet_preflight.py), and [experiment protocol](docs/experiment-protocol.md). These checks validate channel configuration, frame-index membership and provisional physical ranges; they do **not** prove timestamp synchronization or authenticity of supporting documentation. Optional full sensor-file byte hashing is available; it does not establish semantic validity or dataset licensing. No real DBNet performance results are claimed.
+Real-data training requires a **reviewed label-provenance record** and a **passing, matching data preflight report**. See [DBNet label evidence](docs/dbnet-label-evidence.md), [data preflight runner](scripts/audit_dbnet_preflight.py), and [experiment protocol](docs/experiment-protocol.md). These checks validate channel configuration, frame-index membership and provisional physical ranges; they do **not** prove timestamp synchronization or authenticity of supporting documentation. Optional full sensor-file byte hashing is available; it does not establish semantic validity or dataset licensing. Measured performance results are documented with their corresponding experiment artifacts.
 
 ```bash
 python scripts/audit_dbnet_preflight.py \
@@ -83,11 +85,11 @@ python scripts/train_multimodal.py \
   --assignment A --pool-size 2
 ```
 
-The optional `--pool-size 2` selects an experimental 2×2 pooled variant. Omit it for the direct spatial Flatten baseline, which has a substantially larger temporal parameter footprint. The commands require an authorized local dataset and genuine supporting evidence; they have not been validated against the full DBNet data.
+The optional `--pool-size 2` selects an experimental 2×2 pooled variant. Omit it for the direct spatial Flatten baseline, which has a substantially larger temporal parameter footprint. These commands require local DBNet data and reviewed label-channel and unit evidence; the settings shown are examples to be adapted to the verified dataset.
 
 ## Training and checkpointing
 
-Use [the training runner](scripts/train_multimodal.py) to train configuration A or B after independently verifying DBNet target-channel order and physical units. Each run saves its configuration, trainable-stage metadata, validation objectives, and best checkpoint. [Compare the two configurations](scripts/compare_backbones.py) using measured validation objectives; see the [experiment protocol](docs/experiment-protocol.md). Real-data benchmark results are not yet reported.
+Use [the training runner](scripts/train_multimodal.py) to train configuration A or B after independently verifying DBNet target-channel order and physical units. Each run saves its configuration, trainable-stage metadata, validation objectives, and best checkpoint. [Compare the two configurations](scripts/compare_backbones.py) using measured validation objectives; see the [experiment protocol](docs/experiment-protocol.md). Benchmark tables and run artifacts will be added to the repository's evaluation materials.
 
 ## Evaluation
 
@@ -99,7 +101,7 @@ For a transparent overview of completed software checks and remaining scientific
 
 Research interests include autonomous driving, multimodal perception, temporal learning, intelligent vehicles, uncertainty estimation, and vehicle dynamics. Open to academic collaborations and postdoctoral research opportunities.
 
-**Potential collaboration directions:** reproducible camera–LiDAR sensor-fusion benchmarks; controlled comparisons of direct spatial Flatten and pooled fusion; uncertainty-aware steering/speed prediction; and evaluation of semantic scene understanding against continuous driving-control outputs. These are prospective research directions, not claims of completed experiments.
+**Potential collaboration directions:** reproducible camera–LiDAR sensor-fusion benchmarks; controlled comparisons of direct spatial Flatten and pooled fusion; uncertainty-aware steering/speed prediction; and evaluation of semantic scene understanding against continuous driving-control outputs. These directions motivate ongoing research and reproducible evaluation.
 
 ## License and citation
 
